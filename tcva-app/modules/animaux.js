@@ -500,6 +500,11 @@ function displayComparisonCategories() {
     const container = document.getElementById('comparison-categories');
     if (!container) return;
     
+    if (!ANIMAL_CATEGORIES) {
+        container.innerHTML = '<p style="text-align: center; color: #f00;">Erreur : données non chargées</p>';
+        return;
+    }
+    
     container.innerHTML = '';
     
     ANIMAL_CATEGORIES.forEach(category => {
@@ -591,6 +596,11 @@ function displayComparisonTable(categoryId) {
 function displayAnimalGroups() {
     const container = document.getElementById('animal-groups');
     if (!container) return;
+    
+    if (!ANIMAL_CATEGORIES) {
+        container.innerHTML = '<p style="text-align: center; color: #f00;">Erreur : données non chargées</p>';
+        return;
+    }
     
     container.innerHTML = '';
     

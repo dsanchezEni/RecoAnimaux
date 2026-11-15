@@ -2,6 +2,15 @@
    STYLES SPÉCIFIQUES POUR LE MODULE RECONNAISSANCE ANIMAUX
    ============================================ */
 
+/* --- SECTIONS --- */
+.animal-section {
+    display: none;
+}
+
+.animal-section.active {
+    display: block;
+}
+
 /* --- ANIMAL CATEGORIES --- */
 .animal-category {
     margin-bottom: 2rem;
