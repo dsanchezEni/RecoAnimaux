@@ -13,7 +13,7 @@ const ANIMALS_DB = {
             description: 'Chien sociable et intelligent. Excellente pour les familles.',
             characteristics: { taille: '54-57 cm', poids: '25-36 kg', esperanceVie: '10-14 ans', temperament: 'Amical, actif, intelligent', niveauActivite: 'Élevé' },
             needs: { alimentation: 'Croquettes ou pâtée de qualité', espace: 'Maison avec jardin idéal', exercice: '1-2 heures/jour', socialisation: 'Excellente avec enfants et autres animaux' },
-            image: '../img/chien-001.jpg',
+            image: '../img/chien-001.png',
             funFact: 'Race de chien la plus populaire au monde.',
             regulation: 'Identification par puce obligatoire en France',
             advice: 'Éducation précoce recommandée'
@@ -26,7 +26,7 @@ const ANIMALS_DB = {
             description: 'Chien de travail polyvalent, loyal et protecteur.',
             characteristics: { taille: '55-65 cm', poids: '22-40 kg', esperanceVie: '9-13 ans', temperament: 'Loyal, intelligent, protecteur' },
             needs: { alimentation: 'Alimentation riche en protéines', espace: 'Besoin d\'espace', exercice: '2 heures minimum/jour' },
-            image: '../img/chien-002.jpg',
+            image: '../img/chien-002.png',
             funFact: 'Souvent utilisé comme chien policier ou de sauvetage.',
             regulation: 'Identification obligatoire',
             advice: 'Nécessite une éducation ferme et cohérente'
@@ -39,7 +39,7 @@ const ANIMALS_DB = {
             description: 'Chien élégant et intelligent, disponible en trois tailles.',
             characteristics: { taille: '24-60 cm', poids: '2-32 kg', esperanceVie: '12-15 ans' },
             needs: { alimentation: 'Alimentation adaptée à la taille', espace: 'S\'adapte à la vie en appartement', exercice: '30 min à 1 heure/jour' },
-            image: '../img/chien-003.jpg',
+            image: '../img/chien-003.png',
             funFact: 'Souvent utilisé pour créer des races hybrides hypoallergéniques.',
             regulation: 'Identification obligatoire',
             advice: 'Toilettage professionnel nécessaire toutes les 6-8 semaines'
@@ -52,7 +52,7 @@ const ANIMALS_DB = {
             description: 'Petit chien musclé et affectueux. Excellente pour la vie en appartement.',
             characteristics: { taille: '30 cm', poids: '8-14 kg', esperanceVie: '10-12 ans', temperament: 'Joueur, affectueux, calme' },
             needs: { alimentation: 'Attention à l\'obésité', espace: 'Adapté à la vie en appartement', exercice: '30 min/jour' },
-            image: '../img/chien-004.jpg',
+            image: '../img/chien-004.png',
             funFact: 'L\'une des races de chiens les plus populaires en France.',
             regulation: 'Identification obligatoire',
             advice: 'Éviter les températures extrêmes'
@@ -65,7 +65,7 @@ const ANIMALS_DB = {
             description: 'Chien doux et patient. Excellente pour les familles.',
             characteristics: { taille: '51-61 cm', poids: '25-34 kg', esperanceVie: '10-12 ans' },
             needs: { alimentation: 'Croquettes de qualité', espace: 'Maison avec jardin idéale', exercice: '1-2 heures/jour' },
-            image: '../img/chien-005.jpg',
+            image: '../img/chien-005.png',
             funFact: 'Souvent utilisé comme chien guide pour aveugles.',
             regulation: 'Identification obligatoire',
             advice: 'Brossage régulier nécessaire'
