@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconnaissance Animaux - Bac Pro TCVA</title>
+    <link rel="stylesheet" href="../css/style.css?v=1.0">
+    <link rel="stylesheet" href="../css/animals.css?v=1.0">
+</head>
+<body>
+    <header id="site-header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🐾</span>
+                <h1>Reconnaissance Animaux</h1>
+                <p>Module spécial Bac Pro TCVA</p>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Retour à l'accueil</a></li>
+                    <li><a href="#" onclick="showAnimalSection('learning')" class="active">Apprentissage</a></li>
+                    <li><a href="#" onclick="showAnimalSection('quiz')">Quiz</a></li>
+                    <li><a href="#" onclick="showAnimalSection('comparison')">Comparaison</a></li>
+                    <li><a href="#" onclick="showAnimalSection('groups')">Groupes</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- SECTION APPRENTISSAGE -->
+            <div id="learning" class="animal-section active">
+                <h2>📚 Apprentissage - Reconnaître les animaux d'animalerie</h2>
+                
+                <div class="animal-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-animals">0</div>
+                        <div class="stat-label">Espèces répertoriées</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="animals-viewed">0</div>
+                        <div class="stat-label">Espèces étudiées</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="mastery-percent">0%</div>
+                        <div class="stat-label">Maîtrise</div>
+                    </div>
+                </div>
+
+                <div class="learning-mode">
+                    <h3>🔍 Filtrer par catégorie</h3>
+                    <div class="animal-filters" id="animal-filters">
+                        <button class="animal-filter-btn active" data-category="all" onclick="filterAnimals(this)">
+                            🐾 Tous les animaux
+                        </button>
+                        <button class="animal-filter-btn" data-category="chien" onclick="filterAnimals(this)">
+                            🐕 Chiens
+                        </button>
+                        <button class="animal-filter-btn" data-category="chat" onclick="filterAnimals(this)">
+                            🐈 Chats
+                        </button>
+                        <button class="animal-filter-btn" data-category="oiseau" onclick="filterAnimals(this)">
+                            🦜 Oiseaux
+                        </button>
+                        <button class="animal-filter-btn" data-category="NAC" onclick="filterAnimals(this)">
+                            🐹 NAC
+                        </button>
+                        <button class="animal-filter-btn" data-category="poisson" onclick="filterAnimals(this)">
+                            🐠 Poissons
+                        </button>
+                        <button class="animal-filter-btn" data-category="jardin" onclick="filterAnimals(this)">
+                            🐸 Jardin
+                        </button>
+                    </div>
+                </div>
+
+                <div class="search-animals">
+                    <input type="text" id="animal-search-input" placeholder="🔍 Rechercher une espèce..." oninput="searchAnimals()">
+                </div>
+
+                <div id="animal-categories" class="animal-categories">
+                    <!-- Les catégories seront affichées ici -->
+                </div>
+            </div>
+
+            <!-- SECTION QUIZ -->
+            <div id="quiz" class="animal-section">
+                <h2>🎯 Quiz - Identification des animaux</h2>
+                
+                <div class="animal-quiz-container">
+                    <div class="animal-quiz-header">
+                        <div class="animal-quiz-progress">
+                            Question <span id="quiz-current">1</span> sur <span id="quiz-total">10</span>
+                        </div>
+                        <div class="animal-quiz-timer" id="animal-timer">30</div>
+                    </div>
+                    
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="animal-quiz-progress" style="width: 0%;"></div>
+                    </div>
+                    
+                    <div class="animal-quiz-question" id="animal-question">
+                        <p id="quiz-instruction">Identifiez cette espèce :</p>
+                        <img src="" alt="Animal à identifier" id="quiz-animal-image" class="animal-quiz-image">
+                    </div>
+                    
+                    <div class="animal-quiz-options" id="animal-options">
+                        <!-- Les options seront affichées ici -->
+                    </div>
+                    
+                    <div class="animal-quiz-feedback" id="animal-feedback"></div>
+                    
+                    <div class="text-center" style="margin-top: 1rem;">
+                        <button class="btn hidden" id="animal-next-btn" onclick="nextAnimalQuestion()">
+                            Question Suivante
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="animal-quiz-setup" id="animal-quiz-setup">
+                    <h3>Configuration du quiz</h3>
+                    <div class="form-group">
+                        <label for="animal-quiz-category">Catégorie :</label>
+                        <select id="animal-quiz-category" onchange="updateAnimalQuizSetup()">
+                            <option value="all">Tous les animaux</option>
+                            <option value="chien">Chiens</option>
+                            <option value="chat">Chats</option>
+                            <option value="oiseau">Oiseaux</option>
+                            <option value="NAC">NAC</option>
+                            <option value="poisson">Poissons</option>
+                            <option value="jardin">Jardin aquatique</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="animal-quiz-count">Nombre de questions :</label>
+                        <input type="number" id="animal-quiz-count" min="5" max="50" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="animal-quiz-time">Temps par question (s) :</label>
+                        <input type="number" id="animal-quiz-time" min="10" max="60" value="20">
+                    </div>
+                    <button class="btn" onclick="startAnimalQuiz()">
+                        Commencer le Quiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- SECTION COMPARAISON -->
+            <div id="comparison" class="animal-section">
+                <h2>⚖️ Comparaison des espèces</h2>
+                
+                <div class="animal-comparison">
+                    <h3>Comparer des animaux par catégorie</h3>
+                    <div class="comparison-grid" id="comparison-categories">
+                        <!-- Les catégories de comparaison seront affichées ici -->
+                    </div>
+                    
+                    <div id="comparison-table-container" style="margin-top: 2rem;">
+                        <!-- Le tableau de comparaison sera affiché ici -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION GROUPES -->
+            <div id="groups" class="animal-section">
+                <h2>📊 Groupes d'animaux</h2>
+                
+                <div class="animal-groups" id="animal-groups">
+                    <!-- Les groupes seront affichées ici -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="site-footer">
+        <div class="footer-content">
+            <p>Module de reconnaissance d'animaux - Bac Pro TCVA</p>
+            <p>Apprenez à identifier les espèces courantes en animalerie</p>
+        </div>
+    </footer>
+
+    <script src="animaux-db.js"></script>
+    <script src="animaux.js"></script>
+</body>
+</html>

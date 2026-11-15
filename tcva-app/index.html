@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bac Pro TCVA - Révision et Quiz Interactif</title>
+    <link rel="stylesheet" href="css/style.css?v=1.0">
+    <link rel="stylesheet" href="css/animals.css?v=1.0">
+</head>
+<body>
+    <header id="site-header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🐾</span>
+                <h1>Bac Pro TCVA</h1>
+                <p>Technicien Conseil-Vente en Animalerie</p>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#" onclick="showPage('accueil')" class="active">Accueil</a></li>
+                    <li><a href="#" onclick="showPage('quiz-setup')">Quiz</a></li>
+                    <li><a href="#" onclick="showPage('questions-list')">Base de Questions</a></li>
+                    <li><a href="modules/animaux.html">Reconnaissance Animaux</a></li>
+                    <li><a href="#" onclick="showPage('a-retenir')">À Retenir</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <div class="container">
+            <!-- PAGE ACCUEIL -->
+            <div id="accueil" class="page active">
+                <div class="welcome">
+                    <h1>Bienvenue sur la plateforme de révision Bac Pro TCVA</h1>
+                    <p>Application interactive pour réviser et tester vos connaissances sur les 12 blocs de compétences du Baccalauréat Professionnel Technicien Conseil-Vente en Animalerie.</p>
+                    
+                    <p>Plusieurs modes de révision sont disponibles :</p>
+                    <ul class="alignLeft">
+                        <li><strong>Quiz interactif</strong> : questions chronométrées avec explications détaillées</li>
+                        <li><strong>Base de questions</strong> : parcourir toutes les questions par bloc de compétences</li>
+                        <li><strong>Module spécial reconnaissance d'animaux</strong> : identifier et connaître les animaux d'animalerie</li>
+                        <li><strong>Points clés à retenir</strong> : résumé des notions essentielles</li>
+                    </ul>
+
+                    <div class="orientation-panel">
+                        <div class="orientation-grid">
+                            <div class="orientation-card orientation-card-primary" onclick="showPage('quiz-setup')">
+                                <span class="orientation-badge">⏱️</span>
+                                <h3>Je veux m'évaluer</h3>
+                                <p>Testez vos connaissances avec des questions chronométrées et obtenez des explications détaillées.</p>
+                            </div>
+                            <div class="orientation-card orientation-card-secondary" onclick="showPage('questions-list')">
+                                <span class="orientation-badge">📚</span>
+                                <h3>Je veux réviser</h3>
+                                <p>Consultez les questions par bloc de compétences avec explications complètes.</p>
+                            </div>
+                            <div class="orientation-card orientation-card-tertiary" onclick="window.location.href='modules/animaux.html'">
+                                <span class="orientation-badge">🐶</span>
+                                <h3>Reconnaissance Animaux</h3>
+                                <p>Apprenez à identifier et connaître les animaux d'animalerie.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="home-summary-box">
+                        <div class="summary-stat">
+                            <span class="summary-label">Blocs de compétences</span>
+                            <strong id="home-bloc-count">12</strong>
+                        </div>
+                        <div class="summary-stat">
+                            <span class="summary-label">Questions</span>
+                            <strong id="home-total-questions">0</strong>
+                        </div>
+                        <div class="summary-stat">
+                            <span class="summary-label">Espèces animales</span>
+                            <strong id="home-animal-count">6</strong>
+                        </div>
+                        <div class="summary-stat">
+                            <span class="summary-label">Niveaux</span>
+                            <strong id="home-difficulty">3 niveaux</strong>
+                        </div>
+                    </div>
+
+                    <div class="quick-guide">
+                        <h3>📖 Guide de révision</h3>
+                        <p><strong>Commencez par</strong> la base de questions pour (re)voir les concepts clés, <strong>puis</strong> le quiz pour évaluer votre niveau, et <strong>terminez par</strong> le module reconnaissance animaux pour maîtriser l'identification des espèces.</p>
+                    </div>
+
+                    <div class="menu-cards">
+                        <div class="menu-card" onclick="showPage('quiz-setup')">
+                            <h3>🎯 Quiz Interactif</h3>
+                            <p class="welcome-text-card">Testez vos connaissances avec des questions chronométrées et obtenez des explications détaillées</p>
+                        </div>
+                        <div class="menu-card" onclick="showPage('questions-list')">
+                            <h3>📚 Base de Questions</h3>
+                            <p class="welcome-text-card"><span id="total-questions-info" class="highlight"></span></p>
+                            <p class="welcome-text-card">Parcourez toutes les questions organisées par bloc de compétences et niveau</p>
+                        </div>
+                        <div class="menu-card" onclick="window.location.href='modules/animaux.html'">
+                            <h3>🐾 Module Animaux</h3>
+                            <p class="welcome-text-card">Apprenez à reconnaître et conseiller sur les animaux d'animalerie</p>
+                        </div>
+                    </div>
+
+                    <div class="progress-overview">
+                        <div class="progress-card">
+                            <span class="progress-label">Questions vues</span>
+                            <strong class="progress-value" id="progress-seen">0/0</strong>
+                            <span class="progress-meta" id="progress-seen-meta">0% du programme</span>
+                        </div>
+                        <div class="progress-card">
+                            <span class="progress-label">Blocs maîtrisés</span>
+                            <strong class="progress-value" id="progress-themes">0</strong>
+                            <span class="progress-meta">Seuil : 70%</span>
+                        </div>
+                        <div class="progress-card">
+                            <span class="progress-label">Réussite des 3 derniers quiz</span>
+                            <strong class="progress-value" id="progress-recent">0%</strong>
+                            <span class="progress-meta" id="progress-recent-meta">Aucun quiz enregistré</span>
+                        </div>
+                    </div>
+
+                    <div class="recommendations-section">
+                        <h2>🧠 Révisions recommandées</h2>
+                        <div id="recommendations-container"></div>
+                    </div>
+
+                    <div class="history-section">
+                        <h2>📈 Vos 5 Derniers Quiz</h2>
+                        <div id="history-container"></div>
+                        <button class="btn btn-secondary btn-sm" onclick="clearHistory()">Effacer l'historique</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE CONFIGURATION QUIZ -->
+            <div id="quiz-setup" class="page">
+                <h2>Configuration du Quiz</h2>
+                <div class="quiz-setup">
+                    <div class="form-group">
+                        <label for="bloc-select">Choisir un bloc de compétences :</label>
+                        <select id="bloc-select">
+                            <option value="all">Tous les blocs</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="niveau-select">Choisir un niveau :</label>
+                        <select id="niveau-select">
+                            <option value="all">Tous les niveaux</option>
+                            <option value="Facile">Facile</option>
+                            <option value="Intermédiaire">Intermédiaire</option>
+                            <option value="Avancé">Avancé</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animal-filter">Filtrer par type d'animal (optionnel) :</label>
+                        <select id="animal-filter">
+                            <option value="all">Tous les animaux</option>
+                            <option value="chien">Chien</option>
+                            <option value="chat">Chat</option>
+                            <option value="oiseau">Oiseau</option>
+                            <option value="NAC">Petits mammifères NAC</option>
+                            <option value="poisson">Aquariophilie</option>
+                            <option value="jardin">Jardin aquatique</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="question-count">Nombre de questions :</label>
+                        <input type="number" id="question-count" min="1" max="50" value="10" placeholder="Nombre de questions">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="time-limit">Temps par question (secondes) :</label>
+                        <input type="number" id="time-limit" min="10" max="300" value="30" placeholder="Temps en secondes">
+                    </div>
+                    
+                    <button class="btn" onclick="startQuiz()">Commencer le Quiz</button>
+                </div>
+            </div>
+
+            <!-- PAGE QUIZ -->
+            <div id="quiz" class="page">
+                <div class="quiz-container">
+                    <div class="quiz-header">
+                        <div class="quiz-progress">
+                            Question <span id="current-question">1</span> sur <span id="total-questions">10</span>
+                        </div>
+                        <div class="timer" id="timer">30</div>
+                    </div>
+                    
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="quiz-progress-bar" style="width: 0%;"></div>
+                    </div>
+                    
+                    <div class="question-card">
+                        <div class="question-title" id="question-text"></div>
+                        <div class="question-meta" id="question-meta"></div>
+                        <div class="question-animal-badge" id="question-animal-badge"></div>
+                        <div class="answers" id="answers-container"></div>
+                        <div class="explanation" id="explanation"></div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button class="btn hidden" id="next-btn" onclick="nextQuestion()">Question Suivante</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE RÉSULTATS -->
+            <div id="results" class="page">
+                <div class="results-container">
+                    <h2>Résultats du Quiz</h2>
+                    <div class="score-circle" id="score-circle">
+                        <div class="score-text" id="score-text">0%</div>
+                    </div>
+                    
+                    <div class="results-summary">
+                        <div class="stat-card">
+                            <div class="stat-number" id="correct-answers">0</div>
+                            <div class="stat-label">Bonnes réponses</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="incorrect-answers">0</div>
+                            <div class="stat-label">Mauvaises réponses</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-time">0s</div>
+                            <div class="stat-label">Temps total</div>
+                        </div>
+                    </div>
+
+                    <div class="results-review" id="wrong-answers-review"></div>
+                    
+                    <div class="mt-2">
+                        <button class="btn" onclick="showPage('quiz-setup')">Nouveau Quiz</button>
+                        <button class="btn" onclick="showPage('accueil')" style="margin-left: 1rem;">Retour Accueil</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE LISTE DES QUESTIONS -->
+            <div id="questions-list" class="page">
+                <h2>Base de Questions par Bloc de Compétences</h2>
+                <div class="search-filter-container">
+                    <div class="form-group search-group">
+                        <input type="text" id="question-search-input" placeholder="🔍 Rechercher dans les questions ou explications..." oninput="filterQuestionsList()">
+                    </div>
+                    <div class="form-group filter-group">
+                        <select id="question-bloc-filter" onchange="filterQuestionsList()">
+                            <option value="all">Tous les blocs</option>
+                        </select>
+                    </div>
+                    <div class="form-group filter-group">
+                        <select id="question-level-filter" onchange="filterQuestionsList()">
+                            <option value="all">Tous les niveaux</option>
+                            <option value="Facile">Facile</option>
+                            <option value="Intermédiaire">Intermédiaire</option>
+                            <option value="Avancé">Avancé</option>
+                        </select>
+                    </div>
+                    <div class="form-group filter-group">
+                        <select id="question-animal-filter" onchange="filterQuestionsList()">
+                            <option value="all">Tous les animaux</option>
+                            <option value="chien">Chien</option>
+                            <option value="chat">Chat</option>
+                            <option value="oiseau">Oiseau</option>
+                            <option value="NAC">Petits mammifères NAC</option>
+                            <option value="poisson">Aquariophilie</option>
+                            <option value="jardin">Jardin aquatique</option>
+                        </select>
+                    </div>
+                </div>
+               <div class="questions-list" id="questions-container">
+               </div>
+            </div>
+
+            <!-- PAGE À RETENIR -->
+            <div id="a-retenir" class="page">
+                <h2>Points Clés à Retenir pour le Bac Pro TCVA</h2>
+                <div class="a-retenir-content">
+                    <p>Cette section présente les points essentiels à maîtriser pour réussir votre examen.</p>
+                    
+                    <div class="key-points-section">
+                        <h3>📋 Les 12 Blocs de Compétences</h3>
+                        <div id="key-points-list"></div>
+                    </div>
+
+                    <div class="key-points-section">
+                        <h3>🎯 Conseils pour la Pratique</h3>
+                        <ul class="key-points-list">
+                            <li><strong>Conseil client</strong> : Toujours poser des questions ouvertes pour comprendre les besoins</li>
+                            <li><strong>Gestion de rayon</strong> : Vérifier les dates de péremption et les conditions de stockage</li>
+                            <li><strong>Réglementation</strong> : Connaître les lois sur la vente d'animaux et les produits</li>
+                            <li><strong>Hygiène</strong> : Respecter les protocoles sanitaires en magasin</li>
+                            <li><strong>Communication</strong> : Adapter son discours au client (novice ou expert)</li>
+                        </ul>
+                    </div>
+
+                    <div class="key-points-section">
+                        <h3>📚 Ressources Complémentaires</h3>
+                        <ul class="key-points-list">
+                            <li>Référentiel officiel du Bac Pro TCVA</li>
+                            <li>Fiches techniques sur les produits d'animalerie</li>
+                            <li>Réglementation en vigueur (Code rural, etc.)</li>
+                            <li>Guides d'identification des espèces</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="site-footer">
+        <div class="footer-content">
+            <p>Application de révision pour le Bac Pro TCVA - Technicien Conseil-Vente en Animalerie</p>
+            <p>Créé pour faciliter l'apprentissage et la maîtrise des compétences professionnelles</p>
+        </div>
+    </footer>
+
+    <script src="js/quiz-tcva.js?v=1.0"></script>
+    <script src="js/script-tcva.js?v=1.0"></script>
+</body>
+</html>

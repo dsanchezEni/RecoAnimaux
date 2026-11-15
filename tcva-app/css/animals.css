@@ -1,0 +1,560 @@
+/* ============================================
+   STYLES SPÉCIFIQUES POUR LE MODULE RECONNAISSANCE ANIMAUX
+   ============================================ */
+
+/* --- ANIMAL CATEGORIES --- */
+.animal-category {
+    margin-bottom: 2rem;
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.animal-category h3 {
+    color: #4CAF50;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #4CAF50;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.animal-category .category-icon {
+    font-size: 1.5rem;
+}
+
+.animal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.animal-card {
+    background: #F5F5F5;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.animal-card:hover {
+    border-color: #4CAF50;
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(76, 175, 80, 0.2);
+}
+
+.animal-card.selected {
+    border-color: #4CAF50;
+    background: #E8F5E9;
+}
+
+.animal-card.correct {
+    border-color: #4CAF50;
+    background: #E8F5E9;
+}
+
+.animal-card.incorrect {
+    border-color: #F44336;
+    background: #FFEBEE;
+}
+
+.animal-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+}
+
+.animal-name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.animal-scientific {
+    color: #666;
+    font-size: 0.85rem;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+.animal-characteristics {
+    font-size: 0.85rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+/* --- ANIMAL DETAILS MODAL --- */
+.animal-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.animal-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.animal-modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.animal-modal.active .animal-modal-content {
+    transform: scale(1);
+}
+
+.animal-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #EEE;
+}
+
+.animal-modal-header h2 {
+    color: #4CAF50;
+    margin: 0;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0.5rem;
+}
+
+.close-modal:hover {
+    color: #4CAF50;
+}
+
+.animal-modal-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.animal-modal-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.animal-modal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.info-section {
+    padding: 1rem;
+    background: #F5F5F5;
+    border-radius: 8px;
+}
+
+.info-section h4 {
+    color: #4CAF50;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.info-section p {
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.animal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.animal-tag {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    background: #E3F2FD;
+    color: #1976D2;
+}
+
+/* --- QUIZ ANIMAUX --- */
+.animals-quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.animal-quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.animal-quiz-progress {
+    color: #666;
+    font-weight: 500;
+}
+
+.animal-quiz-timer {
+    background: #FF9800;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.animal-quiz-question {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.animal-quiz-question h3 {
+    color: #4CAF50;
+    margin-bottom: 1rem;
+}
+
+.animal-quiz-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    background: #F5F5F5;
+}
+
+.animal-quiz-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.animal-option {
+    padding: 1rem;
+    background: #F5F5F5;
+    border: 2px solid #DDD;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.animal-option:hover {
+    border-color: #4CAF50;
+    background: #E8F5E9;
+}
+
+.animal-option.selected {
+    border-color: #4CAF50;
+    background: #E8F5E9;
+}
+
+.animal-option.correct {
+    border-color: #4CAF50;
+    background: #E8F5E9;
+}
+
+.animal-option.incorrect {
+    border-color: #F44336;
+    background: #FFEBEE;
+}
+
+.animal-option.disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.animal-quiz-feedback {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    display: none;
+}
+
+.animal-quiz-feedback.show {
+    display: block;
+}
+
+.animal-quiz-feedback.correct {
+    background: #E8F5E9;
+    border-left: 4px solid #4CAF50;
+    color: #2E7D32;
+}
+
+.animal-quiz-feedback.incorrect {
+    background: #FFEBEE;
+    border-left: 4px solid #F44336;
+    color: #C62828;
+}
+
+.animal-explanation {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #E3F2FD;
+    border-radius: 8px;
+    border-left: 4px solid #2196F3;
+}
+
+.animal-explanation h4 {
+    color: #1976D2;
+    margin-bottom: 0.5rem;
+}
+
+.animal-explanation p {
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* --- LEARNING MODE --- */
+.learning-mode {
+    margin: 2rem 0;
+}
+
+.learning-mode h3 {
+    color: #4CAF50;
+    margin-bottom: 1rem;
+}
+
+.animal-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.animal-filter-btn {
+    padding: 0.5rem 1rem;
+    border: 2px solid #4CAF50;
+    background: white;
+    color: #4CAF50;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.animal-filter-btn:hover, .animal-filter-btn.active {
+    background: #4CAF50;
+    color: white;
+}
+
+.search-animals {
+    margin-bottom: 1.5rem;
+}
+
+.search-animals input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #DDD;
+    border-radius: 8px;
+    font-size: 1rem;
+    max-width: 400px;
+}
+
+.search-animals input:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+/* --- ANIMAL STATS --- */
+.animal-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+}
+
+.stat-item .stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.stat-item .stat-label {
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+/* --- ANIMAL COMPARISON --- */
+.animal-comparison {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.animal-comparison h3 {
+    color: #4CAF50;
+    margin-bottom: 1rem;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.comparison-card {
+    background: #F5F5F5;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.comparison-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+}
+
+.comparison-card h4 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #DDD;
+}
+
+.comparison-table th {
+    background: #4CAF50;
+    color: white;
+    font-weight: 500;
+}
+
+.comparison-table tr:nth-child(even) {
+    background: #F5F5F5;
+}
+
+/* --- ANIMAL GROUPS --- */
+.animal-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.group-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.group-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.group-card .group-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.group-card h4 {
+    color: #4CAF50;
+    margin-bottom: 0.5rem;
+}
+
+.group-card p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.group-card .group-stat {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+/* --- RESPONSIVE ANIMALS --- */
+@media (max-width: 768px) {
+    .animal-modal-body {
+        grid-template-columns: 1fr;
+    }
+    
+    .animal-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    .animal-quiz-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .animal-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .animal-groups {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .animal-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .animal-stats {
+        grid-template-columns: 1fr;
+    }
+}
