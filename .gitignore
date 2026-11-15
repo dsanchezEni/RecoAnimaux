@@ -1,0 +1,22 @@
+# Application de révision Bac Pro TCVA
+# Fichiers globaux à ignorer pour Git
+
+# Ignorer les dossiers .git dans les sous-dossiers (évite les conflits de submodules)
+.git
+*.git/
+**/.git/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+
+# Cache
+.cache/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
