@@ -906,7 +906,7 @@ const ANIMALS_DB = {
         {
             id: 'poisson-001',
             name: 'Poisson Rouge',
-            scientific: 'Cyprinus carpio',
+            scientific: 'Carassius auratus',
             category: 'poisson',
             description: 'Poisson d\'aquarium résistant et coloré.',
             characteristics: { taille: '25-35 cm', temperature: '18-24°C', esperanceVie: '10-25 ans' },
