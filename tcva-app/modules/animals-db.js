@@ -797,7 +797,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '20-40 cm', poids: '800 g - 2 kg', esperanceVie: '8-12 ans' },
             needs: { alimentation: 'Foin à volonté, granulés, légumes frais', espace: 'Grand enclos', exercice: 'Sorties quotidiennes' },
             origin: 'Europe (domestique)',
-            image: '../img/NAC-001.jpg',
+            image: '../img/NAC-001.png',
             funFact: 'Peut apprendre à répondre à son nom.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Vaccination contre la myxomatose recommandée'
@@ -811,7 +811,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '12-17 cm', poids: '85-150 g', esperanceVie: '2-3 ans' },
             needs: { alimentation: 'Mélange de graines, légumes', espace: 'Cage spacieuse', exercice: 'Roue de course' },
             origin: 'Syrie (domestiqué en Europe)',
-            image: '../img/NAC-002.jpg',
+            image: '../img/NAC-002.png',
             funFact: 'A des abajoues pour transporter de la nourriture.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Ne pas réveiller pendant la journée'
@@ -825,7 +825,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '20-30 cm', poids: '700 g - 1,2 kg', esperanceVie: '5-8 ans' },
             needs: { alimentation: 'Foin, granulés, légumes riches en vitamine C', espace: 'Grand enclos', exercice: 'Sorties quotidiennes' },
             origin: 'Amérique du Sud (Andes)',
-            image: '../img/NAC-003.jpg',
+            image: '../img/NAC-003.png',
             funFact: 'Communique par une variété de sons.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Doit être gardé en groupe (minimum 2)'
@@ -839,7 +839,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '22-38 cm', poids: '400-600 g', esperanceVie: '10-20 ans' },
             needs: { alimentation: 'Foin de graminées, granulés', espace: 'Grande cage', exercice: 'Jouets, cachettes' },
             origin: 'Amérique du Sud (Chili, Pérou)',
-            image: '../img/NAC-004.jpg',
+            image: '../img/NAC-004.png',
             funFact: 'Possède l\'un des pelages les plus denses au monde.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Température idéale : 18-22°C'
@@ -853,7 +853,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '30-50 cm', poids: '500 g - 2 kg', esperanceVie: '6-10 ans' },
             needs: { alimentation: 'Viande crue ou proies entières', espace: 'Grande cage multi-étages', exercice: 'Sorties quotidiennes' },
             origin: 'Europe (domestiqué à partir du putois d\'Afrique du Nord)',
-            image: '../img/NAC-005.jpg',
+            image: '../img/NAC-005.png',
             funFact: 'Dort 14 à 18 heures par jour.',
             regulation: 'Identification et vaccinations obligatoires',
             advice: 'Nécessite beaucoup d\'attention'
@@ -867,7 +867,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '5-10 cm', poids: '20-40 g', esperanceVie: '2-3 ans' },
             needs: { alimentation: 'Graines, légumes, protéines', espace: 'Cage spacieuse avec cachettes', exercice: 'Roue et jouets' },
             origin: 'Monde entier (domestiquée)',
-            image: '../img/NAC-006.jpg',
+            image: '../img/NAC-006.png',
             funFact: 'Très intelligente, peut apprendre des tours.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'À garder en groupe de même sexe'
@@ -881,7 +881,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '20-28 cm', poids: '250-500 g', esperanceVie: '2-3 ans' },
             needs: { alimentation: 'Granulés, légumes, fruits', espace: 'Grande cage multi-niveaux', exercice: 'Sorties quotidiennes' },
             origin: 'Europe (domestiqué)',
-            image: '../img/NAC-007.jpg',
+            image: '../img/NAC-007.png',
             funFact: 'Peut être apprivoisé et reconnaître son propriétaire.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Besoin de beaucoup de stimulation intellectuelle'
@@ -895,7 +895,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '10-15 cm', poids: '50-100 g', esperanceVie: '3-4 ans' },
             needs: { alimentation: 'Mélange de graines, légumes', espace: 'Grand bac avec substrat épais', exercice: 'Roue et tunnels' },
             origin: 'Afrique et Asie (Mongolie, Chine)',
-            image: '../img/NAC-008.jpg',
+            image: '../img/NAC-008.png',
             funFact: 'Creuse des galeries dans le sable.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Doit être gardée en groupe'
