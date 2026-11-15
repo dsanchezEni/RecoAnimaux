@@ -160,7 +160,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '30-40 cm', poids: '400-600 g', esperanceVie: '40-60 ans' },
             needs: { alimentation: 'Mélange de graines, fruits, légumes', espace: 'Grande cage', exercice: 'Sorties quotidiennes' },
             origin: 'Afrique centrale et de l\'Ouest (forêts tropicales)',
-            image: '../img/oiseau-001.jpg',
+            image: '../img/oiseau-001.png',
             funFact: 'Certains Jacos peuvent apprendre plus de 100 mots.',
             regulation: 'Certificat de capacité obligatoire',
             advice: 'Nécessite beaucoup de stimulation intellectuelle'
@@ -174,7 +174,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '12-14 cm', poids: '15-20 g', esperanceVie: '7-10 ans' },
             needs: { alimentation: 'Mélange de graines pour canaris', espace: 'Cage spacieuse', exercice: 'Vol libre supervisé' },
             origin: 'Îles Canaries, Madère, Açores',
-            image: '../img/oiseau-002.jpg',
+            image: '../img/oiseau-002.png',
             funFact: 'Seuls les mâles chantent.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Placer la cage dans un endroit lumineux'
@@ -188,7 +188,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '18 cm', poids: '30-40 g', esperanceVie: '5-10 ans' },
             needs: { alimentation: 'Mélange de graines, légumes frais', espace: 'Cage spacieuse avec jouets' },
             origin: 'Australie',
-            image: '../img/oiseau-003.jpg',
+            image: '../img/oiseau-003.png',
             funFact: 'Peut apprendre à parler.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Nécessite une cage avec des barreaux horizontaux'
@@ -202,7 +202,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '90-120 cm (avec queue)', poids: '2-3 kg', esperanceVie: '30-40 ans' },
             needs: { alimentation: 'Fruits, insectes', espace: 'Très grand volière', exercice: 'Espace pour voler' },
             origin: 'Asie du Sud-Est (Indonésie, Malaisie, Thaïlande)',
-            image: '../img/oiseau-004.jpg',
+            image: '../img/oiseau-004.png',
             funFact: 'Le casque amplifie son chant.',
             regulation: 'Certificat de capacité obligatoire',
             advice: 'Déconseillé aux débutants'
@@ -216,7 +216,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '12-14 cm', poids: '14-16 g', esperanceVie: '4-6 ans' },
             needs: { alimentation: 'Mélange de graines fines', espace: 'Volière spacieuse', exercice: 'Espace pour voler' },
             origin: 'Australie',
-            image: '../img/oiseau-005.jpg',
+            image: '../img/oiseau-005.png',
             funFact: 'Existe en trois variétés de couleur de tête.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Sensible aux courants d\'air'
@@ -231,7 +231,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '15-20 cm', poids: '100-130 g', esperanceVie: '3-5 ans' },
             needs: { alimentation: 'Graines, légumes verts, granulés', espace: 'Volière spacieuse', exercice: 'Espace pour gratter' },
             origin: 'Asie de l\'Est (domestiquée)',
-            image: '../img/oiseau-006.jpg',
+            image: '../img/oiseau-006.png',
             funFact: 'Pond presque un œuf par jour en période de ponte.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Éviter les courants d\'air'
@@ -245,7 +245,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '13-16 cm', poids: '60-80 g', esperanceVie: '3-5 ans' },
             needs: { alimentation: 'Graines, insectes, légumes', espace: 'Volière avec cachettes', exercice: 'Espace pour se déplacer' },
             origin: 'Asie du Sud-Est',
-            image: '../img/oiseau-007.jpg',
+            image: '../img/oiseau-007.png',
             funFact: 'Mâle et femelle ont un plumage différent (dimorphisme sexuel).',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Nécéssite une température stable'
@@ -259,7 +259,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '40-45 cm', poids: '500-700 g', esperanceVie: '10-15 ans' },
             needs: { alimentation: 'Granulés pour canards, légumes, maïs', espace: 'Bassin ou étang', exercice: 'Nage quotidienne' },
             origin: 'Amérique du Nord',
-            image: '../img/oiseau-008.jpg',
+            image: '../img/oiseau-008.png',
             funFact: 'Le mâle a un plumage très coloré avec un bec rouge vif.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'A besoin d\'eau pour se reproduire'
@@ -273,7 +273,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '41-49 cm', poids: '400-700 g', esperanceVie: '5-10 ans' },
             needs: { alimentation: 'Graines, plantes aquatiques, insectes', espace: 'Étang avec végétation', exercice: 'Vol et nage' },
             origin: 'Asie de l\'Est (Chine, Japon)',
-            image: '../img/oiseau-009.jpg',
+            image: '../img/oiseau-009.png',
             funFact: 'Symbole de fidélité dans la culture asiatique.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Préfère les eaux calmes'
@@ -287,7 +287,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '19-21 cm', poids: '25-30 g', esperanceVie: '5-8 ans' },
             needs: { alimentation: 'Mélange de graines fines', espace: 'Volière spacieuse', exercice: 'Espace pour voler' },
             origin: 'Australie',
-            image: '../img/oiseau-010.jpg',
+            image: '../img/oiseau-010.png',
             funFact: 'Forme des couples pour la vie.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'À garder en couple ou en petit groupe'
@@ -301,7 +301,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '30-33 cm', poids: '75-120 g', esperanceVie: '10-15 ans' },
             needs: { alimentation: 'Mélange de graines, fruits, légumes', espace: 'Grande volière', exercice: 'Sorties quotidiennes' },
             origin: 'Australie',
-            image: '../img/oiseau-011.jpg',
+            image: '../img/oiseau-011.png',
             funFact: 'Son nom signifie "à toutes les couleurs".',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Nécessite beaucoup d\'espace pour voler'
@@ -315,7 +315,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '25-30 cm', poids: '65-90 g', esperanceVie: '10-15 ans' },
             needs: { alimentation: 'Graines, fruits, légumes verts', espace: 'Volière spacieuse', exercice: 'Vol régulier' },
             origin: 'Australie',
-            image: '../img/oiseau-012.jpg',
+            image: '../img/oiseau-012.png',
             funFact: 'Très sociable, adore interagir avec son propriétaire.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Préfère les températures modérées'
@@ -329,7 +329,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '30 cm', poids: '80-110 g', esperanceVie: '10-15 ans' },
             needs: { alimentation: 'Mélange de graines, légumes frais', espace: 'Volière spacieuse', exercice: 'Activité physique quotidienne' },
             origin: 'Australie (nord-est)',
-            image: '../img/oiseau-013.jpg',
+            image: '../img/oiseau-013.png',
             funFact: 'Connaît une période de mue annuelle très marquée.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'A besoin de jouets pour se stimuler'
@@ -343,7 +343,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '27-28 cm', poids: '60-85 g', esperanceVie: '10-15 ans' },
             needs: { alimentation: 'Graines, légumes, fruits occasionnels', espace: 'Volière spacieuse', exercice: 'Vol libre supervisé' },
             origin: 'Australie (sud)',
-            image: '../img/oiseau-014.jpg',
+            image: '../img/oiseau-014.png',
             funFact: 'Le mâle a des couleurs plus vives que la femelle.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Sociable, peut vivre en groupe'
@@ -357,7 +357,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '25 cm', poids: '50-70 g', esperanceVie: '10-15 ans' },
             needs: { alimentation: 'Graines, fruits, légumes, bourgeons', espace: 'Grande volière', exercice: 'Beaucoup d\'activité' },
             origin: 'Nouvelle-Zélande',
-            image: '../img/oiseau-015.jpg',
+            image: '../img/oiseau-015.png',
             funFact: 'Connaît pour sa capacité à résoudre des problèmes.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'À garder en couple ou en groupe'
@@ -372,7 +372,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '23-25 cm', poids: '50-70 g', esperanceVie: '10-15 ans' },
             needs: { alimentation: 'Graines, fruits, légumes verts', espace: 'Volière spacieuse', exercice: 'Activité physique quotidienne' },
             origin: 'Nouvelle-Zélande',
-            image: '../img/oiseau-016.jpg',
+            image: '../img/oiseau-016.png',
             funFact: 'Espèce menacée dans la nature, protégée en captivité.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Préfère les températures fraîches'
@@ -386,7 +386,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '19 cm', poids: '35-45 g', esperanceVie: '8-12 ans' },
             needs: { alimentation: 'Graines, millet, légumes', espace: 'Cage moyenne', exercice: 'Vol modéré' },
             origin: 'Australie',
-            image: '../img/oiseau-017.jpg',
+            image: '../img/oiseau-017.png',
             funFact: 'L\'une des rares perruches nocturne, active au crépuscule.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Très calme, adaptée aux appartements'
@@ -400,7 +400,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '22-24 cm', poids: '40-55 g', esperanceVie: '8-12 ans' },
             needs: { alimentation: 'Mélange de graines fines, légumes verts', espace: 'Volière spacieuse', exercice: 'Vol régulier' },
             origin: 'Australie',
-            image: '../img/oiseau-018.jpg',
+            image: '../img/oiseau-018.png',
             funFact: 'Se déplace avec élégance au sol comme dans les airs.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'À garder en couple'
@@ -414,7 +414,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '20-22 cm', poids: '40-50 g', esperanceVie: '8-12 ans' },
             needs: { alimentation: 'Graines, millet, légumes frais', espace: 'Volière', exercice: 'Espace pour voler' },
             origin: 'Australie (sud-est)',
-            image: '../img/oiseau-019.jpg',
+            image: '../img/oiseau-019.png',
             funFact: 'Son plumage change de couleur selon l\'angle de la lumière.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Sociable avec d\'autres petites perruches'
@@ -428,7 +428,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '19-21 cm', poids: '35-45 g', esperanceVie: '8-12 ans' },
             needs: { alimentation: 'Graines variées, légumes', espace: 'Volière', exercice: 'Activité régulière' },
             origin: 'Australie',
-            image: '../img/oiseau-020.jpg',
+            image: '../img/oiseau-020.png',
             funFact: 'Mâle et femelle ont des plumages très différents.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Préfère les espaces calmes'
@@ -442,7 +442,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '15-18 cm', poids: '45-60 g', esperanceVie: '10-15 ans' },
             needs: { alimentation: 'Graines, fruits, légumes, os de seiche', espace: 'Cage spacieuse', exercice: 'Jeux et interaction' },
             origin: 'Afrique du Sud-Ouest (Namibie, Angola)',
-            image: '../img/oiseau-021.jpg',
+            image: '../img/oiseau-021.png',
             funFact: 'Doit son nom à son visage rose caractéristique.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Doit absolument être gardé en couple'
@@ -456,7 +456,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '14-15 cm', poids: '40-55 g', esperanceVie: '10-15 ans' },
             needs: { alimentation: 'Graines, fruits, légumes', espace: 'Cage avec jouets', exercice: 'Stimulation mentale' },
             origin: 'Afrique de l\'Est (Tanzanie)',
-            image: '../img/oiseau-022.jpg',
+            image: '../img/oiseau-022.png',
             funFact: 'Très sociable, adore interagir avec les humains.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Besoin de beaucoup d\'attention'
@@ -470,7 +470,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '15 cm', poids: '45-55 g', esperanceVie: '10-15 ans' },
             needs: { alimentation: 'Mélange de graines, fruits, légumes', espace: 'Cage spacieuse', exercice: 'Jeux interactifs' },
             origin: 'Afrique de l\'Est (Tanzanie, Kenya)',
-            image: '../img/oiseau-023.jpg',
+            image: '../img/oiseau-023.png',
             funFact: 'Connaît pour imiter des sons simples.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'À garder en couple pour son bien-être'
@@ -484,7 +484,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '40-42 cm (avec queue)', poids: '100-140 g', esperanceVie: '20-30 ans' },
             needs: { alimentation: 'Graines, fruits, légumes, noix', espace: 'Grande cage ou volière', exercice: 'Sorties quotidiennes' },
             origin: 'Afrique subsaharienne et Asie du Sud',
-            image: '../img/oiseau-024.jpg',
+            image: '../img/oiseau-024.png',
             funFact: 'Capable d\'imiter la parole et des sons.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Nécessite beaucoup de stimulation intellectuelle'
@@ -498,7 +498,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '50-55 cm (avec queue)', poids: '120-180 g', esperanceVie: '20-30 ans' },
             needs: { alimentation: 'Graines, fruits, légumes, noix', espace: 'Grande volière', exercice: 'Espace pour voler' },
             origin: 'Asie du Sud et Sud-Est',
-            image: '../img/oiseau-025.jpg',
+            image: '../img/oiseau-025.png',
             funFact: 'Son cri est plus puissant que celui de la perruche à collier d\'âne.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'A besoin de beaucoup d\'espace'
@@ -513,7 +513,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '23-25 cm', poids: '70-90 g', esperanceVie: '15-20 ans' },
             needs: { alimentation: 'Graines, fruits, légumes verts', espace: 'Volière spacieuse', exercice: 'Activité physique quotidienne' },
             origin: 'Nouvelle-Guinée',
-            image: '../img/oiseau-026.jpg',
+            image: '../img/oiseau-026.png',
             funFact: 'Son nom vient de sa tête rouge en forme de prune.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'À garder en couple'
@@ -527,7 +527,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '58-62 cm (avec queue)', poids: '180-250 g', esperanceVie: '25-30 ans' },
             needs: { alimentation: 'Graines, fruits, légumes, noix', espace: 'Très grande volière', exercice: 'Sorties quotidiennes' },
             origin: 'Asie du Sud (Inde, Sri Lanka, Bengladesh)',
-            image: '../img/oiseau-027.jpg',
+            image: '../img/oiseau-027.png',
             funFact: 'Capable d\'apprendre à parler avec un vocabulaire étendu.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Nécessite beaucoup de stimulation mentale'
@@ -541,7 +541,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '13-14 cm', poids: '25-30 g', esperanceVie: '10-15 ans' },
             needs: { alimentation: 'Mélange de graines fines, légumes, fruits', espace: 'Cage spacieuse', exercice: 'Beaucoup de mouvement' },
             origin: 'Amérique du Sud (Colombie, Équateur)',
-            image: '../img/oiseau-028.jpg',
+            image: '../img/oiseau-028.png',
             funFact: 'Son nom vient de sa petite taille et de son apparence de souris.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'À garder en groupe pour son épanouissement'
@@ -555,7 +555,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '20-22 cm', poids: '40-55 g', esperanceVie: '8-12 ans' },
             needs: { alimentation: 'Graines, légumes verts', espace: 'Volière', exercice: 'Espace pour voler' },
             origin: 'Australie',
-            image: '../img/oiseau-029.jpg',
+            image: '../img/oiseau-029.png',
             funFact: 'Son plumage rappelle celui d\'une poupée de porcelaine.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Préfère les environnements calmes'
@@ -569,7 +569,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '40-45 cm (avec queue)', poids: '100-130 g', esperanceVie: '15-20 ans' },
             needs: { alimentation: 'Graines, fruits, légumes, noix', espace: 'Grande volière', exercice: 'Vol régulier' },
             origin: 'Australie (centre et ouest)',
-            image: '../img/oiseau-030.jpg',
+            image: '../img/oiseau-030.png',
             funFact: 'Très calme et peu bruyante pour une perruche de cette taille.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'S\'adapte bien à la vie en captivité'
