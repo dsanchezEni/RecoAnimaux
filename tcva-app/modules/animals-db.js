@@ -912,7 +912,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '25-35 cm', temperature: '18-24°C', esperanceVie: '10-25 ans' },
             needs: { aquarium: 'Minimum 200L', alimentation: 'Granulés, flocons, légumes' },
             origin: 'Asie (Chine, domestiqué)',
-            image: '../img/poisson-001.jpg',
+            image: '../img/poisson-001.png',
             funFact: 'Peut reconnaître son propriétaire.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Éviter les petits bocaux'
@@ -926,7 +926,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '4-6 cm', temperature: '22-28°C', esperanceVie: '2-3 ans' },
             needs: { aquarium: 'Minimum 50L', alimentation: 'Flocons, micro-granulés' },
             origin: 'Amérique du Sud (Brésil, Guyana, Venezuela)',
-            image: '../img/poisson-002.jpg',
+            image: '../img/poisson-002.png',
             funFact: 'Les femelles donnent naissance à des alevins déjà formés.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Attention à la reproduction non contrôlée'
@@ -940,7 +940,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '12-15 cm', temperature: '26-30°C', esperanceVie: '10-15 ans' },
             needs: { aquarium: 'Minimum 400L', alimentation: 'Nourriture spécialisée' },
             origin: 'Amazonie (Brésil, Colombie, Pérou)',
-            image: '../img/poisson-003.jpg',
+            image: '../img/poisson-003.png',
             funFact: 'Surnommé "le roi de l\'aquarium".',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Nécessite une eau très propre'
@@ -954,7 +954,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '12-15 cm', temperature: '24-28°C', esperanceVie: '8-10 ans' },
             needs: { aquarium: 'Minimum 200L, hauteur 50 cm', alimentation: 'Flocons, granulés' },
             origin: 'Amazonie (Brésil, Colombie, Pérou)',
-            image: '../img/poisson-004.jpg',
+            image: '../img/poisson-004.png',
             funFact: 'Pond ses œufs sur des feuilles larges.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Éviter les poissons trop petits'
@@ -968,7 +968,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '8-11 cm', temperature: '24-27°C', esperanceVie: '5-10 ans' },
             needs: { aquarium: 'Minimum 200L pour un couple', alimentation: 'Nourriture pour poissons marins' },
             origin: 'Océan Pacifique (Indo-Pacifique)',
-            image: '../img/poisson-005.jpg',
+            image: '../img/poisson-005.png',
             funFact: 'Immunisé contre les toxines des anémones.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'L\'anémone n\'est pas indispensable'
