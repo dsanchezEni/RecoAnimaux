@@ -48,17 +48,15 @@ function showAnimalSection(sectionName) {
     }
     
     // Mettre à jour les liens de navigation
-    const navLinks = document.querySelector('.nav-links a');
-    if (navLinks) {
-        Array.from(navLinks).forEach(link => {
-            const href = link.getAttribute('href').substring(1);
-            if (href === sectionName) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
-        });
-    }
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach(link => {
+        const onclick = link.getAttribute('onclick');
+        if (onclick && onclick.includes(sectionName)) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
     
     // Actions spécifiques
     if (sectionName === 'learning') {
