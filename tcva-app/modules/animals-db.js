@@ -293,6 +293,48 @@ const ANIMALS_DB = {
             funFact: 'Dort 14 à 18 heures par jour.',
             regulation: 'Identification et vaccinations obligatoires',
             advice: 'Nécessite beaucoup d\'attention'
+        },
+        {
+            id: 'NAC-006',
+            name: 'Souris',
+            scientific: 'Mus musculus domesticus',
+            category: 'NAC',
+            description: 'Petit rongeur intelligent et sociable, idéal pour débuter.',
+            characteristics: { taille: '5-10 cm', poids: '20-40 g', esperanceVie: '2-3 ans' },
+            needs: { alimentation: 'Graines, légumes, protéines', espace: 'Cage spacieuse avec cachettes', exercice: 'Roue et jouets' },
+            origin: 'Monde entier (domestiquée)',
+            image: '../img/NAC-006.jpg',
+            funFact: 'Très intelligente, peut apprendre des tours.',
+            regulation: 'Aucune réglementation spécifique',
+            advice: 'À garder en groupe de même sexe'
+        },
+        {
+            id: 'NAC-007',
+            name: 'Rat',
+            scientific: 'Rattus norvegicus domesticus',
+            category: 'NAC',
+            description: 'Rongeur très intelligent et affectueux, excellent compagnon.',
+            characteristics: { taille: '20-28 cm', poids: '250-500 g', esperanceVie: '2-3 ans' },
+            needs: { alimentation: 'Granulés, légumes, fruits', espace: 'Grande cage multi-niveaux', exercice: 'Sorties quotidiennes' },
+            origin: 'Europe (domestiqué)',
+            image: '../img/NAC-007.jpg',
+            funFact: 'Peut être apprivoisé et reconnaître son propriétaire.',
+            regulation: 'Aucune réglementation spécifique',
+            advice: 'Besoin de beaucoup de stimulation intellectuelle'
+        },
+        {
+            id: 'NAC-008',
+            name: 'Gerbille',
+            scientific: 'Meriones unguiculatus',
+            category: 'NAC',
+            description: 'Petit rongeur actif et sociable, peu odorant.',
+            characteristics: { taille: '10-15 cm', poids: '50-100 g', esperanceVie: '3-4 ans' },
+            needs: { alimentation: 'Mélange de graines, légumes', espace: 'Grand bac avec substrat épais', exercice: 'Roue et tunnels' },
+            origin: 'Afrique et Asie (Mongolie, Chine)',
+            image: '../img/NAC-008.jpg',
+            funFact: 'Creuse des galeries dans le sable.',
+            regulation: 'Aucune réglementation spécifique',
+            advice: 'Doit être gardée en groupe'
         }
     ],
     
