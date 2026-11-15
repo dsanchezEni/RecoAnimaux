@@ -191,6 +191,11 @@ function createAnimalCard(animal) {
     scientific.textContent = animal.scientific;
     card.appendChild(scientific);
     
+    const origin = document.createElement('div');
+    origin.className = 'animal-origin';
+    origin.textContent = animal.origin || '';
+    card.appendChild(origin);
+    
     return card;
 }
 
@@ -225,6 +230,7 @@ function showAnimalModal(animal) {
                     <div class="info-section">
                         <h4>📊 Caractéristiques</h4>
                         <p><strong>Nom scientifique:</strong> ${animal.scientific}</p>
+                        <p><strong>Origine:</strong> ${animal.origin || 'N/A'}</p>
                         <p><strong>Catégorie:</strong> ${categoryInfo ? categoryInfo.name : animal.category}</p>
                         ${animal.characteristics ? `
                             <p><strong>Taille:</strong> ${animal.characteristics.taille || 'N/A'}</p>
