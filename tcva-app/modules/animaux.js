@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initAnimalsModule() {
     loadAnimalProgress();
+    initAnimalSelectOptions();
     displayAnimalCategories();
     displayAnimalGroups();
     displayComparisonCategories();
@@ -72,6 +73,23 @@ function showAnimalSection(sectionName) {
     }
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================
+// INITIALISATION DES OPTIONS DE SÉLECTION
+// ============================================
+
+function initAnimalSelectOptions() {
+    const animalQuizCategory = document.getElementById('animal-quiz-category');
+    
+    if (animalQuizCategory) {
+        ANIMAL_CATEGORIES.filter(category => category.id !== "all").forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = `${category.icon} ${category.name}`;
+            animalQuizCategory.appendChild(option);
+        });
+    }
 }
 
 // ============================================

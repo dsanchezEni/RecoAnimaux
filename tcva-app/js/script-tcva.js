@@ -79,7 +79,7 @@ function initSelectOptions() {
     const animalFilterList = document.getElementById('question-animal-filter');
     
     if (animalFilterSelect) {
-        ANIMAL_CATEGORIES.forEach(animal => {
+        ANIMAL_CATEGORIES.filter(animal => animal.id !== "all").forEach(animal => {
             const option = document.createElement('option');
             option.value = animal.id;
             option.textContent = `${animal.icon} ${animal.name}`;
@@ -88,7 +88,7 @@ function initSelectOptions() {
     }
     
     if (animalFilterList) {
-        ANIMAL_CATEGORIES.forEach(animal => {
+        ANIMAL_CATEGORIES.filter(animal => animal.id !== "all").forEach(animal => {
             const option = document.createElement('option');
             option.value = animal.id;
             option.textContent = `${animal.icon} ${animal.name}`;
