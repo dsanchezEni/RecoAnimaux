@@ -985,7 +985,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '30-90 cm', temperature: '10-25°C', esperanceVie: '25-50 ans' },
             needs: { bassin: 'Minimum 1000L', alimentation: 'Granulés spécifiques' },
             origin: 'Asie de l\'Est (domestiquée)',
-            image: '../img/jardin-001.jpg',
+            image: '../img/jardin-001.png',
             funFact: 'Peut vivre plus de 50 ans.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'Protéger le bassin contre les prédateurs'
@@ -999,7 +999,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '15-30 cm', temperature: '20-30°C', esperanceVie: '30-50 ans' },
             needs: { habitat: 'Bassin ou aquarium spacieux', alimentation: 'Granulés, légumes, viande' },
             origin: 'Amérique du Nord (Floride)',
-            image: '../img/jardin-002.jpg',
+            image: '../img/jardin-002.png',
             funFact: 'Certaines espèces sont interdites à la vente en Europe.',
             regulation: 'Certificat de capacité obligatoire pour certaines espèces',
             advice: 'Filtre puissant nécessaire'
@@ -1013,7 +1013,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '10-15 cm', temperature: '15-25°C', esperanceVie: '3-6 ans' },
             needs: { habitat: 'Bassin ou aquarium', alimentation: 'Omnivore' },
             origin: 'Amérique du Nord (Louisiane)',
-            image: '../img/jardin-003.jpg',
+            image: '../img/jardin-003.png',
             funFact: 'Peut régénérer ses pinces.',
             regulation: 'Espèce invasife, réglementée',
             advice: 'Ne pas relâcher dans la nature'
@@ -1027,7 +1027,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '5-10 cm', temperature: '15-25°C', esperanceVie: '5-10 ans' },
             needs: { habitat: 'Étang ou mare', alimentation: 'Insectes' },
             origin: 'Europe, Afrique, Asie',
-            image: '../img/jardin-004.jpg',
+            image: '../img/jardin-004.png',
             funFact: 'Peut sauter jusqu\'à 2 mètres.',
             regulation: 'Protection de certaines espèces',
             advice: 'Éviter les produits chimiques'
@@ -1041,7 +1041,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '15-30 cm', temperature: '14-18°C', esperanceVie: '10-15 ans' },
             needs: { habitat: 'Aquarium spécial', alimentation: 'Vers de terre, granulés' },
             origin: 'Mexique (lac Xochimilco)',
-            image: '../img/jardin-005.jpg',
+            image: '../img/jardin-005.png',
             funFact: 'Peut régénérer des membres entiers.',
             regulation: 'Espèce protégée, certificat obligatoire',
             advice: 'Attention à la température'
