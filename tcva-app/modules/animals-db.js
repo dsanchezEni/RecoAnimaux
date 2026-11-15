@@ -491,8 +491,8 @@ const ANIMALS_DB = {
         },
         {
             id: 'oiseau-025',
-            name: 'Perruche à collier d\'Asie',
-            scientific: 'Psittacula eupatria',
+            name: 'Perruche à collier d\'Asie (pas sur de la photo!)',
+            scientific: 'Psittacula krameri manillensis',
             category: 'oiseau',
             description: 'Plus grande que la perruche à collier d\'âne, avec un bec rouge et un collier noir.',
             characteristics: { taille: '50-55 cm (avec queue)', poids: '120-180 g', esperanceVie: '20-30 ans' },
@@ -507,7 +507,7 @@ const ANIMALS_DB = {
         {
             id: 'oiseau-026',
             name: 'Perruche de tête de prune',
-            scientific: 'Psitteuteles goldiei',
+            scientific: 'Psittacula cyanocephala',
             category: 'oiseau',
             description: 'Perruche colorée avec une tête rouge vif ressemblant à une prune.',
             characteristics: { taille: '23-25 cm', poids: '70-90 g', esperanceVie: '15-20 ans' },
@@ -534,8 +534,8 @@ const ANIMALS_DB = {
         },
         {
             id: 'oiseau-028',
-            name: 'Perruche souris',
-            scientific: 'Forpus coelestis',
+            name: 'Perruche souris aussi appelée conure veuve',
+            scientific: 'Myiopsitta monachus',
             category: 'oiseau',
             description: 'Toute petite perruche, très active et sociable.',
             characteristics: { taille: '13-14 cm', poids: '25-30 g', esperanceVie: '10-15 ans' },
@@ -548,8 +548,8 @@ const ANIMALS_DB = {
         },
         {
             id: 'oiseau-029',
-            name: 'Perruche Catherine',
-            scientific: 'Bolsius athenae',
+            name: 'Perruche Catherine ou Toui catherine',
+            scientific: 'Bolborhynchus lineola',
             category: 'oiseau',
             description: 'Perruche élégante aux couleurs douces, calme et discrète.',
             characteristics: { taille: '20-22 cm', poids: '40-55 g', esperanceVie: '8-12 ans' },
