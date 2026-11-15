@@ -87,7 +87,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '30-40 cm', poids: '3-5 kg', esperanceVie: '12-15 ans' },
             needs: { alimentation: 'Croquettes et/ou pâtée', espace: 'S\'adapte à la vie en intérieur', exercice: 'Jeux quotidiens' },
             origin: 'Europe (domestique)',
-            image: '../img/chat-001.jpg',
+            image: '../img/chat-001.png',
             funFact: 'Race de chat la plus répandue en Europe.',
             regulation: 'Identification par puce ou tatouage obligatoire',
             advice: 'Vaccination et vermifugation régulières recommandées'
@@ -101,7 +101,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '45-50 cm', poids: '3-5 kg', esperanceVie: '12-16 ans' },
             needs: { alimentation: 'Alimentation de qualité', espace: 'Adapté à la vie en intérieur', exercice: 'Jeux calmes' },
             origin: 'Perse (Iran)',
-            image: '../img/chat-002.jpg',
+            image: '../img/chat-002.png',
             funFact: 'L\'une des races de chats les plus anciennes.',
             regulation: 'Identification obligatoire',
             advice: 'Brossage quotidien indispensable'
@@ -115,7 +115,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '40-50 cm', poids: '3-5 kg', esperanceVie: '15-20 ans' },
             needs: { alimentation: 'Alimentation de qualité', espace: 'Besoin d\'espace', exercice: 'Jeux interactifs' },
             origin: 'Thaïlande',
-            image: '../img/chat-003.jpg',
+            image: '../img/chat-003.png',
             funFact: 'L\'une des races de chats les plus bavardes.',
             regulation: 'Identification obligatoire',
             advice: 'N\'aime pas la solitude'
@@ -129,7 +129,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '60-100 cm (avec queue)', poids: '5-10 kg', esperanceVie: '12-15 ans' },
             needs: { alimentation: 'Alimentation riche en protéines', espace: 'Besoin d\'espace', exercice: 'Jeux et griffoirs' },
             origin: 'États-Unis (Maine)',
-            image: '../img/chat-004.jpg',
+            image: '../img/chat-004.png',
             funFact: 'Surnommé "le géant doux".',
             regulation: 'Identification obligatoire',
             advice: 'Arbre à chat solide nécessaire'
@@ -143,7 +143,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '40-50 cm', poids: '4-6 kg', esperanceVie: '12-16 ans' },
             needs: { alimentation: 'Alimentation riche en protéines', espace: 'Grand espace nécessaire', exercice: 'Beaucoup de stimulation' },
             origin: 'États-Unis (hybride)',
-            image: '../img/chat-005.jpg',
+            image: '../img/chat-005.png',
             funFact: 'Issu de croisements entre chats domestiques et chats léopards asiatiques.',
             regulation: 'Identification obligatoire',
             advice: 'Besoin de beaucoup d\'attention'
