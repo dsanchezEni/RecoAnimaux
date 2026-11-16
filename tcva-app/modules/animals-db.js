@@ -724,7 +724,7 @@ const ANIMALS_DB = {
             characteristics: { taille: '10-12 cm', poids: '10-14 g', esperanceVie: '5-8 ans' },
             needs: { alimentation: 'Graines fines, millet, fruits', espace: 'Volière', exercice: 'Activité modérée' },
             origin: 'Nouvelle-Calédonie',
-            image: '../img/oiseau-041.jpg',
+            image: '../img/oiseau-041.png',
             funFact: 'Son nom vient de la couleur de son plumage rappelant une robe de pape.',
             regulation: 'Aucune réglementation spécifique',
             advice: 'À garder en couple'
