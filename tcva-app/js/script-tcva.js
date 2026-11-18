@@ -961,55 +961,84 @@ function exportData() {
         statusElement.innerHTML = '<p style="color: #FFC107;">Export en cours...</p>';
     }
     
-    // Calculer la taille du localStorage
-    let totalSize = 0;
-    for (let key in localStorage) {
-        if (localStorage.hasOwnProperty(key)) {
-            totalSize += localStorage[key].length * 2; // 2 bytes par caractère (UTF-16)
+    try {
+        // Vérifier que les données existent
+        if (typeof QUESTIONS_TCVA === 'undefined' || typeof BLOCS === 'undefined') {
+            throw new Error('Données des questions non chargées');
         }
-    }
-    const sizeInKB = Math.round(totalSize / 1024);
-    
-    // Mettre à jour les stats
-    document.getElementById('export-total-questions').textContent = QUESTIONS_TCVA.length;
-    document.getElementById('export-total-animals').textContent = Object.values(ANIMALS_DB).reduce((sum, cat) => sum + cat.length, 0);
-    document.getElementById('export-local-storage-size').textContent = sizeInKB + ' Ko';
-    
-    // Créer l'objet d'export
-    const exportData = {
-        version: '1.0',
-        date: new Date().toISOString(),
-        questions: QUESTIONS_TCVA,
-        blocks: BLOCS,
-        animalCategories: ANIMAL_CATEGORIES,
-        animals: ANIMALS_DB,
-        userData: {
-            questionsViewed: Array.from(questionsViewed),
-            quizHistory: quizHistory,
-            progress: localStorage.getItem('tcvaProgress'),
-            darkMode: localStorage.getItem('tcvaDarkMode'),
-            favorites: localStorage.getItem('tcvaFavoriteAnimals')
+        
+        // Calculer la taille du localStorage
+        let totalSize = 0;
+        for (let key in localStorage) {
+            if (localStorage.hasOwnProperty(key)) {
+                totalSize += localStorage[key].length * 2;
+            }
         }
-    };
-    
-    // Télécharger le fichier
-    const dataStr = JSON.stringify(exportData, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'tcva-backup-' + new Date().toISOString().split('T')[0] + '.json';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    
-    if (statusElement) {
-        statusElement.innerHTML = '<p style="color: #4CAF50;">✅ Export terminé ! Fichier téléchargé.</p>';
+        const sizeInKB = Math.round(totalSize / 1024);
+        
+        // Mettre à jour les stats
+        document.getElementById('export-total-questions').textContent = QUESTIONS_TCVA.length;
+        
+        // Calculer le nombre total d'animaux
+        let totalAnimals = 0;
+        if (typeof ANIMALS_DB !== 'undefined') {
+            totalAnimals = Object.values(ANIMALS_DB).reduce((sum, cat) => sum + cat.length, 0);
+            document.getElementById('export-total-animals').textContent = totalAnimals;
+        } else {
+            document.getElementById('export-total-animals').textContent = '0 (module non chargé)';
+        }
+        
+        document.getElementById('export-local-storage-size').textContent = sizeInKB + ' Ko';
+        
+        // Créer l'objet d'export
+        const exportData = {
+            version: '1.0',
+            date: new Date().toISOString(),
+            questions: QUESTIONS_TCVA,
+            blocks: BLOCS,
+            userData: {
+                questionsViewed: Array.from(questionsViewed),
+                quizHistory: quizHistory,
+                progress: localStorage.getItem('tcvaProgress'),
+                darkMode: localStorage.getItem('tcvaDarkMode'),
+                favorites: localStorage.getItem('tcvaFavoriteAnimals')
+            }
+        };
+        
+        // Ajouter les données animaux si disponibles
+        if (typeof ANIMALS_DB !== 'undefined') {
+            exportData.animalCategories = ANIMAL_CATEGORIES;
+            exportData.animals = ANIMALS_DB;
+        }
+        
+        // Télécharger le fichier
+        const dataStr = JSON.stringify(exportData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'tcva-backup-' + new Date().toISOString().split('T')[0] + '.json';
+        document.body.appendChild(link);
+        
+        // Méthode alternative pour déclencher le clic
         setTimeout(() => {
-            if (statusElement) statusElement.innerHTML = '';
-        }, 3000);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }, 100);
+        
+        if (statusElement) {
+            statusElement.innerHTML = '<p style="color: #4CAF50;">✅ Export terminé ! Fichier téléchargé.</p>';
+            setTimeout(() => {
+                if (statusElement) statusElement.innerHTML = '';
+            }, 3000);
+        }
+    } catch (error) {
+        if (statusElement) {
+            statusElement.innerHTML = '<p style="color: #F44336;">❌ Erreur : ' + error.message + '</p>';
+        }
+        console.error('Erreur export:', error);
     }
 }
 
