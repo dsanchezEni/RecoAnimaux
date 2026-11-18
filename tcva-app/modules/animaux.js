@@ -7,6 +7,7 @@
 // ============================================
 
 let currentAnimalCategory = 'all';
+let currentAnimalBloc = 'all';
 let currentAnimalSearch = '';
 let currentAnimalQuizQuestions = [];
 let currentAnimalQuizIndex = 0;
@@ -15,6 +16,8 @@ let animalTimer = null;
 let timeLeftAnimal = 0;
 let viewedAnimals = new Set();
 let favoriteAnimals = new Set();
+let viewedAnimalsByBloc = {};
+let selectedRevisionBloc = null;
 
 // ============================================
 // INITIALISATION
@@ -27,12 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
 function initAnimalsModule() {
     loadAnimalProgress();
     loadFavoriteAnimals();
+    loadBlocStats();
     initDarkMode();
     initAnimalSelectOptions();
     displayAnimalCategories();
     displayAnimalGroups();
     displayComparisonCategories();
     updateAnimalStats();
+    displayBlocStats();
 }
 
 // ============================================
@@ -99,12 +104,15 @@ function showAnimalSection(sectionName) {
     if (sectionName === 'learning') {
         displayAnimalCategories();
         updateAnimalStats();
+        displayBlocFilters();
     } else if (sectionName === 'quiz') {
         showAnimalQuizSetup();
     } else if (sectionName === 'comparison') {
         displayComparisonCategories();
     } else if (sectionName === 'groups') {
         displayAnimalGroups();
+    } else if (sectionName === 'bloc-revision') {
+        displayBlocRevisionSelector();
     }
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -176,6 +184,39 @@ function searchAnimals() {
     displayAnimalCategories();
 }
 
+// Filtrer par bloc
+function filterByBloc(button) {
+    const filters = document.querySelectorAll('.bloc-filter-btn');
+    filters.forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+    
+    currentAnimalBloc = button.getAttribute('data-bloc');
+    displayAnimalCategories();
+    updateAnimalStats();
+}
+
+// Afficher les filtres par bloc
+function displayBlocFilters() {
+    const container = document.getElementById('bloc-filters');
+    if (!container || !BLOCS) return;
+    
+    // Garder le bouton "Tous les blocs"
+    const existingButtons = container.querySelectorAll('.bloc-filter-btn');
+    if (existingButtons.length <= 1) {
+        // Ajouter les boutons pour chaque bloc
+        BLOCS.forEach(bloc => {
+            if (bloc.id !== 'all') {
+                const btn = document.createElement('button');
+                btn.className = 'bloc-filter-btn';
+                btn.setAttribute('data-bloc', bloc.id);
+                btn.innerHTML = `${bloc.icon} ${bloc.name}`;
+                btn.onclick = () => filterByBloc(btn);
+                container.appendChild(btn);
+            }
+        });
+    }
+}
+
 function displayAnimalCategories() {
     const container = document.getElementById('animal-categories');
     if (!container) return;
@@ -186,9 +227,19 @@ function displayAnimalCategories() {
     Object.keys(ANIMALS_DB).forEach(category => {
         if (currentAnimalCategory === 'all' || category === currentAnimalCategory) {
             filteredAnimals[category] = ANIMALS_DB[category].filter(animal => {
-                return animal.name.toLowerCase().includes(currentAnimalSearch) ||
-                       animal.scientific.toLowerCase().includes(currentAnimalSearch) ||
-                       animal.description.toLowerCase().includes(currentAnimalSearch);
+                // Filtre par recherche
+                const matchesSearch = animal.name.toLowerCase().includes(currentAnimalSearch) ||
+                                     animal.scientific.toLowerCase().includes(currentAnimalSearch) ||
+                                     animal.description.toLowerCase().includes(currentAnimalSearch);
+                
+                // Filtre par bloc
+                if (currentAnimalBloc !== 'all') {
+                    const animalBlocs = getAnimalBlocs(animal);
+                    const matchesBloc = animalBlocs.includes(currentAnimalBloc);
+                    return matchesSearch && matchesBloc;
+                }
+                
+                return matchesSearch;
             });
         }
     });
@@ -201,7 +252,7 @@ function displayAnimalCategories() {
     });
     
     if (container.innerHTML === '') {
-        container.innerHTML = '<p style="text-align: center; padding: 2rem; color: #666;">Aucun animal ne correspond à votre recherche.</p>';
+        container.innerHTML = '<p style="text-align: center; padding: 2rem; color: #666;">Aucun animal ne correspond à vos critères de recherche et de filtre.</p>';
     }
     
     updateAnimalStats();
@@ -235,9 +286,6 @@ function createAnimalCard(animal) {
     const card = document.createElement('div');
     card.className = 'animal-card';
     card.onclick = () => showAnimalModal(animal);
-    
-    viewedAnimals.add(animal.id);
-    saveAnimalProgress();
     
     // Conteneur pour l'image et le bouton favoris
     const imgContainer = document.createElement('div');
@@ -294,6 +342,11 @@ function showAnimalModal(animal) {
         modal.className = 'animal-modal';
         document.body.appendChild(modal);
     }
+    
+    // Marquer l'animal comme vu et mettre à jour les stats par bloc
+    viewedAnimals.add(animal.id);
+    saveAnimalProgress();
+    updateBlocStatsForAnimal(animal.id);
     
     const categoryInfo = ANIMAL_CATEGORIES.find(c => c.id === animal.category);
     const icon = categoryInfo ? categoryInfo.icon : '🐾';
@@ -778,6 +831,284 @@ function updateAnimalStats() {
 }
 
 // ============================================
+// STATISTIQUES PAR BLOC
+// ============================================
+
+// Initialiser les statistiques par bloc
+function initBlocStats() {
+    if (!BLOCS) return;
+    
+    BLOCS.forEach(bloc => {
+        if (!viewedAnimalsByBloc[bloc.id]) {
+            viewedAnimalsByBloc[bloc.id] = {
+                viewed: new Set(),
+                total: 0
+            };
+        }
+    });
+    
+    // Compter le nombre total d'animaux par bloc
+    Object.values(ANIMALS_DB).forEach(categoryAnimals => {
+        categoryAnimals.forEach(animal => {
+            const animalBlocs = getAnimalBlocs(animal);
+            animalBlocs.forEach(blocId => {
+                if (viewedAnimalsByBloc[blocId]) {
+                    viewedAnimalsByBloc[blocId].total++;
+                }
+            });
+        });
+    });
+}
+
+// Obtenir les blocs d'un animal
+function getAnimalBlocs(animal) {
+    // Vérifier d'abord si l'animal a des blocs définis directement
+    if (animal.blocs && Array.isArray(animal.blocs)) {
+        return animal.blocs;
+    }
+    
+    // Vérifier si l'animal a des blocs spécifiques dans SPECIFIC_ANIMAL_BLOCS
+    if (SPECIFIC_ANIMAL_BLOCS && SPECIFIC_ANIMAL_BLOCS[animal.id]) {
+        return SPECIFIC_ANIMAL_BLOCS[animal.id];
+    }
+    
+    // Si pas de blocs définis, utiliser les blocs par défaut de la catégorie
+    if (CATEGORY_BLOCS && CATEGORY_BLOCS[animal.category]) {
+        return CATEGORY_BLOCS[animal.category];
+    }
+    
+    // Bloc par défaut
+    return ["BC06"];
+}
+
+// Charger les statistiques par bloc depuis le localStorage
+function loadBlocStats() {
+    const savedStats = localStorage.getItem('tcvaBlocStats');
+    if (savedStats) {
+        try {
+            const stats = JSON.parse(savedStats);
+            viewedAnimalsByBloc = {};
+            Object.keys(stats).forEach(blocId => {
+                viewedAnimalsByBloc[blocId] = {
+                    viewed: new Set(stats[blocId].viewed || []),
+                    total: stats[blocId].total || 0
+                };
+            });
+        } catch (e) {
+            console.error('Erreur de chargement des stats par bloc:', e);
+            viewedAnimalsByBloc = {};
+        }
+    } else {
+        viewedAnimalsByBloc = {};
+    }
+    
+    initBlocStats();
+}
+
+// Sauvegarder les statistiques par bloc
+function saveBlocStats() {
+    const stats = {};
+    Object.keys(viewedAnimalsByBloc).forEach(blocId => {
+        stats[blocId] = {
+            viewed: Array.from(viewedAnimalsByBloc[blocId].viewed),
+            total: viewedAnimalsByBloc[blocId].total
+        };
+    });
+    localStorage.setItem('tcvaBlocStats', JSON.stringify(stats));
+}
+
+// Mettre à jour les statistiques par bloc pour un animal
+function updateBlocStatsForAnimal(animalId) {
+    const animal = findAnimalById(animalId);
+    if (!animal) return;
+    
+    const animalBlocs = getAnimalBlocs(animal);
+    animalBlocs.forEach(blocId => {
+        if (viewedAnimalsByBloc[blocId]) {
+            viewedAnimalsByBloc[blocId].viewed.add(animalId);
+        }
+    });
+    
+    saveBlocStats();
+    displayBlocStats();
+}
+
+// Trouver un animal par son ID
+function findAnimalById(animalId) {
+    for (const category of Object.keys(ANIMALS_DB)) {
+        const animal = ANIMALS_DB[category].find(a => a.id === animalId);
+        if (animal) return animal;
+    }
+    return null;
+}
+
+// Afficher les statistiques par bloc
+function displayBlocStats() {
+    const container = document.getElementById('bloc-stats-grid');
+    if (!container || !BLOCS) return;
+    
+    container.innerHTML = '';
+    
+    BLOCS.forEach(bloc => {
+        const blocData = viewedAnimalsByBloc[bloc.id] || { viewed: new Set(), total: 0 };
+        const viewedCount = blocData.viewed.size;
+        const total = blocData.total;
+        const percent = total > 0 ? Math.round((viewedCount / total) * 100) : 0;
+        
+        const card = document.createElement('div');
+        card.className = 'bloc-stat-card';
+        
+        card.innerHTML = `
+            <div class="bloc-stat-header">
+                <span class="bloc-icon">${bloc.icon}</span>
+                <h4>${bloc.name}</h4>
+            </div>
+            <div class="bloc-stat-info">
+                <div class="bloc-stat-progress">
+                    <div class="bloc-progress-bar" style="width: ${percent}%" data-percent="${percent}"></div>
+                </div>
+                <div class="bloc-stat-numbers">
+                    <span class="bloc-viewed">${viewedCount}/${total}</span>
+                    <span class="bloc-percent">${percent}%</span>
+                </div>
+            </div>
+            <div class="bloc-stat-description">${bloc.description}</div>
+        `;
+        
+        container.appendChild(card);
+    });
+}
+
+// ============================================
+// RÉVISION PAR BLOC
+// ============================================
+
+// Afficher le sélecteur de bloc pour la révision
+function displayBlocRevisionSelector() {
+    const container = document.getElementById('bloc-revision-grid');
+    if (!container || !BLOCS) return;
+    
+    container.innerHTML = '';
+    
+    BLOCS.forEach(bloc => {
+        const card = document.createElement('div');
+        card.className = 'bloc-revision-card';
+        card.onclick = () => selectBlocForRevision(bloc.id);
+        
+        const blocData = viewedAnimalsByBloc[bloc.id] || { viewed: new Set(), total: 0 };
+        const viewedCount = blocData.viewed.size;
+        const total = blocData.total;
+        const percent = total > 0 ? Math.round((viewedCount / total) * 100) : 0;
+        
+        card.innerHTML = `
+            <div class="bloc-icon">${bloc.icon}</div>
+            <h4>${bloc.name}</h4>
+            <p>${bloc.description}</p>
+            <div class="bloc-revision-progress" style="margin-top: 0.5rem;">
+                <div class="bloc-progress-bar" style="width: ${percent}%" data-percent="${percent}"></div>
+            </div>
+            <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #666;">
+                ${viewedCount}/${total} (${percent}%)
+            </div>
+        `;
+        
+        if (selectedRevisionBloc === bloc.id) {
+            card.classList.add('selected');
+        }
+        
+        container.appendChild(card);
+    });
+    
+    // Si un bloc est sélectionné, afficher son contenu
+    if (selectedRevisionBloc) {
+        displayBlocRevisionContent(selectedRevisionBloc);
+    }
+}
+
+// Sélectionner un bloc pour la révision
+function selectBlocForRevision(blocId) {
+    selectedRevisionBloc = blocId;
+    displayBlocRevisionSelector();
+    displayBlocRevisionContent(blocId);
+}
+
+// Afficher le contenu de révision pour un bloc
+function displayBlocRevisionContent(blocId) {
+    const container = document.getElementById('bloc-revision-content');
+    if (!container) return;
+    
+    const bloc = BLOCS.find(b => b.id === blocId);
+    if (!bloc) return;
+    
+    const blocData = viewedAnimalsByBloc[blocId] || { viewed: new Set(), total: 0 };
+    const viewedCount = blocData.viewed.size;
+    const total = blocData.total;
+    const percent = total > 0 ? Math.round((viewedCount / total) * 100) : 0;
+    
+    // Obtenir tous les animaux de ce bloc
+    const blocAnimals = [];
+    Object.values(ANIMALS_DB).forEach(categoryAnimals => {
+        categoryAnimals.forEach(animal => {
+            const animalBlocs = getAnimalBlocs(animal);
+            if (animalBlocs.includes(blocId)) {
+                blocAnimals.push(animal);
+            }
+        });
+    });
+    
+    // Séparer les animaux vus et non vus
+    const viewedAnimalsList = blocAnimals.filter(a => viewedAnimals.has(a.id));
+    const notViewedAnimalsList = blocAnimals.filter(a => !viewedAnimals.has(a.id));
+    
+    container.classList.add('active');
+    container.innerHTML = `
+        <div class="bloc-revision-info">
+            <h3>📚 Révision: ${bloc.icon} ${bloc.name}</h3>
+            <p>${bloc.description}</p>
+        </div>
+        
+        <div class="bloc-revision-stats">
+            <div class="revision-stat-item">
+                <div class="revision-stat-number">${viewedCount}</div>
+                <div class="revision-stat-label">Animaux étudiés</div>
+            </div>
+            <div class="revision-stat-item">
+                <div class="revision-stat-number">${notViewedAnimalsList.length}</div>
+                <div class="revision-stat-label">À réviser</div>
+            </div>
+            <div class="revision-stat-item">
+                <div class="revision-stat-number">${total}</div>
+                <div class="revision-stat-label">Total</div>
+            </div>
+            <div class="revision-stat-item">
+                <div class="revision-stat-number">${percent}%</div>
+                <div class="revision-stat-label">Maîtrise</div>
+            </div>
+        </div>
+        
+        <div class="bloc-revision-lists">
+            ${notViewedAnimalsList.length > 0 ? `
+                <div class="revision-list">
+                    <h4>🔴 À réviser en priorité (${notViewedAnimalsList.length})</h4>
+                    <div class="animal-grid" style="margin-top: 1rem;">
+                        ${notViewedAnimalsList.map(a => createAnimalCard(a).outerHTML).join('')}
+                    </div>
+                </div>
+            ` : ''}
+            
+            ${viewedAnimalsList.length > 0 ? `
+                <div class="revision-list" style="margin-top: 2rem;">
+                    <h4>✅ Déjà étudiés (${viewedAnimalsList.length})</h4>
+                    <div class="animal-grid" style="margin-top: 1rem;">
+                        ${viewedAnimalsList.map(a => createAnimalCard(a).outerHTML).join('')}
+                    </div>
+                </div>
+            ` : ''}
+        </div>
+    `;
+}
+
+// ============================================
 // SAUVEGARDE
 // ============================================
 
@@ -787,6 +1118,11 @@ function saveAnimalProgress() {
         lastUpdated: Date.now()
     };
     localStorage.setItem('tcvaAnimalsProgress', JSON.stringify(progress));
+    
+    // Mettre à jour les stats par bloc quand on sauvegarde le progrès
+    viewedAnimals.forEach(animalId => {
+        updateBlocStatsForAnimal(animalId);
+    });
 }
 
 function loadAnimalProgress() {
@@ -798,6 +1134,147 @@ function loadAnimalProgress() {
         } catch (e) {
             console.error('Erreur:', e);
         }
+    }
+}
+
+// ============================================
+// EXPORT PDF
+// ============================================
+
+// Exporter les statistiques par bloc en PDF
+async function exportBlocStatsPDF() {
+    // Créer une copie de la section à exporter
+    const blocStatsSection = document.getElementById('bloc-stats');
+    if (!blocStatsSection || !BLOCS) {
+        alert('Impossible d\'exporter: les statistiques ne sont pas disponibles.');
+        return;
+    }
+    
+    // Créer un élément temporaire avec les stats
+    const tempElement = document.createElement('div');
+    tempElement.className = 'pdf-export-container';
+    
+    // Ajouter le titre et la date
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('fr-FR');
+    const timeStr = now.toLocaleTimeString('fr-FR');
+    
+    tempElement.innerHTML = `
+        <div class="pdf-header">
+            <h1>📊 Statistiques par Bloc de Compétences</h1>
+            <h2>Bac Pro TCVA - Reconnaissances Animaux</h2>
+            <p>Généré le ${dateStr} à ${timeStr}</p>
+        </div>
+        
+        <div class="pdf-stats-grid">
+            ${BLOCS.map(bloc => {
+                const blocData = viewedAnimalsByBloc[bloc.id] || { viewed: new Set(), total: 0 };
+                const viewedCount = blocData.viewed.size;
+                const total = blocData.total;
+                const percent = total > 0 ? Math.round((viewedCount / total) * 100) : 0;
+                
+                return `
+                    <div class="pdf-bloc-card">
+                        <h3>${bloc.icon} ${bloc.name}</h3>
+                        <p><strong>Description:</strong> ${bloc.description}</p>
+                        <p><strong>Progression:</strong> ${viewedCount}/${total} (${percent}%)</p>
+                        <div class="pdf-progress-bar" style="width: ${percent}%; background: ${percent >= 75 ? '#4CAF50' : percent >= 50 ? '#FFC107' : '#F44336'};"></div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        
+        <div class="pdf-footer" style="margin-top: 2rem; text-align: center; padding: 1rem; border-top: 1px solid #ddd;">
+            <p>Application de révision - Bac Pro TCVA</p>
+            <p>Denis Sanchez - 2026</p>
+        </div>
+    `;
+    
+    // Ajouter les styles pour le PDF
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `
+        .pdf-export-container {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 20px;
+        }
+        .pdf-header h1 {
+            color: #2E7D32;
+            margin-bottom: 10px;
+        }
+        .pdf-header h2 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .pdf-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        .pdf-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .pdf-bloc-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            page-break-inside: avoid;
+        }
+        .pdf-bloc-card h3 {
+            color: #2E7D32;
+            margin-bottom: 8px;
+        }
+        .pdf-bloc-card p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .pdf-progress-bar {
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .pdf-footer {
+            font-size: 12px;
+            color: #666;
+        }
+        @media print {
+            .pdf-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    `;
+    tempElement.appendChild(styleElement);
+    
+    // Ajouter l'élément temporaire au body
+    document.body.appendChild(tempElement);
+    
+    try {
+        // Utiliser html2pdf pour générer le PDF
+        const opt = {
+            margin: 10,
+            filename: `statistiques-blocs-TCVA-${dateStr}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        
+        const pdf = await html2pdf().from(tempElement).set(opt).save();
+        
+        // Nettoyer
+        tempElement.remove();
+    } catch (error) {
+        console.error('Erreur lors de l\'export PDF:', error);
+        alert('Une erreur est survenue lors de l\'export PDF. Vérifiez que vous avez une connexion internet.');
+        tempElement.remove();
     }
 }
 

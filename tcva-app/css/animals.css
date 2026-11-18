@@ -476,6 +476,43 @@
     margin-bottom: 1.5rem;
 }
 
+/* --- BLOC FILTERS --- */
+.bloc-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.bloc-filter-btn {
+    padding: 0.5rem 1rem;
+    border: 2px solid #2196F3;
+    background: white;
+    color: #2196F3;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.bloc-filter-btn:hover, .bloc-filter-btn.active {
+    background: #2196F3;
+    color: white;
+}
+
+/* Dark mode for bloc filters */
+.dark-mode .bloc-filter-btn {
+    background: #2d2d2d;
+    color: #64B5F6;
+    border-color: #64B5F6;
+}
+
+.dark-mode .bloc-filter-btn:hover,
+.dark-mode .bloc-filter-btn.active {
+    background: #2196F3;
+    color: white;
+}
+
 .animal-filter-btn {
     padding: 0.5rem 1rem;
     border: 2px solid #4CAF50;
@@ -537,6 +574,137 @@
     color: #666;
     font-size: 0.9rem;
     margin-top: 0.5rem;
+}
+
+/* --- BLOC STATS --- */
+.bloc-stats-section {
+    margin: 2rem 0;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.bloc-stats-section h3 {
+    color: #4CAF50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #4CAF50;
+}
+
+.bloc-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.bloc-stat-card {
+    background: #F5F5F5;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.bloc-stat-card:hover {
+    border-color: #4CAF50;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+}
+
+.bloc-stat-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.bloc-icon {
+    font-size: 1.5rem;
+}
+
+.bloc-stat-header h4 {
+    color: #333;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.bloc-stat-info {
+    margin-bottom: 0.75rem;
+}
+
+.bloc-stat-progress {
+    height: 8px;
+    background: #DDD;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+}
+
+.bloc-progress-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.bloc-progress-bar[data-percent="0"] { background: #F44336; }
+.bloc-progress-bar[data-percent="100"] { background: #4CAF50; }
+
+/* Use CSS variables for dynamic coloring */
+.bloc-progress-bar {
+    background: var(--primary-color);
+}
+
+.bloc-stat-numbers {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+}
+
+.bloc-viewed {
+    color: #666;
+    font-weight: 500;
+}
+
+.bloc-percent {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.bloc-stat-description {
+    color: #888;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+/* Dark mode for bloc stats */
+.dark-mode .bloc-stats-section {
+    background: #2d2d2d;
+}
+
+.dark-mode .bloc-stat-card {
+    background: #3a3a3a;
+}
+
+.dark-mode .bloc-stat-header h4 {
+    color: #f0f0f0;
+}
+
+.dark-mode .bloc-stat-progress {
+    background: #444;
+}
+
+.dark-mode .bloc-viewed {
+    color: #b0b0b0;
+}
+
+.dark-mode .bloc-percent {
+    color: #4CAF50;
+}
+
+.dark-mode .bloc-stat-description {
+    color: #999;
 }
 
 /* --- ANIMAL COMPARISON --- */
@@ -658,6 +826,167 @@
     margin-top: 1rem;
     font-size: 0.85rem;
     color: #888;
+}
+
+/* --- BLOC STATS HEADER --- */
+.bloc-stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* --- BLOC REVISION --- */
+.bloc-revision-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.bloc-revision-selector {
+    margin-bottom: 2rem;
+}
+
+.bloc-revision-selector h3 {
+    color: #4CAF50;
+    margin-bottom: 1rem;
+}
+
+.bloc-revision-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.bloc-revision-card {
+    background: #F5F5F5;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.bloc-revision-card:hover {
+    border-color: #2196F3;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2);
+}
+
+.bloc-revision-card.selected {
+    border-color: #2196F3;
+    background: #E3F2FD;
+}
+
+.bloc-revision-card .bloc-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.bloc-revision-card h4 {
+    color: #333;
+    margin: 0 0 0.5rem;
+    font-size: 0.95rem;
+}
+
+.bloc-revision-card p {
+    color: #666;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.bloc-revision-content {
+    display: none;
+}
+
+.bloc-revision-content.active {
+    display: block;
+}
+
+.bloc-revision-info {
+    background: #E3F2FD;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.bloc-revision-info h4 {
+    color: #1976D2;
+    margin-bottom: 0.5rem;
+}
+
+.bloc-revision-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.revision-stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+}
+
+.revision-stat-number {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2196F3;
+}
+
+.revision-stat-label {
+    color: #666;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* Dark mode for bloc revision */
+.dark-mode .bloc-revision-container {
+    background: #2d2d2d;
+}
+
+.dark-mode .bloc-revision-card {
+    background: #3a3a3a;
+}
+
+.dark-mode .bloc-revision-card:hover {
+    background: #3a3a3a;
+}
+
+.dark-mode .bloc-revision-card.selected {
+    background: #1a237e;
+}
+
+.dark-mode .bloc-revision-card h4 {
+    color: #f0f0f0;
+}
+
+.dark-mode .bloc-revision-card p {
+    color: #b0b0b0;
+}
+
+.dark-mode .bloc-revision-info {
+    background: #0d47a1;
+}
+
+.dark-mode .bloc-revision-info h4 {
+    color: #f0f0f0;
+}
+
+.dark-mode .revision-stat-item {
+    background: #2d2d2d;
+}
+
+.dark-mode .revision-stat-number {
+    color: #64B5F6;
+}
+
+.dark-mode .revision-stat-label {
+    color: #999;
 }
 
 /* --- RESPONSIVE ANIMALS --- */

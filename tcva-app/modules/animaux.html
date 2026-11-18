@@ -19,6 +19,7 @@
                 <ul class="nav-links">
                     <li><a href="../index.html">Retour à l'accueil</a></li>
                     <li><a href="#" onclick="showAnimalSection('learning')" class="active">Apprentissage</a></li>
+                    <li><a href="#" onclick="showAnimalSection('bloc-revision')">Révision par Bloc</a></li>
                     <li><a href="#" onclick="showAnimalSection('quiz')">Quiz</a></li>
                     <li><a href="#" onclick="showAnimalSection('comparison')">Comparaison</a></li>
                     <li><a href="#" onclick="showAnimalSection('groups')">Groupes</a></li>
@@ -49,6 +50,19 @@
                         <div class="stat-label">Maîtrise</div>
                     </div>
                 </div>
+                
+                <!-- STATISTIQUES PAR BLOC -->
+                <div class="bloc-stats-section" id="bloc-stats">
+                    <div class="bloc-stats-header">
+                        <h3>📊 Statistiques par Bloc de Compétences</h3>
+                        <button class="btn btn-secondary btn-sm" onclick="exportBlocStatsPDF()">
+                            📄 Exporter en PDF
+                        </button>
+                    </div>
+                    <div class="bloc-stats-grid" id="bloc-stats-grid">
+                        <!-- Les statistiques par bloc seront affichées ici -->
+                    </div>
+                </div>
 
                 <div class="learning-mode">
                     <h3>🔍 Filtrer par catégorie</h3>
@@ -74,6 +88,14 @@
                         <button class="animal-filter-btn" data-category="jardin" onclick="filterAnimals(this)">
                             🐸 Jardin
                         </button>
+                    </div>
+                    
+                    <h3 style="margin-top: 1.5rem;">📚 Filtrer par Bloc de Compétences</h3>
+                    <div class="bloc-filters" id="bloc-filters">
+                        <button class="bloc-filter-btn active" data-bloc="all" onclick="filterByBloc(this)">
+                            🐾 Tous les blocs
+                        </button>
+                        <!-- Les boutons de filtre par bloc seront ajoutés dynamiquement -->
                     </div>
                 </div>
 
@@ -158,6 +180,24 @@
                 </div>
             </div>
 
+            <!-- SECTION RÉVISION PAR BLOC -->
+            <div id="bloc-revision" class="animal-section">
+                <h2>🎓 Révision par Bloc de Compétences</h2>
+                
+                <div class="bloc-revision-container">
+                    <div class="bloc-revision-selector">
+                        <h3>Sélectionnez un bloc à réviser</h3>
+                        <div class="bloc-revision-grid" id="bloc-revision-grid">
+                            <!-- Les blocs seront affichés ici -->
+                        </div>
+                    </div>
+                    
+                    <div class="bloc-revision-content" id="bloc-revision-content">
+                        <!-- Le contenu de révision sera affiché ici -->
+                    </div>
+                </div>
+            </div>
+            
             <!-- SECTION GROUPES -->
             <div id="groups" class="animal-section">
                 <h2>📊 Groupes d'animaux</h2>
@@ -176,7 +216,9 @@
         </div>
     </footer>
 
-    <script src="animals-db.js?v=1.1"></script>
-    <script src="animaux.js?v=1.1"></script>
+    <script src="animals-db.js?v=1.2"></script>
+    <script src="animaux.js?v=1.2"></script>
+    <!-- Librairie pour l'export PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>

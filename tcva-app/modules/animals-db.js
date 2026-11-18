@@ -17,7 +17,8 @@ const ANIMALS_DB = {
             image: '../img/chien-001.png',
             funFact: 'Race de chien la plus populaire au monde.',
             regulation: 'Identification par puce obligatoire en France',
-            advice: 'Éducation précoce recommandée'
+            advice: 'Éducation précoce recommandée',
+            blocs: ["BC05", "BC06", "BC10"]
         },
         {
             id: 'chien-002',
@@ -1059,3 +1060,91 @@ const ANIMAL_CATEGORIES = [
     { id: "jardin", name: "Jardin aquatique", icon: "🐸", description: "Étangs, bassins et plantes aquatiques" },
     { id: "all", name: "Tous les animaux", icon: "🐾", description: "Toutes les catégories" }
 ];
+
+// ============================================
+// BLOCS DE COMPÉTENCES - BAC PRO TCVA
+// ============================================
+
+const BLOCS = [
+    { id: "BC01", name: "Accueillir et accompagner le client", icon: "👋", description: "Accueil physique et téléphonique, gestion des réclamations" },
+    { id: "BC02", name: "Conseiller et vendre", icon: "💬", description: "Conseil et vente de produits et services" },
+    { id: "BC03", name: "Gérer les stocks", icon: "📦", description: "Gestion des stocks et des approvisionnements" },
+    { id: "BC04", name: "Participer à la gestion de l'animalerie", icon: "🏪", description: "Gestion administrative et commerciale" },
+    { id: "BC05", name: "Conseiller sur les produits", icon: "🛒", description: "Conseil sur les produits d'animalerie" },
+    { id: "BC06", name: "Conseiller sur les animaux", icon: "🐾", description: "Conseil sur les animaux et leur entretien" },
+    { id: "BC07", name: "Assurer l'hygiène et la sécurité", icon: "🧼", description: "Hygiène, sécurité et normes sanitaires" },
+    { id: "BC08", name: "Réceptionner et stocker", icon: "📥", description: "Réception et mise en stockage des marchandises" },
+    { id: "BC09", name: "Participer à la gestion commerciale", icon: "📊", description: "Analyse commerciale et gestion" },
+    { id: "BC10", name: "Participer à la gestion des animaux", icon: "🐕", description: "Gestion et soin des animaux en animalerie" },
+    { id: "BC11", name: "Communiquer avec les professionnels", icon: "📞", description: "Communication avec fournisseurs et partenaires" },
+    { id: "BC12", name: "Participer à l'animation commerciale", icon: "🎯", description: "Animation et promotion commerciale" }
+];
+
+// Map des blocs principaux pour chaque catégorie
+const CATEGORY_BLOCS = {
+    chien: ["BC05", "BC06", "BC10"],
+    chat: ["BC05", "BC06", "BC10"],
+    oiseau: ["BC05", "BC06", "BC10"],
+    NAC: ["BC05", "BC06", "BC10"],
+    poisson: ["BC05", "BC06", "BC10"],
+    jardin: ["BC05", "BC06", "BC10"]
+};
+
+// Mapping des blocs spécifiques pour certains animaux (avec réglementation ou particularités)
+const SPECIFIC_ANIMAL_BLOCS = {
+    // Animaux nécessitant certificat de capacité
+    'oiseau-001': ["BC01", "BC02", "BC05", "BC06", "BC07", "BC10", "BC11"], // Perroquet Gris du Gabon
+    'oiseau-004': ["BC01", "BC02", "BC05", "BC06", "BC07", "BC10", "BC11"], // Calao Rhinocéros
+    'jardin-002': ["BC01", "BC02", "BC05", "BC06", "BC07", "BC10", "BC11"], // Tortue d'eau
+    'jardin-005': ["BC01", "BC02", "BC05", "BC06", "BC07", "BC10", "BC11"], // Axolotl
+    'NAC-005': ["BC01", "BC02", "BC05", "BC06", "BC07", "BC10", "BC11"], // Furet
+    'NAC-004': ["BC05", "BC06", "BC07", "BC10", "BC11"], // Chinchilla (température spécifique)
+    
+    // Animaux populaires pour le conseil client (BC01, BC02)
+    'chien-001': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Labrador
+    'chien-002': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Berger Allemand
+    'chien-003': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Caniche
+    'chien-004': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Bulldog Français
+    'chien-005': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Golden Retriever
+    'chat-001': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Chat Européen
+    'chat-002': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Persan
+    'chat-003': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Siamois
+    'chat-004': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Maine Coon
+    'chat-005': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Bengal
+    
+    // Oiseaux populaires
+    'oiseau-002': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Canari
+    'oiseau-003': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Perruche Ondulée
+    'oiseau-005': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Diamant de Gould
+    
+    // NAC populaires
+    'NAC-001': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Lapin Nain
+    'NAC-002': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Hamster Doré
+    'NAC-003': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Cochon d'Inde
+    'NAC-006': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Souris
+    'NAC-007': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Rat
+    'NAC-008': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Gerbille
+    
+    // Poissons populaires
+    'poisson-001': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Poisson Rouge
+    'poisson-002': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Guppy
+    'poisson-003': ["BC05", "BC06", "BC07", "BC10"], // Discus (eau très propre)
+    'poisson-004': ["BC05", "BC06", "BC07", "BC10"], // Scalaire (aquarium haut)
+    'poisson-005': ["BC05", "BC06", "BC07", "BC10"], // Poisson-Clown (aquarium marin)
+    
+    // Jardin populaires
+    'jardin-001': ["BC01", "BC02", "BC05", "BC06", "BC10"], // Carpe Koï
+    'jardin-003': ["BC05", "BC06", "BC07", "BC10", "BC11"], // Écrevisse Américaine (espèce invasife)
+    'jardin-004': ["BC05", "BC06", "BC10"], // Grenouille Verte
+    
+    // Blocs supplémentaires pour gestion de rayon (BC03, BC08)
+    // Animaux nécessitant une gestion de stock particulière
+    'poisson-003': ["BC03", "BC05", "BC06", "BC07", "BC08", "BC10"], // Discus
+    'poisson-005': ["BC03", "BC05", "BC06", "BC07", "BC08", "BC10"], // Poisson-Clown
+    
+    // Animaux pour animation commerciale (BC12)
+    'chien-001': ["BC01", "BC02", "BC05", "BC06", "BC10", "BC12"], // Labrador (animation)
+    'chat-004': ["BC01", "BC02", "BC05", "BC06", "BC10", "BC12"], // Maine Coon (animation)
+    'oiseau-001': ["BC01", "BC02", "BC05", "BC06", "BC07", "BC10", "BC11", "BC12"], // Perroquet Gris (animation)
+    'NAC-001': ["BC01", "BC02", "BC05", "BC06", "BC10", "BC12"]  // Lapin Nain (animation)
+};
