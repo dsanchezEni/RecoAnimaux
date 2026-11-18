@@ -22,7 +22,11 @@ let completedChallenges = new Set();
 let challengeProgress = {};
 let unlockedRewards = new Set();
 let totalPoints = 0;
-let quizHistory = [];
+// Utiliser window.quizHistory pour partager entre les modules
+if (typeof window.quizHistory === 'undefined') {
+    window.quizHistory = [];
+}
+let quizHistory = window.quizHistory;
 
 // ============================================
 // INITIALISATION
@@ -1588,11 +1592,15 @@ function loadRewardProgress() {
     
     if (savedQuizHistory) {
         try {
-            quizHistory = JSON.parse(savedQuizHistory);
+            window.quizHistory = JSON.parse(savedQuizHistory);
+            if (!Array.isArray(window.quizHistory)) {
+                window.quizHistory = [];
+            }
         } catch (e) {
-            quizHistory = [];
+            window.quizHistory = [];
         }
     }
+    quizHistory = window.quizHistory;
 }
 
 // Sauvegarder la progression des récompenses
@@ -1729,7 +1737,15 @@ function showRewardNotification(reward) {
 // Afficher les récompenses
 function displayRewards(filter = 'earned') {
     const container = document.getElementById('rewards-grid');
-    if (!container || !REWARDS) return;
+    if (!container) return;
+    
+    // Vérifier que REWARDS est bien chargé (via window.REWARDS)
+    const REWARDS_LOCAL = window.REWARDS || REWARDS;
+    if (!REWARDS_LOCAL) {
+        container.innerHTML = '<p style="text-align: center; padding: 2rem; color: #F44336;">⚠️ Erreur : données des récompenses non chargées. Veuillez recharger la page.</p>';
+        console.error('REWARDS non défini. Vérifiez que animals-db.js est chargé.');
+        return;
+    }
     
     container.innerHTML = '';
     
@@ -1759,6 +1775,12 @@ function displayRewards(filter = 'earned') {
 
 // Créer une carte de récompense
 function createRewardCard(reward, isUnlocked) {
+    // Sécurité : vérifier que reward est défini
+    if (!reward) {
+        console.warn('Reward is undefined in createRewardCard');
+        return null;
+    }
+    
     const card = document.createElement('div');
     card.className = 'reward-card';
     card.id = `reward-${reward.id}`;
@@ -1825,6 +1847,7 @@ function showRewardTab(event, tab) {
             buttons[0].classList.add('active');
         }
     }
+    checkAndAwardRewards();
     displayRewards(tab);
 }
 

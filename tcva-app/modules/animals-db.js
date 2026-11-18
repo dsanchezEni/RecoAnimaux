@@ -4,7 +4,7 @@
 // ============================================
 
 // Éviter le rechargement multiple du fichier
-if (typeof window.ANIMALS_DB === 'undefined') {
+if (typeof window.REWARDS === 'undefined') {
 
 window.ANIMALS_DB = {
     chien: [
@@ -1126,7 +1126,7 @@ window.REWARDS = {
         name: 'Premiers pas',
         description: 'A étudier votre premier animal',
         icon: '👶',
-        type: REWARD_TYPES.BADGE,
+        type: "BADGE",
         points: 10,
         unlockCondition: { viewedAnimals: 1 }
     },
@@ -1135,7 +1135,7 @@ window.REWARDS = {
         name: 'Explorateur',
         description: 'A étudié 10 animaux différents',
         icon: '🔍',
-        type: REWARD_TYPES.BADGE,
+        type: "BADGE",
         points: 25,
         unlockCondition: { viewedAnimals: 10 }
     },
@@ -1144,7 +1144,7 @@ window.REWARDS = {
         name: 'Découvreur',
         description: 'A étudié 25 animaux différents',
         icon: '🌍',
-        type: REWARD_TYPES.BADGE,
+        type: "BADGE",
         points: 50,
         unlockCondition: { viewedAnimals: 25 }
     },
@@ -1155,7 +1155,7 @@ window.REWARDS = {
         name: 'Amateur de chiens',
         description: 'A étudié tous les chiens',
         icon: '🐕',
-        type: REWARD_TYPES.MEDAL,
+        type: "MEDAL",
         points: 100,
         unlockCondition: { category: 'chien', percent: 100 }
     },
@@ -1164,7 +1164,7 @@ window.REWARDS = {
         name: 'Amateur de chats',
         description: 'A étudié tous les chats',
         icon: '🐈',
-        type: REWARD_TYPES.MEDAL,
+        type: "MEDAL",
         points: 100,
         unlockCondition: { category: 'chat', percent: 100 }
     },
@@ -1173,7 +1173,7 @@ window.REWARDS = {
         name: 'Amateur d\'oiseaux',
         description: 'A étudié tous les oiseaux',
         icon: '🦜',
-        type: REWARD_TYPES.MEDAL,
+        type: "MEDAL",
         points: 100,
         unlockCondition: { category: 'oiseau', percent: 100 }
     },
@@ -1182,7 +1182,7 @@ window.REWARDS = {
         name: 'Amateur de NAC',
         description: 'A étudié tous les NAC',
         icon: '🐹',
-        type: REWARD_TYPES.MEDAL,
+        type: "MEDAL",
         points: 100,
         unlockCondition: { category: 'NAC', percent: 100 }
     },
@@ -1191,7 +1191,7 @@ window.REWARDS = {
         name: 'Amateur de poissons',
         description: 'A étudié tous les poissons',
         icon: '🐠',
-        type: REWARD_TYPES.MEDAL,
+        type: "MEDAL",
         points: 100,
         unlockCondition: { category: 'poisson', percent: 100 }
     },
@@ -1200,7 +1200,7 @@ window.REWARDS = {
         name: 'Amateur de jardin',
         description: 'A étudié tous les animaux de jardin',
         icon: '🐸',
-        type: REWARD_TYPES.MEDAL,
+        type: "MEDAL",
         points: 100,
         unlockCondition: { category: 'jardin', percent: 100 }
     },
@@ -1211,7 +1211,7 @@ window.REWARDS = {
         name: 'Maître de l\'accueil',
         description: 'A maîtrisé 100% du bloc BC01',
         icon: '👋',
-        type: REWARD_TYPES.TROPHY,
+        type: "TROPHY",
         points: 150,
         unlockCondition: { bloc: 'BC01', percent: 100 }
     },
@@ -1220,7 +1220,7 @@ window.REWARDS = {
         name: 'Maître du conseil',
         description: 'A maîtrisé 100% du bloc BC02',
         icon: '💬',
-        type: REWARD_TYPES.TROPHY,
+        type: "TROPHY",
         points: 150,
         unlockCondition: { bloc: 'BC02', percent: 100 }
     },
@@ -1229,7 +1229,7 @@ window.REWARDS = {
         name: 'Maître des produits',
         description: 'A maîtrisé 100% du bloc BC05',
         icon: '🛒',
-        type: REWARD_TYPES.TROPHY,
+        type: "TROPHY",
         points: 150,
         unlockCondition: { bloc: 'BC05', percent: 100 }
     },
@@ -1238,7 +1238,7 @@ window.REWARDS = {
         name: 'Maître animalier',
         description: 'A maîtrisé 100% du bloc BC06',
         icon: '🐾',
-        type: REWARD_TYPES.TROPHY,
+        type: "TROPHY",
         points: 150,
         unlockCondition: { bloc: 'BC06', percent: 100 }
     },
@@ -1247,7 +1247,7 @@ window.REWARDS = {
         name: 'Maître de l\'hygiène',
         description: 'A maîtrisé 100% du bloc BC07',
         icon: '🧼',
-        type: REWARD_TYPES.TROPHY,
+        type: "TROPHY",
         points: 150,
         unlockCondition: { bloc: 'BC07', percent: 100 }
     },
@@ -1256,7 +1256,7 @@ window.REWARDS = {
         name: 'Maître de la gestion',
         description: 'A maîtrisé 100% du bloc BC10',
         icon: '👨‍💼',
-        type: REWARD_TYPES.TROPHY,
+        type: "TROPHY",
         points: 150,
         unlockCondition: { bloc: 'BC10', percent: 100 }
     },
@@ -1267,7 +1267,7 @@ window.REWARDS = {
         name: 'Explorateur complet',
         description: 'A étudié au moins un animal de chaque catégorie',
         icon: '🌈',
-        type: REWARD_TYPES.TROPHY,
+        type: "TROPHY",
         points: 200,
         unlockCondition: { allCategories: true }
     },
@@ -1276,7 +1276,7 @@ window.REWARDS = {
         name: 'Polyvalent',
         description: 'A atteint 50% de maîtrise dans tous les blocs',
         icon: '🎯',
-        type: REWARD_TYPES.TROPHY,
+        type: "TROPHY",
         points: 300,
         unlockCondition: { allBlocs: 50 }
     },
@@ -1285,7 +1285,7 @@ window.REWARDS = {
         name: 'Expert complet',
         description: 'A atteint 100% de maîtrise dans tous les blocs',
         icon: '🌟',
-        type: REWARD_TYPES.DIPLOMA,
+        type: "DIPLOMA",
         points: 1000,
         unlockCondition: { allBlocs: 100 }
     },
@@ -1296,7 +1296,7 @@ window.REWARDS = {
         name: 'Score parfait',
         description: 'A réussi un quiz avec 100% de bonnes réponses',
         icon: '⭐',
-        type: REWARD_TYPES.STAR,
+        type: "STAR",
         points: 50,
         unlockCondition: { quizPerfect: true }
     },
@@ -1305,7 +1305,7 @@ window.REWARDS = {
         name: 'Maître du quiz',
         description: 'A réussi 10 quiz avec 80% ou plus',
         icon: '🎯',
-        type: REWARD_TYPES.STAR,
+        type: "STAR",
         points: 200,
         unlockCondition: { quizCount: 10, quizScore: 80 }
     }

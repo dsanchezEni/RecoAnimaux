@@ -14,7 +14,11 @@ let quizStartTime = 0;
 let quizTimer = null;
 let timeLeft = 0;
 let userAnswers = [];
-let quizHistory = [];
+// Utiliser window.quizHistory pour partager entre les modules
+if (typeof window.quizHistory === 'undefined') {
+    window.quizHistory = [];
+}
+let quizHistory = window.quizHistory;
 let questionsViewed = new Set();
 
 // ============================================
@@ -766,7 +770,8 @@ function displayRecommendations() {
     
     // Trouver les blocs avec faible score dans l'historique
     const quizByBloc = {};
-    quizHistory.forEach(quiz => {
+    if (quizHistory && Array.isArray(quizHistory)) {
+        quizHistory.forEach(quiz => {
         quiz.wrongAnswers.forEach(answer => {
             const question = QUESTIONS_TCVA.find(q => q.id === answer.questionId);
             if (question) {
@@ -778,7 +783,7 @@ function displayRecommendations() {
                 quizByBloc[blocId].wrong++;
             }
         });
-    });
+    };
     
     // Calculer le taux d'erreur par bloc
     const blocErrorRates = Object.entries(quizByBloc).map(([blocId, stats]) => ({
@@ -907,8 +912,19 @@ function saveHistory() {
 function loadHistory() {
     const history = localStorage.getItem('tcvaQuizHistory');
     if (history) {
-        quizHistory = JSON.parse(history);
+        try {
+            window.quizHistory = JSON.parse(history);
+            // S'assurer que quizHistory est un tableau
+            if (!Array.isArray(window.quizHistory)) {
+                window.quizHistory = [];
+            }
+        } catch (e) {
+            window.quizHistory = [];
+        }
+    } else {
+        window.quizHistory = [];
     }
+    quizHistory = window.quizHistory;
 }
 
 function saveProgress() {
