@@ -752,6 +752,142 @@ main {
     background: #2d2d2d;
 }
 
+/* Key Points Page */
+.key-point-item {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--primary-color);
+}
+
+.key-point-header {
+    margin-bottom: 1rem;
+}
+
+.key-point-header h4 {
+    color: var(--primary-dark);
+    font-size: 1.2rem;
+}
+
+.key-point-description {
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.key-point-competences,
+.key-point-ressources {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.key-point-competences li,
+.key-point-ressources li {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.key-point-ressources a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.key-point-ressources a:hover {
+    text-decoration: underline;
+}
+
+/* Advice Grid */
+.advice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1rem 0;
+}
+
+.advice-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border-top: 3px solid var(--primary-color);
+}
+
+.advice-card h4 {
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.advice-card ul {
+    padding-left: 1.25rem;
+}
+
+.advice-card li {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.advice-card strong {
+    color: var(--primary-color);
+}
+
+/* Resources Grid */
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin: 1rem 0;
+}
+
+.resource-category {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.resource-category h4 {
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.resource-category ul {
+    padding-left: 1.25rem;
+}
+
+.resource-category li {
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.resource-category a {
+    color: var(--primary-color);
+    text-decoration: none;
+    word-break: break-word;
+}
+
+.resource-category a:hover {
+    text-decoration: underline;
+}
+
+/* Dark mode for key points */
+.dark-mode .key-point-item,
+.dark-mode .advice-card,
+.dark-mode .resource-category {
+    background: #2d2d2d;
+    border-color: #444;
+}
+
+.dark-mode .key-point-ressources a,
+.dark-mode .resource-category a {
+    color: #4CAF50;
+}
+
 .question-card {
     margin-bottom: 2rem;
 }

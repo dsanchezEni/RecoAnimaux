@@ -914,6 +914,177 @@ function clearHistory() {
 // ============================================
 // PAGE "À RETENIR"
 // ============================================
+// DONNÉES DES BLOCS AVEC DESCRIPTIONS DÉTAILLÉES
+// ============================================
+
+const BLOC_DESCRIPTIONS = {
+    "BC01": {
+        description: "Comprendre les grands enjeux contemporains (environnementaux, économiques, sociaux) et leur impact sur le secteur de l'animalerie.",
+        competences: [
+            "Analyser les tendances du marché de l'animalerie",
+            "Comprendre l'impact écologique de l'élevage d'animaux domestiques",
+            "Identifier les enjeux éthiques liés à la vente d'animaux",
+            "Connaître la réglementation environnementale"
+        ],
+        ressources: [
+            { name: "Rapport sur l'impact environnemental des animaux de compagnie", url: "https://www.ecologie.gouv.fr/" },
+            { name: "Études de marché du secteur animalier", url: "https://www.facco.coop/" }
+        ]
+    },
+    "BC02": {
+        description: "Comprendre les dynamiques de la mondialisation et leur influence sur les pratiques professionnelles en animalerie.",
+        competences: [
+            "Analyser les chaînes d'approvisionnement internationales",
+            "Comprendre l'impact de la mondialisation sur les prix",
+            "Connaître les spécificités culturelles liées aux animaux",
+            "Identifier les opportunités et menaces de la mondialisation"
+        ],
+        ressources: [
+            { name: "OMC - Statistiques du commerce mondial", url: "https://www.wto.org/" },
+            { name: "Douanes françaises - Import/Export", url: "https://www.douane.gouv.fr/" }
+        ]
+    },
+    "BC03": {
+        description: "Développer sa culture générale et professionnelle dans le domaine de l'animalerie.",
+        competences: [
+            "Connaître l'histoire et l'évolution des animaux domestiques",
+            "Maîtriser le vocabulaire technique de l'animalerie",
+            "Comprendre les différentes cultures liées aux animaux",
+            "Développer une identité professionnelle"
+        ],
+        ressources: [
+            { name: "Histoire des animaux domestiques", url: "https://fr.wikipedia.org/wiki/Animal_domestique" },
+            { name: "Glossaire technique de l'animalerie", url: "https://www.animalin.fr/" }
+        ]
+    },
+    "BC04": {
+        description: "Travailler en équipe et gérer des situations professionnelles complexes en animalerie.",
+        competences: [
+            "Communiquer efficacement avec les collègues",
+            "Gérer les conflits en magasin",
+            "Organiser le travail en équipe",
+            "Participer aux réunions d'équipe"
+        ],
+        ressources: [
+            { name: "Techniques de communication professionnelle", url: "https://www.cidj.com/" },
+            { name: "Gestion des conflits en milieu professionnel", url: "https://www manager-go.com/" }
+        ]
+    },
+    "BC05": {
+        description: "Conseiller et orienter le client dans le choix des produits et services adaptés à ses besoins et à ceux de son animal.",
+        competences: [
+            "Identifier les besoins spécifiques du client et de son animal",
+            "Proposer des produits adaptés au budget et aux attentes",
+            "Conseiller sur l'alimentation adaptée à chaque espèce",
+            "Recommander des accessoires et produits de soin",
+            "Informer sur les bonnes pratiques d'élevage"
+        ],
+        ressources: [
+            { name: "Guide des aliments pour animaux", url: "https://www.zooplus.fr/" },
+            { name: "Fiches conseils par espèce animale", url: "https://www.animalidée.com/" }
+        ]
+    },
+    "BC06": {
+        description: "Assurer la gestion des stocks et l'approvisionnement en produits d'animalerie.",
+        competences: [
+            "Gérer les commandes fournisseurs",
+            "Contrôler les dates de péremption",
+            "Optimiser les stocks en magasin",
+            "Effectuer les inventaires",
+            "Négocier avec les fournisseurs"
+        ],
+        ressources: [
+            { name: "Logiciels de gestion de stock", url: "https://www.easy-stock.com/" },
+            { name: "Techniques d'inventaire", url: "https://www.logistiqueconseil.org/" }
+        ]
+    },
+    "BC07": {
+        description: "Mettre en œuvre les procédures d'hygiène et de sécurité en animalerie.",
+        competences: [
+            "Appliquer les protocoles sanitaires",
+            "Nettoyer et désinfecter les locaux et équipements",
+            "Gérer les déchets selon la réglementation",
+            "Prévenir les risques de contamination",
+            "Connaître les normes HACCP"
+        ],
+        ressources: [
+            { name: "Règles d'hygiène en animalerie", url: "https://www.anses.fr/" },
+            { name: "Normes HACCP", url: "https://www.economie.gouv.fr/dgccrf/" }
+        ]
+    },
+    "BC08": {
+        description: "Accueillir, informer et fidéliser la clientèle en animalerie.",
+        competences: [
+            "Créer une relation de confiance avec le client",
+            "Informer sur les produits et services",
+            "Gérer les réclamations clients",
+            "Mettre en place des actions de fidélisation",
+            "Animer des ateliers ou événements"
+        ],
+        ressources: [
+            { name: "Techniques de vente en animalerie", url: "https://www.merchant.com/" },
+            { name: "Programmes de fidélité", url: "https://www.fidelity.fr/" }
+        ]
+    },
+    "BC09": {
+        description: "Participer à la gestion administrative et commerciale de l'animalerie.",
+        competences: [
+            "Gérer la caisse et les transactions",
+            "Établir des devis et factures",
+            "Suivre les indicateurs de performance",
+            "Participer aux actions marketing",
+            "Connaître la réglementation commerciale"
+        ],
+        ressources: [
+            { name: "Gestion commerciale en animalerie", url: "https://www.entreprises.gouv.fr/" },
+            { name: "Logiciels de caisse", url: "https://www.squareup.fr/" }
+        ]
+    },
+    "BC10": {
+        description: "Connaître et appliquer la réglementation spécifique à la vente d'animaux et de produits d'animalerie.",
+        competences: [
+            "Connaître la réglementation sur la vente d'animaux",
+            "Appliquer les règles de protection animale",
+            "Respecter les normes de bien-être animal",
+            "Connaître les espèces protégées et réglementées",
+            "Informer les clients sur la législation"
+        ],
+        ressources: [
+            { name: "Code rural - Réglementation animaux", url: "https://www.legifrance.gouv.fr/" },
+            { name: "Ministère de l'Agriculture", url: "https://agriculture.gouv.fr/" }
+        ]
+    },
+    "BC11": {
+        description: "Identifier et conseiller sur les animaux de compagnie et leurs besoins spécifiques.",
+        competences: [
+            "Reconnaître les différentes espèces et races",
+            "Conseiller sur les besoins nutritionnels",
+            "Informer sur les soins de santé",
+            "Recommander des accessoires adaptés",
+            "Éduquer sur le comportement animal"
+        ],
+        ressources: [
+            { name: "Fiches techniques par espèce", url: "https://www.zooplus.fr/magazine/" },
+            { name: "Guides de soins vétérinaires", url: "https://www.cliniques-veterinaires.com/" }
+        ]
+    },
+    "BC12": {
+        description: "Gérer et entretenir les espaces de vente et les installations d'animalerie.",
+        competences: [
+            "Aménager les espaces de vente",
+            "Maintenir les aquariums et terrariums",
+            "Contrôler les conditions de vie des animaux",
+            "Gérer l'éclairage et la température",
+            "Assurer la propreté des installations"
+        ],
+        ressources: [
+            { name: "Aménagement de magasin d'animalerie", url: "https://www.animalerie-pro.com/" },
+            { name: "Entretien des aquariums", url: "https://www.aqua-portail.com/" }
+        ]
+    }
+};
+
+// ============================================
 
 function displayKeyPoints() {
     const container = document.getElementById('key-points-list');
@@ -922,17 +1093,58 @@ function displayKeyPoints() {
     container.innerHTML = '';
     
     BLOCS.forEach(bloc => {
-        const item = document.createElement('li');
+        const blocData = BLOC_DESCRIPTIONS[bloc.id];
+        if (!blocData) return;
         
-        const title = document.createElement('strong');
-        title.textContent = `${bloc.id}: ${bloc.name}`;
-        item.appendChild(title);
+        const item = document.createElement('div');
+        item.className = 'key-point-item';
         
-        item.appendChild(document.createElement('br'));
+        const header = document.createElement('div');
+        header.className = 'key-point-header';
+        header.innerHTML = `<h4>${bloc.id}: ${bloc.name}</h4>`;
+        item.appendChild(header);
         
-        const description = document.createElement('span');
-        description.textContent = 'Maîtriser les compétences associées à ce bloc.';
+        const description = document.createElement('p');
+        description.className = 'key-point-description';
+        description.textContent = blocData.description;
         item.appendChild(description);
+        
+        const competencesHeader = document.createElement('h5');
+        competencesHeader.textContent = '🎯 Compétences à maîtriser:';
+        item.appendChild(competencesHeader);
+        
+        const competencesList = document.createElement('ul');
+        competencesList.className = 'key-point-competences';
+        blocData.competences.forEach(comp => {
+            const compItem = document.createElement('li');
+            compItem.textContent = comp;
+            competencesList.appendChild(compItem);
+        });
+        item.appendChild(competencesList);
+        
+        if (blocData.ressources && blocData.ressources.length > 0) {
+            const ressourcesHeader = document.createElement('h5');
+            ressourcesHeader.textContent = '📚 Ressources utiles:';
+            item.appendChild(ressourcesHeader);
+            
+            const ressourcesList = document.createElement('ul');
+            ressourcesList.className = 'key-point-ressources';
+            blocData.ressources.forEach(res => {
+                const resItem = document.createElement('li');
+                if (res.url) {
+                    const link = document.createElement('a');
+                    link.href = res.url;
+                    link.textContent = res.name;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    resItem.appendChild(link);
+                } else {
+                    resItem.textContent = res.name;
+                }
+                ressourcesList.appendChild(resItem);
+            });
+            item.appendChild(ressourcesList);
+        }
         
         container.appendChild(item);
     });
