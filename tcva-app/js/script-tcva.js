@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initApp() {
     loadHistory();
     loadProgress();
+    initDarkMode();
     initSelectOptions();
     displayTotalQuestions();
     updateProgressDisplay();
@@ -44,6 +45,47 @@ function handleHashChange() {
     const hash = window.location.hash.substring(1);
     if (hash) {
         showPage(hash);
+    }
+}
+
+// ============================================
+// DARK MODE
+// ============================================
+
+function toggleDarkMode() {
+    const body = document.body;
+    const isDark = body.classList.toggle('dark-mode');
+    
+    // Sauvegarder la préférence
+    localStorage.setItem('tcvaDarkMode', isDark ? 'true' : 'false');
+    
+    // Mettre à jour l'icône du bouton
+    const toggleBtn = document.querySelector('.dark-mode-toggle');
+    if (toggleBtn) {
+        toggleBtn.textContent = isDark ? '☀️' : '🌙';
+        toggleBtn.title = isDark ? 'Mode clair' : 'Mode sombre';
+    }
+    
+    // Appliquer aussi au module animaux si chargé
+    const animalsPage = document.getElementById('animaux.html') || 
+                         (window.location.pathname.includes('animaux.html') ? document.body : null);
+    if (animalsPage) {
+        animalsPage.classList.toggle('dark-mode', isDark);
+    }
+}
+
+// Charger le dark mode au démarrage
+function initDarkMode() {
+    const savedMode = localStorage.getItem('tcvaDarkMode');
+    const isDark = savedMode === 'true';
+    
+    if (isDark) {
+        document.body.classList.add('dark-mode');
+        const toggleBtn = document.querySelector('.dark-mode-toggle');
+        if (toggleBtn) {
+            toggleBtn.textContent = '☀️';
+            toggleBtn.title = 'Mode clair';
+        }
     }
 }
 
@@ -218,7 +260,18 @@ function displayQuestion(index) {
     
     // Mettre à jour la barre de progression
     const progressPercent = ((index) / currentQuizQuestions.length) * 100;
-    document.getElementById('quiz-progress-bar').style.width = `${progressPercent}%`;
+    const progressBar = document.getElementById('quiz-progress-bar');
+    progressBar.style.width = `${progressPercent}%`;
+    
+    // Appliquer la couleur selon le pourcentage
+    progressBar.className = 'progress-bar-fill';
+    if (progressPercent < 33) {
+        progressBar.classList.add('progress-low');
+    } else if (progressPercent < 66) {
+        progressBar.classList.add('progress-medium');
+    } else {
+        progressBar.classList.add('progress-high');
+    }
     
     // Afficher les réponses
     displayAnswers(question);

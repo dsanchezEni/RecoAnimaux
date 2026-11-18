@@ -33,6 +33,18 @@
     --transition: all 0.3s ease;
 }
 
+/* Dark Mode Variables */
+.dark-mode {
+    --bg-color: #1a1a1a;
+    --card-bg: #2d2d2d;
+    --text-color: #f0f0f0;
+    --text-light: #b0b0b0;
+    --border-color: #444444;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 3px 6px rgba(0,0,0,0.4);
+    --shadow-lg: 0 10px 20px rgba(0,0,0,0.5);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -48,8 +60,11 @@ body {
     line-height: 1.6;
     color: var(--text-color);
     background-color: var(--bg-color);
-    background-image: radial-gradient(circle at 10% 20%, rgba(76, 175, 80, 0.05) 0%, transparent 30%),
-                      radial-gradient(circle at 90% 80%, rgba(33, 150, 243, 0.05) 0%, transparent 30%);
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.dark-mode body {
+    background-image: none;
 }
 
 /* --- HEADER --- */
@@ -117,6 +132,25 @@ header#site-header {
     background: rgba(255, 255, 255, 0.3);
 }
 
+/* Dark Mode Toggle */
+.dark-mode-toggle {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dark-mode-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 /* --- MAIN CONTENT --- */
 main {
     max-width: 1200px;
@@ -142,6 +176,42 @@ main {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Feedback Visual Animations */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes pulseCorrect {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+}
+
+@keyframes pulseIncorrect {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(244, 67, 54, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); }
+}
+
+.correct {
+    animation: pulseCorrect 0.5s ease;
+    background-color: #4CAF50 !important;
+    color: white !important;
+}
+
+.incorrect {
+    animation: pulseIncorrect 0.5s ease;
+    background-color: #F44336 !important;
+    color: white !important;
+}
+
+.selected {
+    animation: pulseCorrect 0.3s ease;
+    border-color: var(--primary-color) !important;
 }
 
 /* --- WELCOME SECTION --- */
@@ -590,10 +660,21 @@ main {
 
 .progress-bar-fill {
     height: 100%;
-    background: var(--primary-color);
     border-radius: var(--radius-sm);
-    transition: width 0.3s ease;
+    transition: width 0.3s ease, background 0.3s ease;
 }
+
+/* Colored progress bar based on percentage */
+.progress-bar-fill[data-percent="0"] { background: var(--danger-color); }
+.progress-bar-fill[data-percent="1"] { background: var(--danger-color); }
+.progress-bar-fill[data-percent="2"] { background: var(--danger-color); }
+.progress-bar-fill[data-percent="3"] { background: var(--danger-color); }
+.progress-bar-fill[data-percent="4"] { background: var(--danger-color); }
+
+/* Use CSS variables for dynamic coloring */
+.progress-low { background: var(--danger-color); }
+.progress-medium { background: var(--warning-color); }
+.progress-high { background: var(--success-color); }
 
 .question-card {
     margin-bottom: 2rem;

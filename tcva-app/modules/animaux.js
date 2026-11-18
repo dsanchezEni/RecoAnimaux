@@ -14,6 +14,7 @@ let animalQuizScore = 0;
 let animalTimer = null;
 let timeLeftAnimal = 0;
 let viewedAnimals = new Set();
+let favoriteAnimals = new Set();
 
 // ============================================
 // INITIALISATION
@@ -25,11 +26,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initAnimalsModule() {
     loadAnimalProgress();
+    loadFavoriteAnimals();
+    initDarkMode();
     initAnimalSelectOptions();
     displayAnimalCategories();
     displayAnimalGroups();
     displayComparisonCategories();
     updateAnimalStats();
+}
+
+// ============================================
+// DARK MODE
+// ============================================
+
+function toggleDarkMode() {
+    const body = document.body;
+    const isDark = body.classList.toggle('dark-mode');
+    
+    // Sauvegarder la préférence
+    localStorage.setItem('tcvaDarkMode', isDark ? 'true' : 'false');
+    
+    // Mettre à jour l'icône du bouton
+    const toggleBtn = document.querySelector('.dark-mode-toggle');
+    if (toggleBtn) {
+        toggleBtn.textContent = isDark ? '☀️' : '🌙';
+        toggleBtn.title = isDark ? 'Mode clair' : 'Mode sombre';
+    }
+}
+
+// Charger le dark mode au démarrage
+function initDarkMode() {
+    const savedMode = localStorage.getItem('tcvaDarkMode');
+    const isDark = savedMode === 'true';
+    
+    if (isDark) {
+        document.body.classList.add('dark-mode');
+        const toggleBtn = document.querySelector('.dark-mode-toggle');
+        if (toggleBtn) {
+            toggleBtn.textContent = '☀️';
+            toggleBtn.title = 'Mode clair';
+        }
+    }
 }
 
 // ============================================
@@ -87,6 +124,36 @@ function initAnimalSelectOptions() {
             option.textContent = `${category.icon} ${category.name}`;
             animalQuizCategory.appendChild(option);
         });
+    }
+}
+
+// ============================================
+// FAVORITES
+// ============================================
+
+function toggleFavorite(animalId) {
+    if (favoriteAnimals.has(animalId)) {
+        favoriteAnimals.delete(animalId);
+    } else {
+        favoriteAnimals.add(animalId);
+    }
+    saveFavoriteAnimals();
+    updateAnimalStats();
+}
+
+function isFavorite(animalId) {
+    return favoriteAnimals.has(animalId);
+}
+
+function saveFavoriteAnimals() {
+    const favorites = Array.from(favoriteAnimals);
+    localStorage.setItem('tcvaFavoriteAnimals', JSON.stringify(favorites));
+}
+
+function loadFavoriteAnimals() {
+    const favorites = localStorage.getItem('tcvaFavoriteAnimals');
+    if (favorites) {
+        favoriteAnimals = new Set(JSON.parse(favorites));
     }
 }
 
@@ -172,6 +239,10 @@ function createAnimalCard(animal) {
     viewedAnimals.add(animal.id);
     saveAnimalProgress();
     
+    // Conteneur pour l'image et le bouton favoris
+    const imgContainer = document.createElement('div');
+    imgContainer.className = 'animal-image-container';
+    
     const img = document.createElement('img');
     img.src = animal.image || 'https://via.placeholder.com/300x200';
     img.alt = animal.name;
@@ -179,7 +250,21 @@ function createAnimalCard(animal) {
     img.onerror = () => {
         img.src = 'https://via.placeholder.com/300x200?text=' + encodeURIComponent(animal.name);
     };
-    card.appendChild(img);
+    imgContainer.appendChild(img);
+    
+    // Bouton favoris
+    const favoriteBtn = document.createElement('button');
+    favoriteBtn.className = 'animal-favorite-btn';
+    favoriteBtn.innerHTML = isFavorite(animal.id) ? '⭐' : '☆';
+    favoriteBtn.onclick = (e) => {
+        e.stopPropagation();
+        toggleFavorite(animal.id);
+        favoriteBtn.innerHTML = isFavorite(animal.id) ? '⭐' : '☆';
+    };
+    favoriteBtn.title = isFavorite(animal.id) ? 'Retirer des favoris' : 'Ajouter aux favoris';
+    imgContainer.appendChild(favoriteBtn);
+    
+    card.appendChild(imgContainer);
     
     const name = document.createElement('div');
     name.className = 'animal-name';
@@ -340,7 +425,18 @@ function displayAnimalQuestion(timeLimit) {
     document.getElementById('quiz-total').textContent = currentAnimalQuizQuestions.length;
     
     const progress = ((currentAnimalQuizIndex) / currentAnimalQuizQuestions.length) * 100;
-    document.getElementById('animal-quiz-progress').style.width = `${progress}%`;
+    const progressBar = document.getElementById('animal-quiz-progress');
+    progressBar.style.width = `${progress}%`;
+    
+    // Appliquer la couleur selon le pourcentage
+    progressBar.className = 'progress-bar-fill';
+    if (progress < 33) {
+        progressBar.classList.add('progress-low');
+    } else if (progress < 66) {
+        progressBar.classList.add('progress-medium');
+    } else {
+        progressBar.classList.add('progress-high');
+    }
     
     timeLeftAnimal = timeLimit;
     document.getElementById('animal-timer').textContent = timeLeftAnimal;

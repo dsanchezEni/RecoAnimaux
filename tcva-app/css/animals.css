@@ -2,6 +2,105 @@
    STYLES SPÉCIFIQUES POUR LE MODULE RECONNAISSANCE ANIMAUX
    ============================================ */
 
+/* Dark Mode Overrides for Animals Module */
+.dark-mode .animal-category,
+.dark-mode .animal-comparison,
+.dark-mode .group-card,
+.dark-mode .animal-modal-content,
+.dark-mode .animal-card,
+.dark-mode .comparison-card {
+    background: #2d2d2d;
+    color: #f0f0f0;
+    border-color: #444;
+}
+
+.dark-mode .animal-stats {
+    background: #2d2d2d;
+}
+
+.dark-mode .animal-grid {
+    background: transparent;
+}
+
+.dark-mode .comparison-table th,
+.dark-mode .comparison-table td {
+    border-bottom-color: #444;
+}
+
+.dark-mode .comparison-table th {
+    background: #388E3C;
+}
+
+.dark-mode .animal-modal-content {
+    background: #2d2d2d;
+}
+
+.dark-mode .info-section {
+    background: #3a3a3a;
+}
+
+.dark-mode .animal-quiz-question,
+.dark-mode .animal-option {
+    background: #2d2d2d;
+    color: #f0f0f0;
+    border-color: #444;
+}
+
+/* Favorites */
+.animal-image-container {
+    position: relative;
+}
+
+.animal-favorite-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.animal-favorite-btn:hover {
+    background: rgba(255, 255, 255, 0.95);
+    transform: scale(1.1);
+}
+
+.dark-mode .animal-favorite-btn {
+    background: rgba(0, 0, 0, 0.6);
+    color: #f0f0f0;
+}
+
+.dark-mode .animal-favorite-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* Feedback Visual Animations for Animal Quiz */
+.animal-option.correct {
+    animation: pulseCorrect 0.5s ease;
+    background-color: #4CAF50 !important;
+    color: white !important;
+    border-color: #4CAF50 !important;
+}
+
+.animal-option.incorrect {
+    animation: pulseIncorrect 0.5s ease;
+    background-color: #F44336 !important;
+    color: white !important;
+    border-color: #F44336 !important;
+}
+
+.animal-option.selected {
+    animation: pulseCorrect 0.3s ease;
+    border-color: var(--primary-color) !important;
+}
+
 /* --- SECTIONS --- */
 .animal-section {
     display: none;
