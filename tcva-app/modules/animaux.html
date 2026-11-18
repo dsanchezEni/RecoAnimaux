@@ -19,6 +19,7 @@
                 <ul class="nav-links">
                     <li><a href="../index.html">Retour à l'accueil</a></li>
                     <li><a href="#" onclick="showAnimalSection('learning')" class="active">Apprentissage</a></li>
+                    <li><a href="#" onclick="showAnimalSection('rewards')">🎖️ Récompenses</a></li>
                     <li><a href="#" onclick="showAnimalSection('challenges')">🏆 Défis</a></li>
                     <li><a href="#" onclick="showAnimalSection('bloc-revision')">Révision par Bloc</a></li>
                     <li><a href="#" onclick="showAnimalSection('quiz')">Quiz</a></li>
@@ -165,9 +166,14 @@
                         <label for="animal-quiz-time">Temps par question (s) :</label>
                         <input type="number" id="animal-quiz-time" min="10" max="60" value="20">
                     </div>
-                    <button class="btn" onclick="startAnimalQuiz()">
-                        Commencer le Quiz
-                    </button>
+                    <div class="quiz-actions" id="quiz-actions">
+                        <button class="btn btn-secondary" onclick="resetQuizFilters()">
+                            Réinitialiser les filtres
+                        </button>
+                        <button class="btn" onclick="startAnimalQuiz()">
+                            Commencer le Quiz
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -187,6 +193,35 @@
                 </div>
             </div>
 
+            <!-- SECTION RÉCOMPENSES -->
+            <div id="rewards" class="animal-section">
+                <h2>🎖️ Récompenses & Badges</h2>
+                
+                <div class="rewards-container">
+                    <div class="rewards-header">
+                        <div class="user-level-display" id="user-level-display">
+                            <span class="level-icon">🐣</span>
+                            <span class="level-name">Débutant</span>
+                            <span class="level-points">0 pts</span>
+                        </div>
+                        <div class="rewards-summary">
+                            <span id="rewards-earned">0</span>/
+                            <span id="rewards-total">0</span> récompenses
+                        </div>
+                    </div>
+                    
+                    <div class="rewards-tabs">
+                        <button class="reward-tab-btn active" data-tab="earned" onclick="showRewardTab(event, 'earned')">Mes récompenses</button>
+                        <button class="reward-tab-btn" data-tab="available" onclick="showRewardTab(event, 'available')">À débloquer</button>
+                        <button class="reward-tab-btn" data-tab="all" onclick="showRewardTab(event, 'all')">Toutes</button>
+                    </div>
+                    
+                    <div class="rewards-grid" id="rewards-grid">
+                        <!-- Les récompenses seront affichées ici -->
+                    </div>
+                </div>
+            </div>
+            
             <!-- SECTION DÉFIS -->
             <div id="challenges" class="animal-section">
                 <h2>🏆 Défis - Bac Pro TCVA</h2>

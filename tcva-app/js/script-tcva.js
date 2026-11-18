@@ -509,6 +509,9 @@ function displayQuestionsList(page = 1) {
         return questionText.includes(searchTerm) || explanationText.includes(searchTerm);
     });
     
+    // Mettre à jour la page courante globale
+    currentQuestionPage = page;
+    
     const questionsContainer = document.getElementById('questions-container');
     questionsContainer.innerHTML = '';
     
@@ -547,6 +550,9 @@ function displayPagination(totalItems, currentPage, totalPages) {
     container.innerHTML = '';
     
     if (totalPages <= 1) return;
+    
+    // S'assurer que currentPage est un nombre et dans la plage valide
+    currentPage = Math.max(1, Math.min(totalPages, Number(currentPage) || 1));
     
     const paginationDiv = document.createElement('div');
     paginationDiv.className = 'pagination';

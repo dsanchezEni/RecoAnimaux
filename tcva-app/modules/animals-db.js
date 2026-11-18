@@ -1091,6 +1091,224 @@ const CATEGORY_BLOCS = {
 };
 
 // ============================================
+// RÉCOMPENSES & BADGES
+// ============================================
+
+// Types de récompenses
+const REWARD_TYPES = {
+    BADGE: { name: 'Badge', icon: '🎖️' },
+    MEDAL: { name: 'Médaille', icon: '🏅' },
+    TROPHY: { name: 'Trophée', icon: '🏆' },
+    DIPLOMA: { name: 'Diplôme', icon: '🎓' },
+    STAR: { name: 'Étoile', icon: '⭐' }
+};
+
+// Niveaux globaux basés sur les points
+const GLOBAL_LEVELS = {
+    BEGINNER: { name: 'Débutant', icon: '🐣', threshold: 0, color: '#9E9E9E' },
+    NOVICE: { name: 'Novice', icon: '🌱', threshold: 100, color: '#8D6E63' },
+    APPRENTICE: { name: 'Apprenti', icon: '👨‍🔧', threshold: 300, color: '#795548' },
+    SKILLED: { name: 'Compétent', icon: '💪', threshold: 600, color: '#689F38' },
+    EXPERT: { name: 'Expert', icon: '🧠', threshold: 1000, color: '#4CAF50' },
+    MASTER: { name: 'Maître', icon: '👑', threshold: 1500, color: '#2196F3' },
+    CHAMPION: { name: 'Champion', icon: '🏆', threshold: 2000, color: '#FFD700' },
+    LEGEND: { name: 'Légende', icon: '🌟', threshold: 2500, color: '#9C27B0' }
+};
+
+// Récompenses (badges) à débloquer
+const REWARDS = {
+    // Récompenses de base
+    FIRST_STEPS: {
+        id: 'RW01',
+        name: 'Premiers pas',
+        description: 'A étudier votre premier animal',
+        icon: '👶',
+        type: REWARD_TYPES.BADGE,
+        points: 10,
+        unlockCondition: { viewedAnimals: 1 }
+    },
+    EXPLORER: {
+        id: 'RW02',
+        name: 'Explorateur',
+        description: 'A étudié 10 animaux différents',
+        icon: '🔍',
+        type: REWARD_TYPES.BADGE,
+        points: 25,
+        unlockCondition: { viewedAnimals: 10 }
+    },
+    DISCOVERER: {
+        id: 'RW03',
+        name: 'Découvreur',
+        description: 'A étudié 25 animaux différents',
+        icon: '🌍',
+        type: REWARD_TYPES.BADGE,
+        points: 50,
+        unlockCondition: { viewedAnimals: 25 }
+    },
+    
+    // Récompenses par catégorie
+    DOG_LOVER: {
+        id: 'RW04',
+        name: 'Amateur de chiens',
+        description: 'A étudié tous les chiens',
+        icon: '🐕',
+        type: REWARD_TYPES.MEDAL,
+        points: 100,
+        unlockCondition: { category: 'chien', percent: 100 }
+    },
+    CAT_LOVER: {
+        id: 'RW05',
+        name: 'Amateur de chats',
+        description: 'A étudié tous les chats',
+        icon: '🐈',
+        type: REWARD_TYPES.MEDAL,
+        points: 100,
+        unlockCondition: { category: 'chat', percent: 100 }
+    },
+    BIRD_LOVER: {
+        id: 'RW06',
+        name: 'Amateur d\'oiseaux',
+        description: 'A étudié tous les oiseaux',
+        icon: '🦜',
+        type: REWARD_TYPES.MEDAL,
+        points: 100,
+        unlockCondition: { category: 'oiseau', percent: 100 }
+    },
+    NAC_LOVER: {
+        id: 'RW07',
+        name: 'Amateur de NAC',
+        description: 'A étudié tous les NAC',
+        icon: '🐹',
+        type: REWARD_TYPES.MEDAL,
+        points: 100,
+        unlockCondition: { category: 'NAC', percent: 100 }
+    },
+    FISH_LOVER: {
+        id: 'RW08',
+        name: 'Amateur de poissons',
+        description: 'A étudié tous les poissons',
+        icon: '🐠',
+        type: REWARD_TYPES.MEDAL,
+        points: 100,
+        unlockCondition: { category: 'poisson', percent: 100 }
+    },
+    GARDEN_LOVER: {
+        id: 'RW09',
+        name: 'Amateur de jardin',
+        description: 'A étudié tous les animaux de jardin',
+        icon: '🐸',
+        type: REWARD_TYPES.MEDAL,
+        points: 100,
+        unlockCondition: { category: 'jardin', percent: 100 }
+    },
+    
+    // Récompenses par bloc
+    BC01_MASTER: {
+        id: 'RW10',
+        name: 'Maître de l\'accueil',
+        description: 'A maîtrisé 100% du bloc BC01',
+        icon: '👋',
+        type: REWARD_TYPES.TROPHY,
+        points: 150,
+        unlockCondition: { bloc: 'BC01', percent: 100 }
+    },
+    BC02_MASTER: {
+        id: 'RW11',
+        name: 'Maître du conseil',
+        description: 'A maîtrisé 100% du bloc BC02',
+        icon: '💬',
+        type: REWARD_TYPES.TROPHY,
+        points: 150,
+        unlockCondition: { bloc: 'BC02', percent: 100 }
+    },
+    BC05_MASTER: {
+        id: 'RW12',
+        name: 'Maître des produits',
+        description: 'A maîtrisé 100% du bloc BC05',
+        icon: '🛒',
+        type: REWARD_TYPES.TROPHY,
+        points: 150,
+        unlockCondition: { bloc: 'BC05', percent: 100 }
+    },
+    BC06_MASTER: {
+        id: 'RW13',
+        name: 'Maître animalier',
+        description: 'A maîtrisé 100% du bloc BC06',
+        icon: '🐾',
+        type: REWARD_TYPES.TROPHY,
+        points: 150,
+        unlockCondition: { bloc: 'BC06', percent: 100 }
+    },
+    BC07_MASTER: {
+        id: 'RW14',
+        name: 'Maître de l\'hygiène',
+        description: 'A maîtrisé 100% du bloc BC07',
+        icon: '🧼',
+        type: REWARD_TYPES.TROPHY,
+        points: 150,
+        unlockCondition: { bloc: 'BC07', percent: 100 }
+    },
+    BC10_MASTER: {
+        id: 'RW15',
+        name: 'Maître de la gestion',
+        description: 'A maîtrisé 100% du bloc BC10',
+        icon: '👨‍💼',
+        type: REWARD_TYPES.TROPHY,
+        points: 150,
+        unlockCondition: { bloc: 'BC10', percent: 100 }
+    },
+    
+    // Récompenses globales
+    ALL_CATEGORIES: {
+        id: 'RW16',
+        name: 'Explorateur complet',
+        description: 'A étudié au moins un animal de chaque catégorie',
+        icon: '🌈',
+        type: REWARD_TYPES.TROPHY,
+        points: 200,
+        unlockCondition: { allCategories: true }
+    },
+    ALL_BLOCS_50: {
+        id: 'RW17',
+        name: 'Polyvalent',
+        description: 'A atteint 50% de maîtrise dans tous les blocs',
+        icon: '🎯',
+        type: REWARD_TYPES.TROPHY,
+        points: 300,
+        unlockCondition: { allBlocs: 50 }
+    },
+    ALL_BLOCS_100: {
+        id: 'RW18',
+        name: 'Expert complet',
+        description: 'A atteint 100% de maîtrise dans tous les blocs',
+        icon: '🌟',
+        type: REWARD_TYPES.DIPLOMA,
+        points: 1000,
+        unlockCondition: { allBlocs: 100 }
+    },
+    
+    // Récompenses spéciales
+    PERFECT_SCORE: {
+        id: 'RW19',
+        name: 'Score parfait',
+        description: 'A réussi un quiz avec 100% de bonnes réponses',
+        icon: '⭐',
+        type: REWARD_TYPES.STAR,
+        points: 50,
+        unlockCondition: { quizPerfect: true }
+    },
+    QUIZ_MASTER: {
+        id: 'RW20',
+        name: 'Maître du quiz',
+        description: 'A réussi 10 quiz avec 80% ou plus',
+        icon: '🎯',
+        type: REWARD_TYPES.STAR,
+        points: 200,
+        unlockCondition: { quizCount: 10, quizScore: 80 }
+    }
+};
+
+// ============================================
 // DÉFIS PAR BLOC DE COMPÉTENCES
 // ============================================
 

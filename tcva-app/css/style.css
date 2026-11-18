@@ -533,6 +533,26 @@ main {
     text-align: center;
 }
 
+/* Quiz Actions Buttons */
+.quiz-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+@media (min-width: 768px) {
+    .quiz-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 1rem;
+    }
+    
+    .quiz-actions .btn {
+        min-width: 200px;
+    }
+}
+
 .form-group {
     margin-bottom: 1.5rem;
 }

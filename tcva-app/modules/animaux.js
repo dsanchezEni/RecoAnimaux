@@ -20,6 +20,9 @@ let viewedAnimalsByBloc = {};
 let selectedRevisionBloc = null;
 let completedChallenges = new Set();
 let challengeProgress = {};
+let unlockedRewards = new Set();
+let totalPoints = 0;
+let quizHistory = [];
 
 // ============================================
 // INITIALISATION
@@ -34,6 +37,7 @@ function initAnimalsModule() {
     loadFavoriteAnimals();
     loadBlocStats();
     loadChallengeProgress();
+    loadRewardProgress();
     initDarkMode();
     initAnimalSelectOptions();
     displayAnimalCategories();
@@ -120,6 +124,10 @@ function showAnimalSection(sectionName) {
     } else if (sectionName === 'challenges') {
         checkAllChallenges();
         displayChallenges();
+    } else if (sectionName === 'rewards') {
+        checkAndAwardRewards();
+        displayRewards('earned');
+        updateUserLevelDisplay();
     }
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -233,6 +241,21 @@ function displayBlocFilters() {
             }
         });
     }
+}
+
+// Réinitialiser les filtres du quiz
+function resetQuizFilters() {
+    document.getElementById('animal-quiz-category').value = 'all';
+    document.getElementById('animal-quiz-bloc').value = 'all';
+    document.getElementById('animal-quiz-count').value = '10';
+    document.getElementById('animal-quiz-time').value = '20';
+    
+    // Réinitialiser les filtres visuels
+    const categorySelect = document.getElementById('animal-quiz-category');
+    const blocSelect = document.getElementById('animal-quiz-bloc');
+    
+    // Mettre à jour l'affichage
+    updateAnimalQuizSetup();
 }
 
 function displayAnimalCategories() {
@@ -365,6 +388,9 @@ function showAnimalModal(animal) {
     viewedAnimals.add(animal.id);
     saveAnimalProgress();
     updateBlocStatsForAnimal(animal.id);
+    
+    // Vérifier et attribuer les récompenses
+    checkAndAwardRewards();
     
     const categoryInfo = ANIMAL_CATEGORIES.find(c => c.id === animal.category);
     const icon = categoryInfo ? categoryInfo.icon : '🐾';
@@ -621,6 +647,9 @@ function showAnimalQuizResults() {
     
     const scorePercent = Math.round((animalQuizScore / currentAnimalQuizQuestions.length) * 100);
     
+    // Ajouter le quiz à l'historique pour les récompenses
+    addQuizToHistory(animalQuizScore, currentAnimalQuizQuestions.length);
+    
     const quizDiv = document.getElementById('quiz');
     quizDiv.innerHTML = `
         <h2>🎉 Résultats du Quiz</h2>
@@ -642,6 +671,11 @@ function showAnimalQuizResults() {
                     <div class="stat-label">Questions</div>
                 </div>
             </div>
+            ${scorePercent === 100 ? '
+                <div class="perfect-score-badge" style="text-align: center; margin: 1rem 0;">
+                    🌟 Score Parfait ! 🌟
+                </div>
+            ' : ''}
             <div class="text-center" style="margin-top: 2rem;">
                 <button class="btn" onclick="showAnimalQuizSetup()">Nouveau Quiz</button>
                 <button class="btn btn-secondary" onclick="showAnimalSection('learning')" style="margin-left: 1rem;">Retour</button>
@@ -1526,6 +1560,332 @@ function updateChallengeSummary() {
         completedEl.textContent = completedChallenges.size;
         totalEl.textContent = CHALLENGES.length;
     }
+}
+
+// ============================================
+// RÉCOMPENSES
+// ============================================
+
+// Charger la progression des récompenses
+function loadRewardProgress() {
+    const savedRewards = localStorage.getItem('tcvaUnlockedRewards');
+    const savedPoints = localStorage.getItem('tcvaTotalPoints');
+    const savedQuizHistory = localStorage.getItem('tcvaQuizHistory');
+    
+    if (savedRewards) {
+        try {
+            unlockedRewards = new Set(JSON.parse(savedRewards));
+        } catch (e) {
+            unlockedRewards = new Set();
+        }
+    }
+    
+    if (savedPoints) {
+        try {
+            totalPoints = parseInt(savedPoints);
+        } catch (e) {
+            totalPoints = 0;
+        }
+    }
+    
+    if (savedQuizHistory) {
+        try {
+            quizHistory = JSON.parse(savedQuizHistory);
+        } catch (e) {
+            quizHistory = [];
+        }
+    }
+}
+
+// Sauvegarder la progression des récompenses
+function saveRewardProgress() {
+    localStorage.setItem('tcvaUnlockedRewards', JSON.stringify(Array.from(unlockedRewards)));
+    localStorage.setItem('tcvaTotalPoints', totalPoints.toString());
+    localStorage.setItem('tcvaQuizHistory', JSON.stringify(quizHistory));
+}
+
+// Vérifier et attribuer les récompenses
+function checkAndAwardRewards() {
+    if (!REWARDS) return;
+    
+    Object.keys(REWARDS).forEach(rewardId => {
+        const reward = REWARDS[rewardId];
+        if (unlockedRewards.has(rewardId)) return;
+        
+        if (checkRewardUnlock(reward)) {
+            unlockReward(rewardId);
+        }
+    });
+    
+    updateGlobalLevel();
+    saveRewardProgress();
+}
+
+// Vérifier si une récompense peut être débloquée
+function checkRewardUnlock(reward) {
+    const condition = reward.unlockCondition;
+    
+    if (condition.viewedAnimals) {
+        return viewedAnimals.size >= condition.viewedAnimals;
+    }
+    
+    if (condition.category) {
+        const categoryAnimals = ANIMALS_DB[condition.category] || [];
+        const viewedInCategory = categoryAnimals.filter(a => viewedAnimals.has(a.id)).length;
+        const percent = categoryAnimals.length > 0 ? Math.round((viewedInCategory / categoryAnimals.length) * 100) : 0;
+        return percent >= condition.percent;
+    }
+    
+    if (condition.bloc) {
+        const blocData = viewedAnimalsByBloc[condition.bloc] || { viewed: new Set(), total: 0 };
+        const viewedCount = blocData.viewed.size;
+        const total = blocData.total;
+        const percent = total > 0 ? Math.round((viewedCount / total) * 100) : 0;
+        return percent >= condition.percent;
+    }
+    
+    if (condition.allCategories) {
+        const categoriesViewed = new Set();
+        Object.values(ANIMALS_DB).forEach(categoryAnimals => {
+            const viewedInCategory = categoryAnimals.filter(a => viewedAnimals.has(a.id)).length;
+            if (viewedInCategory > 0) {
+                categoriesViewed.add(categoryAnimals[0].category);
+            }
+        });
+        return categoriesViewed.size >= Object.keys(ANIMALS_DB).length;
+    }
+    
+    if (condition.allBlocs) {
+        if (condition.allBlocs === 'all') {
+            return true;
+        }
+        for (const blocId of Object.keys(viewedAnimalsByBloc)) {
+            const blocData = viewedAnimalsByBloc[blocId];
+            const viewedCount = blocData.viewed.size;
+            const total = blocData.total;
+            const percent = total > 0 ? Math.round((viewedCount / total) * 100) : 0;
+            if (percent < condition.allBlocs) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    if (condition.quizPerfect) {
+        return quizHistory.some(q => q.score === q.total && q.total > 0);
+    }
+    
+    if (condition.quizCount) {
+        const highScoreQuizzes = quizHistory.filter(q => q.score >= condition.quizScore).length;
+        return highScoreQuizzes >= condition.quizCount;
+    }
+    
+    return false;
+}
+
+// Débloquer une récompense
+function unlockReward(rewardId) {
+    const reward = REWARDS[rewardId];
+    if (!reward || unlockedRewards.has(rewardId)) return;
+    
+    unlockedRewards.add(rewardId);
+    totalPoints += reward.points;
+    
+    // Afficher une notification
+    showRewardNotification(reward);
+    
+    saveRewardProgress();
+    displayRewards();
+    updateUserLevelDisplay();
+}
+
+// Afficher une notification de récompense
+function showRewardNotification(reward) {
+    // Créer l'élément de notification
+    const notification = document.createElement('div');
+    notification.className = 'reward-notification';
+    notification.innerHTML = `
+        <div class="reward-notification-icon">${reward.icon}</div>
+        <div class="reward-notification-content">
+            <strong>Nouvelle récompense !</strong>
+            <p>${reward.name}</p>
+            <small>${reward.description}</small>
+        </div>
+        <div class="reward-notification-points">+${reward.points} pts</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Animer
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+    
+    // Retirer après 5 secondes
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 5000);
+}
+
+// Afficher les récompenses
+function displayRewards(filter = 'earned') {
+    const container = document.getElementById('rewards-grid');
+    if (!container || !REWARDS) return;
+    
+    container.innerHTML = '';
+    
+    const rewardsToShow = Object.values(REWARDS).filter(reward => {
+        if (filter === 'earned') {
+            return unlockedRewards.has(reward.id);
+        } else if (filter === 'available') {
+            return !unlockedRewards.has(reward.id) && !checkRewardUnlock(reward);
+        } else {
+            return true;
+        }
+    });
+    
+    if (rewardsToShow.length === 0) {
+        container.innerHTML = '<p style="text-align: center; padding: 2rem; color: #666;">Aucune récompense à afficher.</p>';
+        return;
+    }
+    
+    rewardsToShow.forEach(reward => {
+        const isUnlocked = unlockedRewards.has(reward.id);
+        const card = createRewardCard(reward, isUnlocked);
+        container.appendChild(card);
+    });
+    
+    updateRewardsSummary();
+}
+
+// Créer une carte de récompense
+function createRewardCard(reward, isUnlocked) {
+    const card = document.createElement('div');
+    card.className = 'reward-card';
+    card.id = `reward-${reward.id}`;
+    
+    if (isUnlocked) {
+        card.classList.add('unlocked');
+    }
+    
+    const levelInfo = getRewardLevelInfo(reward.points);
+    
+    card.innerHTML = `
+        <div class="reward-header">
+            <div class="reward-icon">${reward.icon}</div>
+            <div class="reward-info">
+                <h4>${reward.name}</h4>
+                <p class="reward-type">${REWARD_TYPES[reward.type].name}</p>
+            </div>
+            ${isUnlocked ? '<span class="reward-unlocked-badge">✅</span>' : '<span class="reward-locked-badge">🔒</span>'}
+        </div>
+        <div class="reward-body">
+            <p>${reward.description}</p>
+        </div>
+        <div class="reward-footer">
+            <div class="reward-points">${reward.points} pts</div>
+            ${isUnlocked ? `<div class="reward-date">Débloqué le ${getRewardUnlockDate(reward.id)}</div>` : ''}
+        </div>
+        ${!isUnlocked ? `<div class="reward-locked-overlay"></div>` : ''}
+    `;
+    
+    return card;
+}
+
+// Obtenir la date de débloquage d'une récompense
+function getRewardUnlockDate(rewardId) {
+    // Pour l'instant, on retourne une date générique
+    // On pourrait stocker les dates de débloquage dans le localStorage
+    return '...';
+}
+
+// Obtenir les infos de niveau pour une récompense
+function getRewardLevelInfo(points) {
+    for (const [levelName, levelInfo] of Object.entries(GLOBAL_LEVELS)) {
+        if (points >= levelInfo.threshold) {
+            return levelInfo;
+        }
+    }
+    return GLOBAL_LEVELS.BEGINNER;
+}
+
+// Changer l'onglet des récompenses
+function showRewardTab(event, tab) {
+    const buttons = document.querySelectorAll('.reward-tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    
+    // Activer le bouton cliqué
+    if (event && event.target) {
+        event.target.classList.add('active');
+    } else {
+        // Fallback : activer le bouton correspondant au tab
+        const activeBtn = Array.from(buttons).find(btn => btn.dataset.tab === tab);
+        if (activeBtn) {
+            activeBtn.classList.add('active');
+        } else {
+            buttons[0].classList.add('active');
+        }
+    }
+    displayRewards(tab);
+}
+
+// Mettre à jour le résumé des récompenses
+function updateRewardsSummary() {
+    const earnedEl = document.getElementById('rewards-earned');
+    const totalEl = document.getElementById('rewards-total');
+    
+    if (earnedEl && totalEl && REWARDS) {
+        earnedEl.textContent = unlockedRewards.size;
+        totalEl.textContent = Object.keys(REWARDS).length;
+    }
+}
+
+// Mettre à jour l'affichage du niveau de l'utilisateur
+function updateUserLevelDisplay() {
+    const levelDisplay = document.getElementById('user-level-display');
+    if (!levelDisplay) return;
+    
+    const level = getGlobalLevel();
+    levelDisplay.innerHTML = `
+        <span class="level-icon">${level.icon}</span>
+        <span class="level-name">${level.name}</span>
+        <span class="level-points">${totalPoints} pts</span>
+    `;
+}
+
+// Obtenir le niveau global de l'utilisateur
+function getGlobalLevel() {
+    for (const [levelName, levelInfo] of Object.entries(GLOBAL_LEVELS)) {
+        if (totalPoints >= levelInfo.threshold) {
+            return levelInfo;
+        }
+    }
+    return GLOBAL_LEVELS.BEGINNER;
+}
+
+// Mettre à jour le niveau global
+function updateGlobalLevel() {
+    const newLevel = getGlobalLevel();
+    // Sauvegarder si nécessaire
+}
+
+// Ajouter un résultat de quiz à l'historique
+function addQuizToHistory(score, total) {
+    quizHistory.push({
+        date: new Date().toISOString(),
+        score: score,
+        total: total,
+        percent: total > 0 ? Math.round((score / total) * 100) : 0
+    });
+    
+    // Garder seulement les 50 derniers quiz
+    if (quizHistory.length > 50) {
+        quizHistory.shift();
+    }
+    
+    saveRewardProgress();
+    checkAndAwardRewards();
 }
 
 // ============================================
