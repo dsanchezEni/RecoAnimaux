@@ -1613,10 +1613,19 @@ function saveRewardProgress() {
 // Vérifier et attribuer les récompenses
 function checkAndAwardRewards() {
     const REWARDS_LOCAL = window.REWARDS;
-    if (!REWARDS_LOCAL) return;
+    if (!REWARDS_LOCAL) {
+        // Essayer de charger animals-db.js si ce n'est pas encore fait
+        console.warn('window.REWARDS non chargé. Tentative de rechargement...');
+        return;
+    }
     
     Object.keys(REWARDS_LOCAL).forEach(rewardId => {
         const reward = REWARDS_LOCAL[rewardId];
+        if (!reward) {
+            console.warn(`Récompense ${rewardId} non trouvée dans REWARDS`);
+            return;
+        }
+        
         if (unlockedRewards.has(rewardId)) return;
         
         if (checkRewardUnlock(reward)) {
@@ -1692,7 +1701,13 @@ function checkRewardUnlock(reward) {
 
 // Débloquer une récompense
 function unlockReward(rewardId) {
-    const reward = window.REWARDS ? window.REWARDS[rewardId] : null;
+    const REWARDS_LOCAL = window.REWARDS;
+    if (!REWARDS_LOCAL) {
+        console.error('window.REWARDS non défini dans unlockReward');
+        return;
+    }
+    
+    const reward = REWARDS_LOCAL[rewardId];
     if (!reward || unlockedRewards.has(rewardId)) return;
     
     unlockedRewards.add(rewardId);
@@ -1750,15 +1765,17 @@ function displayRewards(filter = 'earned') {
     
     container.innerHTML = '';
     
-    const rewardsToShow = Object.values(REWARDS_LOCAL).filter(reward => {
-        if (filter === 'earned') {
-            return unlockedRewards.has(reward.id);
-        } else if (filter === 'available') {
-            return !unlockedRewards.has(reward.id) && !checkRewardUnlock(reward);
-        } else {
-            return true;
-        }
-    });
+    const rewardsToShow = Object.entries(REWARDS_LOCAL)
+        .filter(([rewardKey, reward]) => {
+            if (filter === 'earned') {
+                return unlockedRewards.has(rewardKey);
+            } else if (filter === 'available') {
+                return !unlockedRewards.has(rewardKey) && !checkRewardUnlock(reward);
+            } else {
+                return true;
+            }
+        })
+        .map(([rewardKey, reward]) => reward);
     
     if (rewardsToShow.length === 0) {
         container.innerHTML = '<p style="text-align: center; padding: 2rem; color: #666;">Aucune récompense à afficher.</p>';
