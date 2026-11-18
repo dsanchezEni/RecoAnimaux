@@ -1774,16 +1774,15 @@ function displayRewards(filter = 'earned') {
             } else {
                 return true;
             }
-        })
-        .map(([rewardKey, reward]) => reward);
+        });
     
     if (rewardsToShow.length === 0) {
         container.innerHTML = '<p style="text-align: center; padding: 2rem; color: #666;">Aucune récompense à afficher.</p>';
         return;
     }
     
-    rewardsToShow.forEach(reward => {
-        const isUnlocked = unlockedRewards.has(reward.id);
+    rewardsToShow.forEach(([rewardKey, reward]) => {
+        const isUnlocked = unlockedRewards.has(rewardKey);
         const card = createRewardCard(reward, isUnlocked);
         container.appendChild(card);
     });
