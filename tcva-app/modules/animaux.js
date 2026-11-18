@@ -141,7 +141,7 @@ function initAnimalSelectOptions() {
     const animalQuizCategory = document.getElementById('animal-quiz-category');
     
     if (animalQuizCategory) {
-        ANIMAL_CATEGORIES.filter(category => category.id !== "all").forEach(category => {
+        window.ANIMAL_CATEGORIES.filter(category => category.id !== "all").forEach(category => {
             const option = document.createElement('option');
             option.value = category.id;
             option.textContent = `${category.icon} ${category.name}`;
@@ -265,9 +265,9 @@ function displayAnimalCategories() {
     container.innerHTML = '';
     
     const filteredAnimals = {};
-    Object.keys(ANIMALS_DB).forEach(category => {
+    Object.keys(window.ANIMALS_DB).forEach(category => {
         if (currentAnimalCategory === 'all' || category === currentAnimalCategory) {
-            filteredAnimals[category] = ANIMALS_DB[category].filter(animal => {
+            filteredAnimals[category] = window.ANIMALS_DB[category].filter(animal => {
                 // Filtre par recherche
                 const matchesSearch = animal.name.toLowerCase().includes(currentAnimalSearch) ||
                                      animal.scientific.toLowerCase().includes(currentAnimalSearch) ||
@@ -303,7 +303,7 @@ function createAnimalCategoryDiv(category, animals) {
     const categoryDiv = document.createElement('div');
     categoryDiv.className = 'animal-category';
     
-    const categoryInfo = ANIMAL_CATEGORIES.find(c => c.id === category);
+    const categoryInfo = window.ANIMAL_CATEGORIES.find(c => c.id === category);
     const icon = categoryInfo ? categoryInfo.icon : '🐾';
     const name = categoryInfo ? categoryInfo.name : category;
     
@@ -392,7 +392,7 @@ function showAnimalModal(animal) {
     // Vérifier et attribuer les récompenses
     checkAndAwardRewards();
     
-    const categoryInfo = ANIMAL_CATEGORIES.find(c => c.id === animal.category);
+    const categoryInfo = window.ANIMAL_CATEGORIES.find(c => c.id === animal.category);
     const icon = categoryInfo ? categoryInfo.icon : '🐾';
     
     modal.innerHTML = `
@@ -510,11 +510,11 @@ function generateAnimalQuizQuestions(category, bloc, count) {
     let animals = [];
     
     if (category === 'all') {
-        Object.values(ANIMALS_DB).forEach(catAnimals => {
+        Object.values(window.ANIMALS_DB).forEach(catAnimals => {
             animals = animals.concat(catAnimals);
         });
     } else {
-        animals = ANIMALS_DB[category] || [];
+        animals = window.ANIMALS_DB[category] || [];
     }
     
     // Filtrer par bloc si sélectionné
@@ -569,7 +569,7 @@ function displayAnimalOptions(correctAnimal) {
     optionsContainer.innerHTML = '';
     
     const allAnimals = [];
-    Object.values(ANIMALS_DB).forEach(catAnimals => {
+    Object.values(window.ANIMALS_DB).forEach(catAnimals => {
         allAnimals.push(...catAnimals);
     });
     
@@ -673,11 +673,7 @@ function showAnimalQuizResults() {
                     <div class="stat-label">Questions</div>
                 </div>
             </div>
-            ${scorePercent === 100 ? '
-                <div class="perfect-score-badge" style="text-align: center; margin: 1rem 0;">
-                    🌟 Score Parfait ! 🌟
-                </div>
-            ' : ''}
+            ${scorePercent === 100 ? '<div class="perfect-score-badge" style="text-align: center; margin: 1rem 0;">🌟 Score Parfait ! 🌟</div>' : ''}
             <div class="text-center" style="margin-top: 2rem;">
                 <button class="btn" onclick="showAnimalQuizSetup()">Nouveau Quiz</button>
                 <button class="btn btn-secondary" onclick="showAnimalSection('learning')" style="margin-left: 1rem;">Retour</button>
@@ -724,14 +720,14 @@ function displayComparisonCategories() {
     const container = document.getElementById('comparison-categories');
     if (!container) return;
     
-    if (!ANIMAL_CATEGORIES) {
+    if (!window.ANIMAL_CATEGORIES) {
         container.innerHTML = '<p style="text-align: center; color: #f00;">Erreur : données non chargées</p>';
         return;
     }
     
     container.innerHTML = '';
     
-    ANIMAL_CATEGORIES.forEach(category => {
+    window.ANIMAL_CATEGORIES.forEach(category => {
         if (category.id !== 'all') {
             const card = document.createElement('div');
             card.className = 'group-card';
@@ -750,7 +746,7 @@ function displayComparisonCategories() {
             description.textContent = category.description || 'Comparer les espèces';
             card.appendChild(description);
             
-            const animalCount = ANIMALS_DB[category.id] ? ANIMALS_DB[category.id].length : 0;
+            const animalCount = window.ANIMALS_DB[category.id] ? window.ANIMALS_DB[category.id].length : 0;
             const stat = document.createElement('div');
             stat.className = 'group-stat';
             stat.textContent = `${animalCount} espèces`;
@@ -766,14 +762,14 @@ function displayComparisonTable(categoryId) {
     if (!container) return;
     
     container.innerHTML = '';
-    const animals = ANIMALS_DB[categoryId] || [];
+    const animals = window.ANIMALS_DB[categoryId] || [];
     
     if (animals.length === 0) {
         container.innerHTML = '<p>Pas d\'animaux dans cette catégorie.</p>';
         return;
     }
     
-    const categoryInfo = ANIMAL_CATEGORIES.find(c => c.id === categoryId);
+    const categoryInfo = window.ANIMAL_CATEGORIES.find(c => c.id === categoryId);
     const title = document.createElement('h3');
     title.textContent = `Comparaison: ${categoryInfo ? categoryInfo.name : categoryId}`;
     container.appendChild(title);
@@ -835,14 +831,14 @@ function displayAnimalGroups() {
     const container = document.getElementById('animal-groups');
     if (!container) return;
     
-    if (!ANIMAL_CATEGORIES) {
+    if (!window.ANIMAL_CATEGORIES) {
         container.innerHTML = '<p style="text-align: center; color: #f00;">Erreur : données non chargées</p>';
         return;
     }
     
     container.innerHTML = '';
     
-    ANIMAL_CATEGORIES.forEach(category => {
+    window.ANIMAL_CATEGORIES.forEach(category => {
         if (category.id !== 'all') {
             const card = document.createElement('div');
             card.className = 'group-card';
@@ -864,7 +860,7 @@ function displayAnimalGroups() {
             description.textContent = category.description || 'Découvrir les espèces';
             card.appendChild(description);
             
-            const animalCount = ANIMALS_DB[category.id] ? ANIMALS_DB[category.id].length : 0;
+            const animalCount = window.ANIMALS_DB[category.id] ? window.ANIMALS_DB[category.id].length : 0;
             const stat = document.createElement('div');
             stat.className = 'group-stat';
             stat.textContent = `${animalCount} espèces`;
@@ -880,7 +876,7 @@ function displayAnimalGroups() {
 // ============================================
 
 function updateAnimalStats() {
-    const totalAnimals = Object.values(ANIMALS_DB).reduce((sum, animals) => sum + animals.length, 0);
+    const totalAnimals = Object.values(window.ANIMALS_DB).reduce((sum, animals) => sum + animals.length, 0);
     const viewedCount = viewedAnimals.size;
     const masteryPercent = totalAnimals > 0 ? Math.round((viewedCount / totalAnimals) * 100) : 0;
     
@@ -911,7 +907,7 @@ function initBlocStats() {
     });
     
     // Compter le nombre total d'animaux par bloc
-    Object.values(ANIMALS_DB).forEach(categoryAnimals => {
+    Object.values(window.ANIMALS_DB).forEach(categoryAnimals => {
         categoryAnimals.forEach(animal => {
             const animalBlocs = getAnimalBlocs(animal);
             animalBlocs.forEach(blocId => {
@@ -998,8 +994,8 @@ function updateBlocStatsForAnimal(animalId) {
 
 // Trouver un animal par son ID
 function findAnimalById(animalId) {
-    for (const category of Object.keys(ANIMALS_DB)) {
-        const animal = ANIMALS_DB[category].find(a => a.id === animalId);
+    for (const category of Object.keys(window.ANIMALS_DB)) {
+        const animal = window.ANIMALS_DB[category].find(a => a.id === animalId);
         if (animal) return animal;
     }
     return null;
@@ -1110,7 +1106,7 @@ function displayBlocRevisionContent(blocId) {
     
     // Obtenir tous les animaux de ce bloc
     const blocAnimals = [];
-    Object.values(ANIMALS_DB).forEach(categoryAnimals => {
+    Object.values(window.ANIMALS_DB).forEach(categoryAnimals => {
         categoryAnimals.forEach(animal => {
             const animalBlocs = getAnimalBlocs(animal);
             if (animalBlocs.includes(blocId)) {
@@ -1389,7 +1385,7 @@ function checkChallengeCompletion(challengeId) {
     
     if (challenge.blocId === 'all') {
         // Défis globaux
-        const totalAnimals = Object.values(ANIMALS_DB).reduce((sum, animals) => sum + animals.length, 0);
+        const totalAnimals = Object.values(window.ANIMALS_DB).reduce((sum, animals) => sum + animals.length, 0);
         const viewedCount = viewedAnimals.size;
         const percent = totalAnimals > 0 ? Math.round((viewedCount / totalAnimals) * 100) : 0;
         isCompleted = percent >= challenge.targetCount;
@@ -1484,7 +1480,7 @@ function createChallengeCard(challenge) {
     let progressText = '';
     
     if (challenge.blocId === 'all') {
-        const totalAnimals = Object.values(ANIMALS_DB).reduce((sum, animals) => sum + animals.length, 0);
+        const totalAnimals = Object.values(window.ANIMALS_DB).reduce((sum, animals) => sum + animals.length, 0);
         const viewedCount = viewedAnimals.size;
         progress = totalAnimals > 0 ? Math.round((viewedCount / totalAnimals) * 100) : 0;
         progressText = `${viewedAnimals.size}/${totalAnimals}`;
@@ -1632,7 +1628,7 @@ function checkRewardUnlock(reward) {
     }
     
     if (condition.category) {
-        const categoryAnimals = ANIMALS_DB[condition.category] || [];
+        const categoryAnimals = window.ANIMALS_DB[condition.category] || [];
         const viewedInCategory = categoryAnimals.filter(a => viewedAnimals.has(a.id)).length;
         const percent = categoryAnimals.length > 0 ? Math.round((viewedInCategory / categoryAnimals.length) * 100) : 0;
         return percent >= condition.percent;
@@ -1648,13 +1644,13 @@ function checkRewardUnlock(reward) {
     
     if (condition.allCategories) {
         const categoriesViewed = new Set();
-        Object.values(ANIMALS_DB).forEach(categoryAnimals => {
+        Object.values(window.ANIMALS_DB).forEach(categoryAnimals => {
             const viewedInCategory = categoryAnimals.filter(a => viewedAnimals.has(a.id)).length;
             if (viewedInCategory > 0) {
                 categoriesViewed.add(categoryAnimals[0].category);
             }
         });
-        return categoriesViewed.size >= Object.keys(ANIMALS_DB).length;
+        return categoriesViewed.size >= Object.keys(window.ANIMALS_DB).length;
     }
     
     if (condition.allBlocs) {

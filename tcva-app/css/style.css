@@ -722,7 +722,8 @@ main {
 .pagination .btn.active,
 .pagination button.btn.active,
 .pagination > div > button.active,
-.pagination .btn-pagination.active {
+.pagination .btn-pagination.active,
+.pagination button.btn-pagination.active {
     background: var(--primary-color) !important;
     color: white !important;
     border-color: var(--primary-color) !important;

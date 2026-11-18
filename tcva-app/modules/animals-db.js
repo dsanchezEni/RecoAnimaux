@@ -3,7 +3,10 @@
 // Images locales dans le dossier img/
 // ============================================
 
-const ANIMALS_DB = {
+// Éviter le rechargement multiple du fichier
+if (typeof window.ANIMALS_DB === 'undefined') {
+
+window.ANIMALS_DB = {
     chien: [
         {
             id: 'chien-001',
@@ -672,7 +675,7 @@ const ANIMALS_DB = {
             image: '../img/oiseau-037.png',
             funFact: 'Son plumage semble constellé de petites étoiles blanches.',
             regulation: 'Aucune réglementation spécifique',
-            advice: 'Sociable avec d\'autres petits passereaux'
+            advice: 'Sociable avec d autres petits passereaux'
         },
         {
             id: 'oiseau-038',
@@ -1051,7 +1054,7 @@ const ANIMALS_DB = {
 };
 
 // Catégories d'animaux
-const ANIMAL_CATEGORIES = [
+window.ANIMAL_CATEGORIES = [
     { id: "chien", name: "Chien", icon: "🐕", description: "Tous les aspects liés aux chiens" },
     { id: "chat", name: "Chat", icon: "🐈", description: "Tous les aspects liés aux chats" },
     { id: "oiseau", name: "Oiseau", icon: "🦜", description: "Oiseaux de compagnie" },
@@ -1065,7 +1068,7 @@ const ANIMAL_CATEGORIES = [
 // BLOCS DE COMPÉTENCES - BAC PRO TCVA
 // ============================================
 
-const BLOCS = [
+window.BLOCS = [
     { id: "BC01", name: "Accueillir et accompagner le client", icon: "👋", description: "Accueil physique et téléphonique, gestion des réclamations" },
     { id: "BC02", name: "Conseiller et vendre", icon: "💬", description: "Conseil et vente de produits et services" },
     { id: "BC03", name: "Gérer les stocks", icon: "📦", description: "Gestion des stocks et des approvisionnements" },
@@ -1081,7 +1084,7 @@ const BLOCS = [
 ];
 
 // Map des blocs principaux pour chaque catégorie
-const CATEGORY_BLOCS = {
+window.CATEGORY_BLOCS = {
     chien: ["BC05", "BC06", "BC10"],
     chat: ["BC05", "BC06", "BC10"],
     oiseau: ["BC05", "BC06", "BC10"],
@@ -1095,7 +1098,7 @@ const CATEGORY_BLOCS = {
 // ============================================
 
 // Types de récompenses
-const REWARD_TYPES = {
+window.REWARD_TYPES = {
     BADGE: { name: 'Badge', icon: '🎖️' },
     MEDAL: { name: 'Médaille', icon: '🏅' },
     TROPHY: { name: 'Trophée', icon: '🏆' },
@@ -1104,7 +1107,7 @@ const REWARD_TYPES = {
 };
 
 // Niveaux globaux basés sur les points
-const GLOBAL_LEVELS = {
+window.GLOBAL_LEVELS = {
     BEGINNER: { name: 'Débutant', icon: '🐣', threshold: 0, color: '#9E9E9E' },
     NOVICE: { name: 'Novice', icon: '🌱', threshold: 100, color: '#8D6E63' },
     APPRENTICE: { name: 'Apprenti', icon: '👨‍🔧', threshold: 300, color: '#795548' },
@@ -1116,7 +1119,7 @@ const GLOBAL_LEVELS = {
 };
 
 // Récompenses (badges) à débloquer
-const REWARDS = {
+window.REWARDS = {
     // Récompenses de base
     FIRST_STEPS: {
         id: 'RW01',
@@ -1313,7 +1316,7 @@ const REWARDS = {
 // ============================================
 
 // Niveaux de défis
-const CHALLENGE_LEVELS = {
+window.CHALLENGE_LEVELS = {
     BRONZE: { name: 'Bronze', icon: '🥉', threshold: 25, color: '#CD7F32', reward: 'Débutant' },
     SILVER: { name: 'Argent', icon: '🥈', threshold: 50, color: '#C0C0C0', reward: 'Intermédiaire' },
     GOLD: { name: 'Or', icon: '🥇', threshold: 75, color: '#FFD700', reward: 'Avancé' },
@@ -1321,7 +1324,7 @@ const CHALLENGE_LEVELS = {
 };
 
 // Défis par bloc
-const CHALLENGES = [
+window.CHALLENGES = [
     {
         id: 'CH01',
         blocId: 'BC01',
@@ -1493,7 +1496,7 @@ const CHALLENGES = [
 ];
 
 // Mapping des blocs spécifiques pour certains animaux (avec réglementation ou particularités)
-const SPECIFIC_ANIMAL_BLOCS = {
+window.SPECIFIC_ANIMAL_BLOCS = {
     // Animaux nécessitant certificat de capacité
     'oiseau-001': ["BC01", "BC02", "BC05", "BC06", "BC07", "BC10", "BC11"], // Perroquet Gris du Gabon
     'oiseau-004': ["BC01", "BC02", "BC05", "BC06", "BC07", "BC10", "BC11"], // Calao Rhinocéros
@@ -1550,3 +1553,4 @@ const SPECIFIC_ANIMAL_BLOCS = {
     'oiseau-001': ["BC01", "BC02", "BC05", "BC06", "BC07", "BC10", "BC11", "BC12"], // Perroquet Gris (animation)
     'NAC-001': ["BC01", "BC02", "BC05", "BC06", "BC10", "BC12"]  // Lapin Nain (animation)
 };
+}

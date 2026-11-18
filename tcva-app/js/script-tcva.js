@@ -115,7 +115,7 @@ function initSelectOptions() {
     const blocFilterSelect = document.getElementById('question-bloc-filter');
     
     if (blocSelect) {
-        BLOCS.forEach(bloc => {
+        window.BLOCS.forEach(bloc => {
             const option = document.createElement('option');
             option.value = bloc.id;
             option.textContent = `${bloc.id} - ${bloc.name}`;
@@ -124,7 +124,7 @@ function initSelectOptions() {
     }
     
     if (blocFilterSelect) {
-        BLOCS.forEach(bloc => {
+        window.BLOCS.forEach(bloc => {
             const option = document.createElement('option');
             option.value = bloc.id;
             option.textContent = `${bloc.id} - ${bloc.name}`;
@@ -137,7 +137,7 @@ function initSelectOptions() {
     const animalFilterList = document.getElementById('question-animal-filter');
     
     if (animalFilterSelect) {
-        ANIMAL_CATEGORIES.filter(animal => animal.id !== "all").forEach(animal => {
+        window.ANIMAL_CATEGORIES.filter(animal => animal.id !== "all").forEach(animal => {
             const option = document.createElement('option');
             option.value = animal.id;
             option.textContent = `${animal.icon} ${animal.name}`;
@@ -146,7 +146,7 @@ function initSelectOptions() {
     }
     
     if (animalFilterList) {
-        ANIMAL_CATEGORIES.filter(animal => animal.id !== "all").forEach(animal => {
+        window.ANIMAL_CATEGORIES.filter(animal => animal.id !== "all").forEach(animal => {
             const option = document.createElement('option');
             option.value = animal.id;
             option.textContent = `${animal.icon} ${animal.name}`;
@@ -182,7 +182,7 @@ function showPage(pageName) {
         } else if (pageName === 'outils') {
             // Mettre à jour les stats
             document.getElementById('export-total-questions').textContent = QUESTIONS_TCVA.length;
-            document.getElementById('export-total-animals').textContent = Object.values(ANIMALS_DB).reduce((sum, cat) => sum + cat.length, 0);
+            document.getElementById('export-total-animals').textContent = Object.values(window.ANIMALS_DB).reduce((sum, cat) => sum + cat.length, 0);
             
             // Calculer la taille du localStorage
             let totalSize = 0;
@@ -516,9 +516,6 @@ function displayQuestionsList(page = 1) {
         return questionText.includes(searchTerm) || explanationText.includes(searchTerm);
     });
     
-    // Mettre à jour la page courante globale
-    currentQuestionPage = page;
-    
     const questionsContainer = document.getElementById('questions-container');
     questionsContainer.innerHTML = '';
     
@@ -530,6 +527,11 @@ function displayQuestionsList(page = 1) {
     
     // Pagination
     const totalPages = Math.ceil(filteredQuestions.length / QUESTIONS_PER_PAGE);
+    
+    // Forcer page à être valide
+    page = Math.max(1, Math.min(totalPages, parseInt(page) || 1));
+    currentQuestionPage = page;
+    
     const startIndex = (page - 1) * QUESTIONS_PER_PAGE;
     const endIndex = Math.min(startIndex + QUESTIONS_PER_PAGE, filteredQuestions.length);
     const paginatedQuestions = filteredQuestions.slice(startIndex, endIndex);
@@ -561,8 +563,11 @@ function displayPagination(totalItems, currentPage, totalPages) {
     
     if (totalPages <= 1) return;
     
-    // S'assurer que currentPage est un nombre et dans la plage valide
-    currentPage = Math.max(1, Math.min(totalPages, Number(currentPage) || 1));
+    // VALIDATION STRICTE
+    currentPage = parseInt(currentPage) || 1;
+    if (currentPage < 1) currentPage = 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+    currentQuestionPage = currentPage;
     
     const paginationDiv = document.createElement('div');
     paginationDiv.className = 'pagination';
@@ -572,25 +577,30 @@ function displayPagination(totalItems, currentPage, totalPages) {
     prevBtn.className = 'btn btn-secondary';
     prevBtn.textContent = '← Précédent';
     prevBtn.disabled = currentPage === 1;
-    prevBtn.onclick = () => {
-        if (currentPage > 1) {
-            displayQuestionsList(currentPage - 1);
-        }
-    };
+    prevBtn.onclick = () => displayQuestionsList(currentPage - 1);
     paginationDiv.appendChild(prevBtn);
     
-    // Numéros de page
+    // Numéros de page - Systématique
     const maxVisiblePages = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, currentPage + 2);
     
-    if (endPage - startPage + 1 < maxVisiblePages) {
-        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    // Ajustement pour afficher 5 pages si possible
+    if (endPage - startPage < 4) {
+        startPage = Math.max(1, endPage - 4);
+    }
+    if (endPage - startPage < 4) {
+        endPage = Math.min(totalPages, startPage + 4);
     }
     
     for (let i = startPage; i <= endPage; i++) {
         const pageBtn = document.createElement('button');
-        pageBtn.className = 'btn btn-pagination' + (i === currentPage ? ' active' : ' btn-secondary');
+        // FORCER la classe active avec une condition explicite
+        if (i === currentPage) {
+            pageBtn.className = 'btn btn-pagination active';
+        } else {
+            pageBtn.className = 'btn btn-pagination btn-secondary';
+        }
         pageBtn.textContent = i;
         pageBtn.onclick = () => displayQuestionsList(i);
         paginationDiv.appendChild(pageBtn);
@@ -601,14 +611,18 @@ function displayPagination(totalItems, currentPage, totalPages) {
     nextBtn.className = 'btn btn-secondary';
     nextBtn.textContent = 'Suivant →';
     nextBtn.disabled = currentPage === totalPages;
-    nextBtn.onclick = () => {
-        if (currentPage < totalPages) {
-            displayQuestionsList(currentPage + 1);
-        }
-    };
+    nextBtn.onclick = () => displayQuestionsList(currentPage + 1);
     paginationDiv.appendChild(nextBtn);
     
     container.appendChild(paginationDiv);
+    
+    // Forcer la classe active sur le bon bouton (fallback ultime)
+    const buttons = container.querySelectorAll('.pagination button');
+    buttons.forEach(btn => {
+        if (parseInt(btn.textContent) === currentPage) {
+            btn.className = 'btn btn-pagination active';
+        }
+    });
 }
 
 function createQuestionElement(question) {
@@ -710,7 +724,7 @@ function updateProgressDisplay() {
     const masteryThreshold = 70;
     let masteredThemes = 0;
     
-    BLOCS.forEach(bloc => {
+    window.BLOCS.forEach(bloc => {
         const blocQuestions = getQuestionsByBloc(bloc.id);
         if (blocQuestions.length === 0) return;
         
@@ -743,7 +757,7 @@ function displayRecommendations() {
     container.innerHTML = '';
     
     // Trouver les blocs les moins vus
-    const blocStats = BLOCS.map(bloc => {
+    const blocStats = window.BLOCS.map(bloc => {
         const blocQuestions = getQuestionsByBloc(bloc.id);
         const blocSeen = blocQuestions.filter(q => questionsViewed.has(q.id)).length;
         const blocPercent = blocQuestions.length > 0 ? (blocSeen / blocQuestions.length) * 100 : 0;
@@ -930,7 +944,7 @@ function clearHistory() {
 // ============================================
 // PAGE "À RETENIR"
 // ============================================
-// DONNÉES DES BLOCS AVEC DESCRIPTIONS DÉTAILLÉES
+// DONNÉES DES window.BLOCS AVEC DESCRIPTIONS DÉTAILLÉES
 // ============================================
 
 const BLOC_DESCRIPTIONS = {
@@ -1108,7 +1122,7 @@ function displayKeyPoints() {
     
     container.innerHTML = '';
     
-    BLOCS.forEach(bloc => {
+    window.BLOCS.forEach(bloc => {
         const blocData = BLOC_DESCRIPTIONS[bloc.id];
         if (!blocData) return;
         
@@ -1191,7 +1205,7 @@ function exportData() {
     
     try {
         // Vérifier que les données existent
-        if (typeof QUESTIONS_TCVA === 'undefined' || typeof BLOCS === 'undefined') {
+        if (typeof QUESTIONS_TCVA === 'undefined' || typeof window.BLOCS === 'undefined') {
             throw new Error('Données des questions non chargées');
         }
         
@@ -1209,8 +1223,8 @@ function exportData() {
         
         // Calculer le nombre total d'animaux
         let totalAnimals = 0;
-        if (typeof ANIMALS_DB !== 'undefined') {
-            totalAnimals = Object.values(ANIMALS_DB).reduce((sum, cat) => sum + cat.length, 0);
+        if (typeof window.ANIMALS_DB !== 'undefined') {
+            totalAnimals = Object.values(window.ANIMALS_DB).reduce((sum, cat) => sum + cat.length, 0);
             document.getElementById('export-total-animals').textContent = totalAnimals;
         } else {
             document.getElementById('export-total-animals').textContent = '0 (module non chargé)';
@@ -1223,7 +1237,7 @@ function exportData() {
             version: '1.0',
             date: new Date().toISOString(),
             questions: QUESTIONS_TCVA,
-            blocks: BLOCS,
+            blocks: window.BLOCS,
             userData: {
                 questionsViewed: Array.from(questionsViewed),
                 quizHistory: quizHistory,
@@ -1234,9 +1248,9 @@ function exportData() {
         };
         
         // Ajouter les données animaux si disponibles
-        if (typeof ANIMALS_DB !== 'undefined') {
-            exportData.animalCategories = ANIMAL_CATEGORIES;
-            exportData.animals = ANIMALS_DB;
+        if (typeof window.ANIMALS_DB !== 'undefined') {
+            exportData.animalCategories = window.ANIMAL_CATEGORIES;
+            exportData.animals = window.ANIMALS_DB;
         }
         
         // Télécharger le fichier
@@ -1362,9 +1376,9 @@ function validateData() {
         questionIds.add(q.id);
     });
     
-    // Vérifier ANIMALS_DB
+    // Vérifier window.ANIMALS_DB
     const animalIds = new Set();
-    Object.values(ANIMALS_DB).forEach(cat => {
+    Object.values(window.ANIMALS_DB).forEach(cat => {
         cat.forEach(a => {
             if (animalIds.has(a.id)) {
                 issues.push(`❌ ID d'animal dupliqué : ${a.id}`);
@@ -1381,18 +1395,18 @@ function validateData() {
         });
     });
     
-    // Vérifier BLOCS
+    // Vérifier window.BLOCS
     const blocIds = new Set();
-    BLOCS.forEach(b => {
+    window.BLOCS.forEach(b => {
         if (blocIds.has(b.id)) {
             issues.push(`❌ ID de bloc dupliqué : ${b.id}`);
         }
         blocIds.add(b.id);
     });
     
-    // Vérifier ANIMAL_CATEGORIES
+    // Vérifier window.ANIMAL_CATEGORIES
     const categoryIds = new Set();
-    ANIMAL_CATEGORIES.forEach(c => {
+    window.ANIMAL_CATEGORIES.forEach(c => {
         if (categoryIds.has(c.id)) {
             issues.push(`❌ ID de catégorie dupliqué : ${c.id}`);
         }
