@@ -21,6 +21,7 @@ let selectedRevisionBloc = null;
 let completedChallenges = new Set();
 let challengeProgress = {};
 let unlockedRewards = new Set();
+let rewardUnlockDates = {};
 let totalPoints = 0;
 // Utiliser window.quizHistory pour partager entre les modules
 if (typeof window.quizHistory === 'undefined') {
@@ -1573,6 +1574,7 @@ function loadRewardProgress() {
     const savedRewards = localStorage.getItem('tcvaUnlockedRewards');
     const savedPoints = localStorage.getItem('tcvaTotalPoints');
     const savedQuizHistory = localStorage.getItem('tcvaQuizHistory');
+    const savedUnlockDates = localStorage.getItem('tcvaRewardUnlockDates');
     
     if (savedRewards) {
         try {
@@ -1587,6 +1589,14 @@ function loadRewardProgress() {
             totalPoints = parseInt(savedPoints);
         } catch (e) {
             totalPoints = 0;
+        }
+    }
+    
+    if (savedUnlockDates) {
+        try {
+            rewardUnlockDates = JSON.parse(savedUnlockDates);
+        } catch (e) {
+            rewardUnlockDates = {};
         }
     }
     
@@ -1608,6 +1618,7 @@ function saveRewardProgress() {
     localStorage.setItem('tcvaUnlockedRewards', JSON.stringify(Array.from(unlockedRewards)));
     localStorage.setItem('tcvaTotalPoints', totalPoints.toString());
     localStorage.setItem('tcvaQuizHistory', JSON.stringify(quizHistory));
+    localStorage.setItem('tcvaRewardUnlockDates', JSON.stringify(rewardUnlockDates));
 }
 
 // Vérifier et attribuer les récompenses
@@ -1711,6 +1722,7 @@ function unlockReward(rewardId) {
     if (!reward || unlockedRewards.has(rewardId)) return;
     
     unlockedRewards.add(rewardId);
+    rewardUnlockDates[rewardId] = new Date().toLocaleDateString('fr-FR');
     totalPoints += reward.points;
     
     // Afficher une notification
@@ -1783,7 +1795,7 @@ function displayRewards(filter = 'earned') {
     
     rewardsToShow.forEach(([rewardKey, reward]) => {
         const isUnlocked = unlockedRewards.has(rewardKey);
-        const card = createRewardCard(reward, isUnlocked);
+        const card = createRewardCard(reward, isUnlocked, rewardKey);
         container.appendChild(card);
     });
     
@@ -1791,7 +1803,7 @@ function displayRewards(filter = 'earned') {
 }
 
 // Créer une carte de récompense
-function createRewardCard(reward, isUnlocked) {
+function createRewardCard(reward, isUnlocked, rewardKey) {
     // Sécurité : vérifier que reward est défini
     if (!reward) {
         console.warn('Reward is undefined in createRewardCard');
@@ -1822,7 +1834,7 @@ function createRewardCard(reward, isUnlocked) {
         </div>
         <div class="reward-footer">
             <div class="reward-points">${reward.points} pts</div>
-            ${isUnlocked ? `<div class="reward-date">Débloqué le ${getRewardUnlockDate(reward.id)}</div>` : ''}
+            ${isUnlocked ? `<div class="reward-date">Débloqué le ${getRewardUnlockDate(rewardKey)}</div>` : ''}
         </div>
         ${!isUnlocked ? `<div class="reward-locked-overlay"></div>` : ''}
     `;
@@ -1832,9 +1844,7 @@ function createRewardCard(reward, isUnlocked) {
 
 // Obtenir la date de débloquage d'une récompense
 function getRewardUnlockDate(rewardId) {
-    // Pour l'instant, on retourne une date générique
-    // On pourrait stocker les dates de débloquage dans le localStorage
-    return '...';
+    return rewardUnlockDates[rewardId] || '...';
 }
 
 // Obtenir les infos de niveau pour une récompense
