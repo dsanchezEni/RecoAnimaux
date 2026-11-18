@@ -1203,7 +1203,7 @@
 
 /* --- REWARDS --- */
 .rewards-container {
-    background: white;
+    background: #F5F5F5;
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -1277,7 +1277,7 @@
 }
 
 .reward-card {
-    background: #FAFAFA;
+    background: white;
     border: 2px solid #BDBDBD;
     border-radius: 12px;
     padding: 1.25rem;
@@ -1285,6 +1285,7 @@
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     margin: 0.5rem 0;
+    z-index: 1;
 }
 
 .reward-card:hover {
@@ -1448,7 +1449,7 @@
 
 /* Dark mode for rewards */
 .dark-mode .rewards-container {
-    background: #2d2d2d;
+    background: #1e1e1e;
 }
 
 .dark-mode .reward-card {
