@@ -551,7 +551,7 @@ function displayComparisonTable(categoryId) {
     const animals = ANIMALS_DB[categoryId] || [];
     
     if (animals.length === 0) {
-        container.innerHTML = '<p>No animals in this category.</p>';
+        container.innerHTML = '<p>Pas d\'animaux dans cette catégorie.</p>';
         return;
     }
     
@@ -565,26 +565,40 @@ function displayComparisonTable(categoryId) {
     
     const thead = document.createElement('thead');
     const headerRow = document.createElement('tr');
-    headerRow.innerHTML = '<th>Caractéristiques</th>' + animals.map(a => `<th>${a.name}</th>`).join('');
+    headerRow.innerHTML = '<th class="sticky-col">Caractéristiques</th>' + animals.map(a => `<th>${a.name}</th>`).join('');
     thead.appendChild(headerRow);
     table.appendChild(thead);
     
     const tbody = document.createElement('tbody');
     
     // Caracteristiques
+    const charMap = {
+        'Taille': 'taille',
+        'Poids': 'poids',
+        'Espérance de vie': 'esperanceVie',
+        'Tempérament': 'temperament'
+    };
     ['Taille', 'Poids', 'Espérance de vie', 'Tempérament'].forEach(char => {
         const row = document.createElement('tr');
-        row.innerHTML = `<td>${char}</td>` + animals.map(a => {
-            const value = a.characteristics ? a.characteristics[char.toLowerCase().replace('é', 'e')] : 'N/A';
+        const key = charMap[char] || char.toLowerCase().replace(/\s+/g, '').replace('é', 'e');
+        row.innerHTML = `<td class="sticky-col">${char}</td>` + animals.map(a => {
+            const value = a.characteristics && a.characteristics[key] ? a.characteristics[key] : 'N/A';
             return `<td>${value || 'N/A'}</td>`;
         }).join('');
         tbody.appendChild(row);
     });
     
+    // Origine
+    const originRow = document.createElement('tr');
+    originRow.innerHTML = `<td class="sticky-col">Origine</td>` + animals.map(a => {
+        return `<td>${a.origin || 'N/A'}</td>`;
+    }).join('');
+    tbody.appendChild(originRow);
+    
     // Besoins
-    ['Alimentation', 'Espace', 'Compatibilité'].forEach(need => {
+    ['Alimentation', 'Espace', 'Exercice'].forEach(need => {
         const row = document.createElement('tr');
-        row.innerHTML = `<td>${need}</td>` + animals.map(a => {
+        row.innerHTML = `<td class="sticky-col">${need}</td>` + animals.map(a => {
             const value = a.needs ? a.needs[need.toLowerCase()] : 'N/A';
             return `<td>${value || 'N/A'}</td>`;
         }).join('');

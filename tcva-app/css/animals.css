@@ -73,9 +73,11 @@
 .animal-image {
     width: 100%;
     height: 180px;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
     border-radius: 6px;
     margin-bottom: 0.75rem;
+    background: #f5f5f5;
 }
 
 .animal-name {
@@ -181,8 +183,10 @@
 .animal-modal-image {
     width: 100%;
     height: 300px;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
     border-radius: 8px;
+    background: #f5f5f5;
 }
 
 .animal-modal-info {
@@ -452,7 +456,7 @@
 
 .comparison-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(8, 1fr);
     gap: 1rem;
 }
 
@@ -466,9 +470,11 @@
 .comparison-card img {
     width: 100%;
     height: 150px;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
     border-radius: 6px;
     margin-bottom: 0.75rem;
+    background: #f5f5f5;
 }
 
 .comparison-card h4 {
@@ -482,6 +488,10 @@
     margin-top: 1rem;
 }
 
+#comparison-table-container {
+    overflow-x: auto;
+}
+
 .comparison-table th,
 .comparison-table td {
     padding: 0.5rem;
@@ -493,6 +503,15 @@
     background: #4CAF50;
     color: white;
     font-weight: 500;
+}
+
+.comparison-table th.sticky-col,
+.comparison-table td.sticky-col {
+    position: sticky;
+    left: 0;
+    background: #4CAF50;
+    color: white;
+    z-index: 2;
 }
 
 .comparison-table tr:nth-child(even) {
@@ -563,6 +582,10 @@
     .animal-groups {
         grid-template-columns: 1fr;
     }
+    
+    .comparison-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 @media (max-width: 480px) {
@@ -572,5 +595,9 @@
     
     .animal-stats {
         grid-template-columns: 1fr;
+    }
+    
+    .comparison-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
