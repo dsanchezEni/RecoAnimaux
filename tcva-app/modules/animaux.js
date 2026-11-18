@@ -2084,6 +2084,171 @@ function addQuizToHistory(score, total) {
 }
 
 // ============================================
+// SAUVEGARDE / IMPORT
+// ============================================
+
+// Exporter toutes les données en fichier JSON
+function exportAllData() {
+    const data = {
+        // Progression animaux
+        viewedAnimals: Array.from(viewedAnimals),
+        favoriteAnimals: Array.from(favoriteAnimals),
+        blocStats: viewedAnimalsByBloc,
+        
+        // Récompenses
+        unlockedRewards: Array.from(unlockedRewards),
+        rewardUnlockDates: rewardUnlockDates,
+        totalPoints: totalPoints,
+        
+        // Défis
+        completedChallenges: Array.from(completedChallenges),
+        challengeProgress: challengeProgress,
+        
+        // Quiz
+        quizHistory: quizHistory,
+        
+        // Préférences
+        darkMode: localStorage.getItem('tcvaDarkMode'),
+        
+        // Métadonnées
+        exportDate: new Date().toISOString(),
+        version: '1.0',
+        app: 'TCVA-Animaux'
+    };
+    
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tcva-sauvegarde-${new Date().toLocaleDateString('fr-FR')}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    alert('✅ Sauvegarde exportée avec succès !');
+}
+
+// Importer les données depuis un fichier JSON
+function importAllData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    if (file.type !== 'application/json') {
+        alert('❌ Veuillez sélectionner un fichier JSON valide.');
+        event.target.value = '';
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            
+            // Vérifier la structure du fichier
+            if (!data || typeof data !== 'object') {
+                throw new Error('Fichier invalide');
+            }
+            
+            // Importer les données
+            if (data.viewedAnimals) {
+                viewedAnimals = new Set(data.viewedAnimals);
+                localStorage.setItem('tcvaAnimalsProgress', JSON.stringify({ viewedAnimals: Array.from(viewedAnimals), lastUpdated: Date.now() }));
+            }
+            
+            if (data.favoriteAnimals) {
+                favoriteAnimals = new Set(data.favoriteAnimals);
+                localStorage.setItem('tcvaFavoriteAnimals', JSON.stringify(Array.from(favoriteAnimals)));
+            }
+            
+            if (data.blocStats) {
+                viewedAnimalsByBloc = data.blocStats;
+                localStorage.setItem('tcvaBlocStats', JSON.stringify(viewedAnimalsByBloc));
+            }
+            
+            if (data.unlockedRewards) {
+                unlockedRewards = new Set(data.unlockedRewards);
+                localStorage.setItem('tcvaUnlockedRewards', JSON.stringify(Array.from(unlockedRewards)));
+            }
+            
+            if (data.rewardUnlockDates) {
+                rewardUnlockDates = data.rewardUnlockDates;
+                localStorage.setItem('tcvaRewardUnlockDates', JSON.stringify(rewardUnlockDates));
+            }
+            
+            if (data.totalPoints !== undefined) {
+                totalPoints = data.totalPoints;
+                localStorage.setItem('tcvaTotalPoints', totalPoints.toString());
+            }
+            
+            if (data.completedChallenges) {
+                completedChallenges = new Set(data.completedChallenges);
+                localStorage.setItem('tcvaCompletedChallenges', JSON.stringify(Array.from(completedChallenges)));
+            }
+            
+            if (data.challengeProgress) {
+                challengeProgress = data.challengeProgress;
+                localStorage.setItem('tcvaChallengeProgress', JSON.stringify(challengeProgress));
+            }
+            
+            if (data.quizHistory) {
+                window.quizHistory = data.quizHistory;
+                quizHistory = window.quizHistory;
+                localStorage.setItem('tcvaQuizHistory', JSON.stringify(quizHistory));
+            }
+            
+            if (data.darkMode) {
+                localStorage.setItem('tcvaDarkMode', data.darkMode);
+                if (data.darkMode === 'true') {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+            }
+            
+            // Recharger l'interface
+            loadAnimalProgress();
+            loadFavoriteAnimals();
+            loadBlocStats();
+            loadChallengeProgress();
+            loadRewardProgress();
+            initDarkMode();
+            
+            // Mettre à jour l'affichage
+            if (typeof displayRewards === 'function') displayRewards('earned');
+            if (typeof updateAnimalStats === 'function') updateAnimalStats();
+            if (typeof displayBlocStats === 'function') displayBlocStats();
+            if (typeof updateUserLevelDisplay === 'function') updateUserLevelDisplay();
+            
+            alert('✅ Données importées avec succès ! La page va se recharger.');
+            location.reload();
+            
+        } catch (error) {
+            console.error('Erreur lors de l\'import:', error);
+            alert('❌ Erreur lors de l\'import: ' + error.message);
+        } finally {
+            event.target.value = '';
+        }
+    };
+    
+    reader.readAsText(file);
+}
+
+// Créer un input file caché pour l'import
+function triggerImport() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.style.display = 'none';
+    input.onchange = importAllData;
+    document.body.appendChild(input);
+    input.click();
+    document.body.removeChild(input);
+}
+
+// ============================================
 // UTILITAIRES
 // ============================================
 
