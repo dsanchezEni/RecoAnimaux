@@ -19,6 +19,7 @@
                 <ul class="nav-links">
                     <li><a href="../index.html">Retour à l'accueil</a></li>
                     <li><a href="#" onclick="showAnimalSection('learning')" class="active">Apprentissage</a></li>
+                    <li><a href="#" onclick="showAnimalSection('challenges')">🏆 Défis</a></li>
                     <li><a href="#" onclick="showAnimalSection('bloc-revision')">Révision par Bloc</a></li>
                     <li><a href="#" onclick="showAnimalSection('quiz')">Quiz</a></li>
                     <li><a href="#" onclick="showAnimalSection('comparison')">Comparaison</a></li>
@@ -151,6 +152,12 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="animal-quiz-bloc">Bloc de compétences (optionnel) :</label>
+                        <select id="animal-quiz-bloc" onchange="updateAnimalQuizSetup()">
+                            <option value="all">Tous les blocs</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="animal-quiz-count">Nombre de questions :</label>
                         <input type="number" id="animal-quiz-count" min="5" max="50" value="10">
                     </div>
@@ -180,6 +187,24 @@
                 </div>
             </div>
 
+            <!-- SECTION DÉFIS -->
+            <div id="challenges" class="animal-section">
+                <h2>🏆 Défis - Bac Pro TCVA</h2>
+                
+                <div class="challenges-container">
+                    <div class="challenges-header">
+                        <h3>Défis par Bloc de Compétences</h3>
+                        <div class="challenge-progress-summary">
+                            <span id="challenges-completed">0</span>/
+                            <span id="challenges-total">0</span> défis complétés
+                        </div>
+                    </div>
+                    <div class="challenges-grid" id="challenges-grid">
+                        <!-- Les défis seront affichés ici -->
+                    </div>
+                </div>
+            </div>
+            
             <!-- SECTION RÉVISION PAR BLOC -->
             <div id="bloc-revision" class="animal-section">
                 <h2>🎓 Révision par Bloc de Compétences</h2>

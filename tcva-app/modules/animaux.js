@@ -18,6 +18,8 @@ let viewedAnimals = new Set();
 let favoriteAnimals = new Set();
 let viewedAnimalsByBloc = {};
 let selectedRevisionBloc = null;
+let completedChallenges = new Set();
+let challengeProgress = {};
 
 // ============================================
 // INITIALISATION
@@ -31,6 +33,7 @@ function initAnimalsModule() {
     loadAnimalProgress();
     loadFavoriteAnimals();
     loadBlocStats();
+    loadChallengeProgress();
     initDarkMode();
     initAnimalSelectOptions();
     displayAnimalCategories();
@@ -104,6 +107,7 @@ function showAnimalSection(sectionName) {
     if (sectionName === 'learning') {
         displayAnimalCategories();
         updateAnimalStats();
+        displayBlocStats();
         displayBlocFilters();
     } else if (sectionName === 'quiz') {
         showAnimalQuizSetup();
@@ -113,6 +117,9 @@ function showAnimalSection(sectionName) {
         displayAnimalGroups();
     } else if (sectionName === 'bloc-revision') {
         displayBlocRevisionSelector();
+    } else if (sectionName === 'challenges') {
+        checkAllChallenges();
+        displayChallenges();
     }
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -131,6 +138,17 @@ function initAnimalSelectOptions() {
             option.value = category.id;
             option.textContent = `${category.icon} ${category.name}`;
             animalQuizCategory.appendChild(option);
+        });
+    }
+    
+    // Initialiser les options de bloc pour le quiz
+    const animalQuizBloc = document.getElementById('animal-quiz-bloc');
+    if (animalQuizBloc && BLOCS) {
+        BLOCS.filter(bloc => bloc.id !== "all").forEach(bloc => {
+            const option = document.createElement('option');
+            option.value = bloc.id;
+            option.textContent = `${bloc.icon} ${bloc.name}`;
+            animalQuizBloc.appendChild(option);
         });
     }
 }
@@ -439,10 +457,11 @@ function showAnimalQuizSetup() {
 
 function startAnimalQuiz() {
     const category = document.getElementById('animal-quiz-category').value;
+    const bloc = document.getElementById('animal-quiz-bloc').value;
     const count = parseInt(document.getElementById('animal-quiz-count').value);
     const timeLimit = parseInt(document.getElementById('animal-quiz-time').value);
     
-    currentAnimalQuizQuestions = generateAnimalQuizQuestions(category, count);
+    currentAnimalQuizQuestions = generateAnimalQuizQuestions(category, bloc, count);
     
     if (currentAnimalQuizQuestions.length === 0) {
         alert('Aucun animal disponible pour cette catégorie.');
@@ -461,7 +480,7 @@ function startAnimalQuiz() {
     displayAnimalQuestion(timeLimit);
 }
 
-function generateAnimalQuizQuestions(category, count) {
+function generateAnimalQuizQuestions(category, bloc, count) {
     let animals = [];
     
     if (category === 'all') {
@@ -470,6 +489,14 @@ function generateAnimalQuizQuestions(category, count) {
         });
     } else {
         animals = ANIMALS_DB[category] || [];
+    }
+    
+    // Filtrer par bloc si sélectionné
+    if (bloc !== 'all' && BLOCS) {
+        animals = animals.filter(animal => {
+            const animalBlocs = getAnimalBlocs(animal);
+            return animalBlocs.includes(bloc);
+        });
     }
     
     return shuffleArray(animals).slice(0, Math.min(count, animals.length));
@@ -1275,6 +1302,229 @@ async function exportBlocStatsPDF() {
         console.error('Erreur lors de l\'export PDF:', error);
         alert('Une erreur est survenue lors de l\'export PDF. Vérifiez que vous avez une connexion internet.');
         tempElement.remove();
+    }
+}
+
+// ============================================
+// DÉFIS
+// ============================================
+
+// Charger la progression des défis
+function loadChallengeProgress() {
+    const savedCompleted = localStorage.getItem('tcvaCompletedChallenges');
+    const savedProgress = localStorage.getItem('tcvaChallengeProgress');
+    
+    if (savedCompleted) {
+        try {
+            completedChallenges = new Set(JSON.parse(savedCompleted));
+        } catch (e) {
+            completedChallenges = new Set();
+        }
+    }
+    
+    if (savedProgress) {
+        try {
+            challengeProgress = JSON.parse(savedProgress);
+        } catch (e) {
+            challengeProgress = {};
+        }
+    }
+}
+
+// Sauvegarder la progression des défis
+function saveChallengeProgress() {
+    localStorage.setItem('tcvaCompletedChallenges', JSON.stringify(Array.from(completedChallenges)));
+    localStorage.setItem('tcvaChallengeProgress', JSON.stringify(challengeProgress));
+}
+
+// Mettre à jour la progression d'un défi
+function updateChallengeProgress(challengeId, value) {
+    challengeProgress[challengeId] = value;
+    saveChallengeProgress();
+    checkChallengeCompletion(challengeId);
+}
+
+// Vérifier si un défi est complété
+function checkChallengeCompletion(challengeId) {
+    const challenge = CHALLENGES.find(c => c.id === challengeId);
+    if (!challenge) return false;
+    
+    let isCompleted = false;
+    
+    if (challenge.blocId === 'all') {
+        // Défis globaux
+        const totalAnimals = Object.values(ANIMALS_DB).reduce((sum, animals) => sum + animals.length, 0);
+        const viewedCount = viewedAnimals.size;
+        const percent = totalAnimals > 0 ? Math.round((viewedCount / totalAnimals) * 100) : 0;
+        isCompleted = percent >= challenge.targetCount;
+    } else {
+        // Défis par bloc
+        const blocData = viewedAnimalsByBloc[challenge.blocId] || { viewed: new Set(), total: 0 };
+        const viewedCount = blocData.viewed.size;
+        const total = blocData.total;
+        
+        if (challenge.targetCount === 'all') {
+            isCompleted = viewedCount === total && total > 0;
+        } else {
+            const percent = total > 0 ? Math.round((viewedCount / total) * 100) : 0;
+            isCompleted = percent >= challenge.targetCount;
+        }
+    }
+    
+    if (isCompleted && !completedChallenges.has(challengeId)) {
+        completedChallenges.add(challengeId);
+        saveChallengeProgress();
+    } else if (!isCompleted && completedChallenges.has(challengeId)) {
+        completedChallenges.delete(challengeId);
+        saveChallengeProgress();
+    }
+    
+    return isCompleted;
+}
+
+// Vérifier tous les défis
+function checkAllChallenges() {
+    if (CHALLENGES) {
+        CHALLENGES.forEach(challenge => {
+            checkChallengeCompletion(challenge.id);
+        });
+    }
+}
+
+// Afficher les défis
+function displayChallenges() {
+    const container = document.getElementById('challenges-grid');
+    if (!container || !CHALLENGES) return;
+    
+    container.innerHTML = '';
+    
+    // Afficher les défis par bloc
+    BLOCS.forEach(bloc => {
+        const blocChallenges = CHALLENGES.filter(c => c.blocId === bloc.id);
+        if (blocChallenges.length === 0) return;
+        
+        const blocHeader = document.createElement('div');
+        blocHeader.className = 'challenge-bloc-header';
+        blocHeader.innerHTML = `
+            <h3>${bloc.icon} ${bloc.name}</h3>
+        `;
+        container.appendChild(blocHeader);
+        
+        blocChallenges.forEach(challenge => {
+            const card = createChallengeCard(challenge);
+            container.appendChild(card);
+        });
+    });
+    
+    // Afficher les défis globaux
+    const globalChallenges = CHALLENGES.filter(c => c.blocId === 'all');
+    if (globalChallenges.length > 0) {
+        const globalHeader = document.createElement('div');
+        globalHeader.className = 'challenge-bloc-header';
+        globalHeader.innerHTML = '<h3>🌍 Défis Globaux</h3>';
+        container.appendChild(globalHeader);
+        
+        globalChallenges.forEach(challenge => {
+            const card = createChallengeCard(challenge);
+            container.appendChild(card);
+        });
+    }
+    
+    // Mettre à jour le résumé
+    updateChallengeSummary();
+}
+
+// Créer une carte de défi
+function createChallengeCard(challenge) {
+    const card = document.createElement('div');
+    card.className = 'challenge-card';
+    card.id = `challenge-${challenge.id}`;
+    
+    // Vérifier si le défi est complété
+    const isCompleted = completedChallenges.has(challenge.id);
+    
+    // Calculer la progression
+    let progress = 0;
+    let progressText = '';
+    
+    if (challenge.blocId === 'all') {
+        const totalAnimals = Object.values(ANIMALS_DB).reduce((sum, animals) => sum + animals.length, 0);
+        const viewedCount = viewedAnimals.size;
+        progress = totalAnimals > 0 ? Math.round((viewedCount / totalAnimals) * 100) : 0;
+        progressText = `${viewedAnimals.size}/${totalAnimals}`;
+    } else {
+        const blocData = viewedAnimalsByBloc[challenge.blocId] || { viewed: new Set(), total: 0 };
+        const viewedCount = blocData.viewed.size;
+        const total = blocData.total;
+        
+        if (challenge.targetCount === 'all') {
+            progress = total > 0 ? Math.round((viewedCount / total) * 100) : 0;
+            progressText = `${viewedCount}/${total}`;
+        } else {
+            progress = total > 0 ? Math.round((viewedCount / total) * 100) : 0;
+            progressText = `${viewedCount}/${total} (${progress}%)`;
+        }
+    }
+    
+    // Déterminer le niveau
+    const level = getChallengeLevel(progress, challenge.targetCount);
+    
+    card.innerHTML = `
+        <div class="challenge-header">
+            <span class="challenge-icon">${challenge.icon}</span>
+            <div class="challenge-info">
+                <h4>${challenge.name}</h4>
+                <p class="challenge-difficulty">${challenge.difficulty}</p>
+            </div>
+            ${isCompleted ? '<span class="challenge-completed-badge">✅ Complété</span>' : ''}
+        </div>
+        <div class="challenge-body">
+            <p>${challenge.description}</p>
+            <div class="challenge-objective">
+                <strong>Objectif:</strong> ${challenge.objective}
+            </div>
+        </div>
+        <div class="challenge-footer">
+            <div class="challenge-progress">
+                <div class="challenge-progress-bar" style="width: ${Math.min(progress, 100)}%; background: ${level.color};"></div>
+            </div>
+            <div class="challenge-stats">
+                <span>${progressText}</span>
+                <span class="challenge-reward">${level.icon} ${level.name}</span>
+            </div>
+        </div>
+    `;
+    
+    if (isCompleted) {
+        card.classList.add('completed');
+    }
+    
+    return card;
+}
+
+// Obtenir le niveau d'un défi
+function getChallengeLevel(currentProgress, target) {
+    if (target === 'all') {
+        if (currentProgress >= 100) return CHALLENGE_LEVELS.PLATINUM;
+        if (currentProgress >= 75) return CHALLENGE_LEVELS.GOLD;
+        if (currentProgress >= 50) return CHALLENGE_LEVELS.SILVER;
+        return CHALLENGE_LEVELS.BRONZE;
+    } else {
+        if (currentProgress >= target) return CHALLENGE_LEVELS.PLATINUM;
+        if (currentProgress >= target * 0.75) return CHALLENGE_LEVELS.GOLD;
+        if (currentProgress >= target * 0.5) return CHALLENGE_LEVELS.SILVER;
+        return CHALLENGE_LEVELS.BRONZE;
+    }
+}
+
+// Mettre à jour le résumé des défis
+function updateChallengeSummary() {
+    const completedEl = document.getElementById('challenges-completed');
+    const totalEl = document.getElementById('challenges-total');
+    
+    if (completedEl && totalEl && CHALLENGES) {
+        completedEl.textContent = completedChallenges.size;
+        totalEl.textContent = CHALLENGES.length;
     }
 }
 

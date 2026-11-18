@@ -1090,6 +1090,190 @@ const CATEGORY_BLOCS = {
     jardin: ["BC05", "BC06", "BC10"]
 };
 
+// ============================================
+// DÉFIS PAR BLOC DE COMPÉTENCES
+// ============================================
+
+// Niveaux de défis
+const CHALLENGE_LEVELS = {
+    BRONZE: { name: 'Bronze', icon: '🥉', threshold: 25, color: '#CD7F32', reward: 'Débutant' },
+    SILVER: { name: 'Argent', icon: '🥈', threshold: 50, color: '#C0C0C0', reward: 'Intermédiaire' },
+    GOLD: { name: 'Or', icon: '🥇', threshold: 75, color: '#FFD700', reward: 'Avancé' },
+    PLATINUM: { name: 'Platine', icon: '🏆', threshold: 100, color: '#E5E4E2', reward: 'Expert' }
+};
+
+// Défis par bloc
+const CHALLENGES = [
+    {
+        id: 'CH01',
+        blocId: 'BC01',
+        name: 'Maîtriser l\'accueil client',
+        description: 'Apprendre à accueillir et accompagner efficacement les clients en animalerie',
+        objective: 'Étudier tous les animaux associés au bloc BC01',
+        targetCount: 'all', // 'all' signifie tous les animaux du bloc
+        difficulty: 'Facile',
+        reward: 'Médaille Bronze',
+        points: 100,
+        icon: '👋'
+    },
+    {
+        id: 'CH02',
+        blocId: 'BC01',
+        name: 'Devenir expert en accueil',
+        description: 'Atteindre 100% de maîtrise pour le bloc Accueillir et accompagner le client',
+        objective: '100% de maîtrise du bloc BC01',
+        targetCount: 100, // 100% de maîtrise
+        difficulty: 'Difficile',
+        reward: 'Médaille Platine',
+        points: 300,
+        icon: '🎖️'
+    },
+    {
+        id: 'CH03',
+        blocId: 'BC02',
+        name: 'Conseiller comme un pro',
+        description: 'Maîtriser les techniques de conseil et de vente',
+        objective: 'Étudier 75% des animaux du bloc BC02',
+        targetCount: 75,
+        difficulty: 'Moyen',
+        reward: 'Médaille Argent',
+        points: 200,
+        icon: '💬'
+    },
+    {
+        id: 'CH04',
+        blocId: 'BC02',
+        name: 'Vendeur hors pair',
+        description: 'Atteindre l\'excellence en conseil et vente',
+        objective: '100% de maîtrise du bloc BC02',
+        targetCount: 100,
+        difficulty: 'Difficile',
+        reward: 'Médaille Platine',
+        points: 300,
+        icon: '💎'
+    },
+    {
+        id: 'CH05',
+        blocId: 'BC05',
+        name: 'Conseiller sur les produits',
+        description: 'Maîtriser le conseil sur les produits d\'animalerie',
+        objective: 'Étudier 50% des animaux du bloc BC05',
+        targetCount: 50,
+        difficulty: 'Facile',
+        reward: 'Médaille Bronze',
+        points: 100,
+        icon: '🛒'
+    },
+    {
+        id: 'CH06',
+        blocId: 'BC05',
+        name: 'Expert produits',
+        description: 'Connaître tous les produits et leurs utilisations',
+        objective: '100% de maîtrise du bloc BC05',
+        targetCount: 100,
+        difficulty: 'Difficile',
+        reward: 'Médaille Platine',
+        points: 300,
+        icon: '🏪'
+    },
+    {
+        id: 'CH07',
+        blocId: 'BC06',
+        name: 'Spécialiste animalier',
+        description: 'Conseiller sur tous les types d\'animaux',
+        objective: 'Étudier 50% des animaux du bloc BC06',
+        targetCount: 50,
+        difficulty: 'Moyen',
+        reward: 'Médaille Argent',
+        points: 200,
+        icon: '🐾'
+    },
+    {
+        id: 'CH08',
+        blocId: 'BC06',
+        name: 'Encyclopédie animale',
+        description: 'Devenir une référence sur les animaux d\'animalerie',
+        objective: '100% de maîtrise du bloc BC06',
+        targetCount: 100,
+        difficulty: 'Difficile',
+        reward: 'Médaille Platine',
+        points: 300,
+        icon: '📚'
+    },
+    {
+        id: 'CH09',
+        blocId: 'BC07',
+        name: 'Champion de l\'hygiène',
+        description: 'Maîtriser les normes d\'hygiène et de sécurité',
+        objective: 'Étudier tous les animaux du bloc BC07',
+        targetCount: 'all',
+        difficulty: 'Facile',
+        reward: 'Médaille Bronze',
+        points: 100,
+        icon: '🧼'
+    },
+    {
+        id: 'CH10',
+        blocId: 'BC07',
+        name: 'Expert sanitaire',
+        description: 'Connaître toutes les normes sanitaires par cœur',
+        objective: '100% de maîtrise du bloc BC07',
+        targetCount: 100,
+        difficulty: 'Moyen',
+        reward: 'Médaille Or',
+        points: 250,
+        icon: '⚕️'
+    },
+    {
+        id: 'CH11',
+        blocId: 'BC10',
+        name: 'Gestionnaire d\'animaux',
+        description: 'Apprendre à gérer et soigner les animaux',
+        objective: 'Étudier 50% des animaux du bloc BC10',
+        targetCount: 50,
+        difficulty: 'Facile',
+        reward: 'Médaille Bronze',
+        points: 100,
+        icon: '🐕'
+    },
+    {
+        id: 'CH12',
+        blocId: 'BC10',
+        name: 'Responsable animalerie',
+        description: 'Maîtriser la gestion complète des animaux',
+        objective: '100% de maîtrise du bloc BC10',
+        targetCount: 100,
+        difficulty: 'Difficile',
+        reward: 'Médaille Platine',
+        points: 300,
+        icon: '👨‍💼'
+    },
+    {
+        id: 'CH13',
+        blocId: 'all',
+        name: 'Défi Ultimate TCVA',
+        description: 'Maîtriser tous les blocs de compétences du Bac Pro TCVA',
+        objective: 'Atteindre 80% de maîtrise globale',
+        targetCount: 80,
+        difficulty: 'Extrême',
+        reward: 'Trophée Ultimate 🏆',
+        points: 1000,
+        icon: '🌟'
+    },
+    {
+        id: 'CH14',
+        blocId: 'all',
+        name: 'Perfection absolue',
+        description: 'Devenir un expert complet en animalerie',
+        objective: '100% de maîtrise de tous les animaux',
+        targetCount: 100,
+        difficulty: 'Légendaire',
+        reward: 'Diplôme Virtuel TCVA',
+        points: 2000,
+        icon: '🎓'
+    }
+];
+
 // Mapping des blocs spécifiques pour certains animaux (avec réglementation ou particularités)
 const SPECIFIC_ANIMAL_BLOCS = {
     // Animaux nécessitant certificat de capacité
