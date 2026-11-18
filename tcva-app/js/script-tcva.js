@@ -117,8 +117,6 @@ function showPage(pageName) {
         // Actions spécifiques selon la page
         if (pageName === 'questions-list') {
             displayQuestionsList();
-        } else if (pageName === 'quiz-setup') {
-            resetQuizSetup();
         } else if (pageName === 'accueil') {
             updateProgressDisplay();
             displayRecommendations();
