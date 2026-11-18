@@ -1342,6 +1342,153 @@ async function exportBlocStatsPDF() {
     }
 }
 
+// Exporter les récompenses en PDF
+async function exportRewardsPDF() {
+    const REWARDS_LOCAL = window.REWARDS;
+    if (!REWARDS_LOCAL) {
+        alert('Impossible d\'exporter: les données des récompenses ne sont pas disponibles.');
+        return;
+    }
+    
+    // Créer un élément temporaire avec les récompenses
+    const tempElement = document.createElement('div');
+    tempElement.className = 'pdf-export-container';
+    
+    // Ajouter le titre et la date
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('fr-FR');
+    const timeStr = now.toLocaleTimeString('fr-FR');
+    
+    // Compter les récompenses
+    const earnedCount = unlockedRewards.size;
+    const totalCount = Object.keys(REWARDS_LOCAL).length;
+    
+    tempElement.innerHTML = `
+        <div class="pdf-header">
+            <h1>🎖️ Mes Récompenses & Badges</h1>
+            <h2>Bac Pro TCVA - Reconnaissances Animaux</h2>
+            <p>Généré le ${dateStr} à ${timeStr}</p>
+            <p><strong>Niveau actuel:</strong> ${getGlobalLevel().name} (${totalPoints} pts)</p>
+            <p><strong>Progression:</strong> ${earnedCount}/${totalCount} récompenses débloquées</p>
+        </div>
+        
+        <div class="pdf-rewards-grid">
+            ${Object.entries(REWARDS_LOCAL).map(([rewardKey, reward]) => {
+                const isUnlocked = unlockedRewards.has(rewardKey);
+                const unlockDate = isUnlocked ? (rewardUnlockDates[rewardKey] || '...') : 'À débloquer';
+                const levelInfo = getRewardLevelInfo(reward.points);
+                
+                return `
+                    <div class="pdf-reward-card ${isUnlocked ? 'unlocked' : 'locked'}">
+                        <h3>${reward.icon} ${reward.name}</h3>
+                        <p><strong>Type:</strong> ${REWARD_TYPES[reward.type]?.name || reward.type}</p>
+                        <p><strong>Description:</strong> ${reward.description}</p>
+                        <p><strong>Points:</strong> ${reward.points} pts</p>
+                        <p><strong>Date de débloquage:</strong> ${unlockDate}</p>
+                        <p><strong>Statut:</strong> <span style="color: ${isUnlocked ? '#4CAF50' : '#F44336'}; font-weight: bold;">${isUnlocked ? '✅ Débloqué' : '🔒 Verrouillé'}</span></p>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        
+        <div class="pdf-footer" style="margin-top: 2rem; text-align: center; padding: 1rem; border-top: 1px solid #ddd;">
+            <p>Application de révision - Bac Pro TCVA</p>
+            <p>Denis Sanchez - 2026</p>
+        </div>
+    `;
+    
+    // Ajouter les styles pour le PDF
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `
+        .pdf-export-container {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #9C27B0;
+            padding-bottom: 20px;
+        }
+        .pdf-header h1 {
+            color: #7B1FA2;
+            margin-bottom: 10px;
+        }
+        .pdf-header h2 {
+            color: #9C27B0;
+            margin-bottom: 10px;
+        }
+        .pdf-header p {
+            color: #666;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .pdf-rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .pdf-reward-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            page-break-inside: avoid;
+        }
+        .pdf-reward-card.unlocked {
+            background-color: #F8F9FA;
+            border-left: 4px solid #4CAF50;
+        }
+        .pdf-reward-card.locked {
+            background-color: #FFF8F8;
+            border-left: 4px solid #F44336;
+        }
+        .pdf-reward-card h3 {
+            color: #7B1FA2;
+            margin-bottom: 8px;
+        }
+        .pdf-reward-card p {
+            margin: 5px 0;
+            font-size: 13px;
+        }
+        .pdf-footer {
+            font-size: 12px;
+            color: #666;
+        }
+        @media print {
+            .pdf-rewards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    `;
+    tempElement.appendChild(styleElement);
+    
+    // Ajouter l'élément temporaire au body
+    document.body.appendChild(tempElement);
+    
+    try {
+        // Utiliser html2pdf pour générer le PDF
+        const opt = {
+            margin: 10,
+            filename: `recompenses-TCVA-${dateStr}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        
+        const pdf = await html2pdf().from(tempElement).set(opt).save();
+        
+        // Nettoyer
+        tempElement.remove();
+    } catch (error) {
+        console.error('Erreur lors de l\'export PDF des récompenses:', error);
+        alert('Une erreur est survenue lors de l\'export PDF. Vérifiez que vous avez une connexion internet.');
+        tempElement.remove();
+    }
+}
+
 // ============================================
 // DÉFIS
 // ============================================
