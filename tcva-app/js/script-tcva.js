@@ -52,6 +52,20 @@ function handleHashChange() {
 // DARK MODE
 // ============================================
 
+function checkForUpdates() {
+    // Charger le fichier version.json
+    fetch('version.json')
+        .then(response => response.json())
+        .then(data => {
+            // Stockage la version actuelle
+            localStorage.setItem('tcvaCurrentVersion', data.version);
+        })
+        .catch(() => {
+            // Si le fichier n'existe pas ou erreur, on utilise une version par défaut
+            console.log('Impossible de charger version.json');
+        });
+}
+
 function toggleDarkMode() {
     const body = document.body;
     const isDark = body.classList.toggle('dark-mode');
@@ -76,6 +90,8 @@ function toggleDarkMode() {
 
 // Charger le dark mode au démarrage
 function initDarkMode() {
+    // Vérifier les mises à jour
+    checkForUpdates();
     const savedMode = localStorage.getItem('tcvaDarkMode');
     const isDark = savedMode === 'true';
     
@@ -163,6 +179,19 @@ function showPage(pageName) {
             updateProgressDisplay();
             displayRecommendations();
             displayHistory();
+        } else if (pageName === 'outils') {
+            // Mettre à jour les stats
+            document.getElementById('export-total-questions').textContent = QUESTIONS_TCVA.length;
+            document.getElementById('export-total-animals').textContent = Object.values(ANIMALS_DB).reduce((sum, cat) => sum + cat.length, 0);
+            
+            // Calculer la taille du localStorage
+            let totalSize = 0;
+            for (let key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    totalSize += localStorage[key].length * 2;
+                }
+            }
+            document.getElementById('export-local-storage-size').textContent = Math.round(totalSize / 1024) + ' Ko';
         }
     }
     
@@ -459,7 +488,11 @@ function resetQuizSetup() {
 // GESTION DE LA BASE DE QUESTIONS
 // ============================================
 
-function displayQuestionsList() {
+// Pagination variables
+let currentQuestionPage = 1;
+const QUESTIONS_PER_PAGE = 20;
+
+function displayQuestionsList(page = 1) {
     const searchInput = document.getElementById('question-search-input');
     const blocFilter = document.getElementById('question-bloc-filter');
     const levelFilter = document.getElementById('question-level-filter');
@@ -481,10 +514,17 @@ function displayQuestionsList() {
     
     if (filteredQuestions.length === 0) {
         questionsContainer.innerHTML = '<p style="text-align: center; padding: 2rem; color: #666;">Aucune question ne correspond aux critères sélectionnés.</p>';
+        document.getElementById('pagination-container').innerHTML = '';
         return;
     }
     
-    filteredQuestions.forEach(question => {
+    // Pagination
+    const totalPages = Math.ceil(filteredQuestions.length / QUESTIONS_PER_PAGE);
+    const startIndex = (page - 1) * QUESTIONS_PER_PAGE;
+    const endIndex = Math.min(startIndex + QUESTIONS_PER_PAGE, filteredQuestions.length);
+    const paginatedQuestions = filteredQuestions.slice(startIndex, endIndex);
+    
+    paginatedQuestions.forEach(question => {
         const questionElement = createQuestionElement(question);
         questionsContainer.appendChild(questionElement);
         
@@ -493,8 +533,66 @@ function displayQuestionsList() {
         saveProgress();
     });
     
+    // Afficher la pagination
+    displayPagination(filteredQuestions.length, page, totalPages);
+    
     // Mettre à jour le nombre total de questions
     displayTotalQuestions();
+}
+
+function displayPagination(totalItems, currentPage, totalPages) {
+    const container = document.getElementById('pagination-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    if (totalPages <= 1) return;
+    
+    const paginationDiv = document.createElement('div');
+    paginationDiv.className = 'pagination';
+    
+    // Bouton Précédent
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'btn btn-secondary';
+    prevBtn.textContent = '← Précédent';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => {
+        if (currentPage > 1) {
+            displayQuestionsList(currentPage - 1);
+        }
+    };
+    paginationDiv.appendChild(prevBtn);
+    
+    // Numéros de page
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.className = 'btn' + (i === currentPage ? ' btn-primary' : ' btn-secondary');
+        pageBtn.textContent = i;
+        pageBtn.onclick = () => displayQuestionsList(i);
+        paginationDiv.appendChild(pageBtn);
+    }
+    
+    // Bouton Suivant
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn btn-secondary';
+    nextBtn.textContent = 'Suivant →';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => {
+        if (currentPage < totalPages) {
+            displayQuestionsList(currentPage + 1);
+        }
+    };
+    paginationDiv.appendChild(nextBtn);
+    
+    container.appendChild(paginationDiv);
 }
 
 function createQuestionElement(question) {
@@ -851,6 +949,207 @@ function shuffleArray(array) {
         [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
     return newArray;
+}
+
+// ============================================
+// OUTILS : Backup, Import, Validation
+// ============================================
+
+function exportData() {
+    const statusElement = document.getElementById('import-export-status');
+    if (statusElement) {
+        statusElement.innerHTML = '<p style="color: #FFC107;">Export en cours...</p>';
+    }
+    
+    // Calculer la taille du localStorage
+    let totalSize = 0;
+    for (let key in localStorage) {
+        if (localStorage.hasOwnProperty(key)) {
+            totalSize += localStorage[key].length * 2; // 2 bytes par caractère (UTF-16)
+        }
+    }
+    const sizeInKB = Math.round(totalSize / 1024);
+    
+    // Mettre à jour les stats
+    document.getElementById('export-total-questions').textContent = QUESTIONS_TCVA.length;
+    document.getElementById('export-total-animals').textContent = Object.values(ANIMALS_DB).reduce((sum, cat) => sum + cat.length, 0);
+    document.getElementById('export-local-storage-size').textContent = sizeInKB + ' Ko';
+    
+    // Créer l'objet d'export
+    const exportData = {
+        version: '1.0',
+        date: new Date().toISOString(),
+        questions: QUESTIONS_TCVA,
+        blocks: BLOCS,
+        animalCategories: ANIMAL_CATEGORIES,
+        animals: ANIMALS_DB,
+        userData: {
+            questionsViewed: Array.from(questionsViewed),
+            quizHistory: quizHistory,
+            progress: localStorage.getItem('tcvaProgress'),
+            darkMode: localStorage.getItem('tcvaDarkMode'),
+            favorites: localStorage.getItem('tcvaFavoriteAnimals')
+        }
+    };
+    
+    // Télécharger le fichier
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'tcva-backup-' + new Date().toISOString().split('T')[0] + '.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    if (statusElement) {
+        statusElement.innerHTML = '<p style="color: #4CAF50;">✅ Export terminé ! Fichier téléchargé.</p>';
+        setTimeout(() => {
+            if (statusElement) statusElement.innerHTML = '';
+        }, 3000);
+    }
+}
+
+function importData() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.json';
+    fileInput.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const statusElement = document.getElementById('import-export-status');
+        if (statusElement) {
+            statusElement.innerHTML = '<p style="color: #FFC107;">Import en cours...</p>';
+        }
+        
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const importedData = JSON.parse(event.target.result);
+                
+                // Importer les données utilisateur
+                if (importedData.userData) {
+                    if (importedData.userData.questionsViewed) {
+                        questionsViewed = new Set(importedData.userData.questionsViewed);
+                        saveProgress();
+                    }
+                    if (importedData.userData.quizHistory) {
+                        quizHistory = importedData.userData.quizHistory;
+                        saveHistory();
+                    }
+                    if (importedData.userData.progress) {
+                        localStorage.setItem('tcvaProgress', importedData.userData.progress);
+                    }
+                    if (importedData.userData.darkMode) {
+                        localStorage.setItem('tcvaDarkMode', importedData.userData.darkMode);
+                        initDarkMode();
+                    }
+                    if (importedData.userData.favorites) {
+                        localStorage.setItem('tcvaFavoriteAnimals', importedData.userData.favorites);
+                    }
+                }
+                
+                if (statusElement) {
+                    statusElement.innerHTML = '<p style="color: #4CAF50;">✅ Import terminé ! Données restaurées.</p>';
+                    setTimeout(() => {
+                        if (statusElement) statusElement.innerHTML = '';
+                        location.reload();
+                    }, 2000);
+                }
+            } catch (error) {
+                if (statusElement) {
+                    statusElement.innerHTML = '<p style="color: #F44336;">❌ Erreur lors de l\'import : ' + error.message + '</p>';
+                }
+            }
+        };
+        reader.readAsText(file);
+    };
+    fileInput.click();
+}
+
+function clearAllData() {
+    if (confirm('⚠️ Attention : Cette action effacera TOUTES vos données locales (progression, historique, favoris). Voulez-vous continuer ?')) {
+        localStorage.clear();
+        questionsViewed = new Set();
+        quizHistory = [];
+        
+        const statusElement = document.getElementById('import-export-status');
+        if (statusElement) {
+            statusElement.innerHTML = '<p style="color: #4CAF50;">✅ Toutes les données ont été effacées.</p>';
+            setTimeout(() => {
+                if (statusElement) statusElement.innerHTML = '';
+                location.reload();
+            }, 2000);
+        }
+    }
+}
+
+function validateData() {
+    const resultsContainer = document.getElementById('validation-results');
+    if (!resultsContainer) return;
+    
+    resultsContainer.innerHTML = '<p style="color: #2196F3;">Validation en cours...</p>';
+    
+    const issues = [];
+    
+    // Vérifier QUESTIONS_TCVA
+    const questionIds = new Set();
+    QUESTIONS_TCVA.forEach(q => {
+        if (questionIds.has(q.id)) {
+            issues.push(`❌ ID de question dupliqué : ${q.id}`);
+        }
+        questionIds.add(q.id);
+    });
+    
+    // Vérifier ANIMALS_DB
+    const animalIds = new Set();
+    Object.values(ANIMALS_DB).forEach(cat => {
+        cat.forEach(a => {
+            if (animalIds.has(a.id)) {
+                issues.push(`❌ ID d'animal dupliqué : ${a.id}`);
+            }
+            animalIds.add(a.id);
+            
+            // Vérifier que l'image existe (approximation)
+            if (a.image && !a.image.includes('placeholder')) {
+                // On vérifie juste le format
+                if (!a.image.match(/\.(png|jpg|jpeg|gif)$/i)) {
+                    issues.push(`⚠️ Format d'image suspect pour ${a.id}: ${a.image}`);
+                }
+            }
+        });
+    });
+    
+    // Vérifier BLOCS
+    const blocIds = new Set();
+    BLOCS.forEach(b => {
+        if (blocIds.has(b.id)) {
+            issues.push(`❌ ID de bloc dupliqué : ${b.id}`);
+        }
+        blocIds.add(b.id);
+    });
+    
+    // Vérifier ANIMAL_CATEGORIES
+    const categoryIds = new Set();
+    ANIMAL_CATEGORIES.forEach(c => {
+        if (categoryIds.has(c.id)) {
+            issues.push(`❌ ID de catégorie dupliqué : ${c.id}`);
+        }
+        categoryIds.add(c.id);
+    });
+    
+    // Afficher les résultats
+    if (issues.length === 0) {
+        resultsContainer.innerHTML = '<p style="color: #4CAF50;">✅ Toutes les données sont valides ! Aucun problème détecté.</p>';
+    } else {
+        resultsContainer.innerHTML = '<p style="color: #F44336;">⚠️ ' + issues.length + ' problème(s) détecté(s) :</p><ul>' + 
+            issues.map(issue => '<li>' + issue + '</li>').join('') + 
+            '</ul>';
+    }
 }
 
 // ============================================

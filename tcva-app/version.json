@@ -1,0 +1,53 @@
+{
+  "appName": "Bac Pro TCVA - Application de Révision",
+  "version": "1.1.0",
+  "description": "Application interactive pour réviser et tester les connaissances sur les 12 blocs de compétences du Baccalauréat Professionnel Technicien Conseil-Vente en Animalerie",
+  "author": "Denis Sanchez",
+  "lastUpdated": "2026-11-16",
+  "changelog": [
+    {
+      "version": "1.1.0",
+      "date": "2026-11-16",
+      "changes": [
+        "Ajout du mode sombre (Dark Mode)",
+        "Animations de feedback visuel pour le quiz",
+        "Barre de progression colorée (rouge/orange/vert)",
+        "Système de favoris pour les animaux",
+        "Lazy loading des images",
+        "Pagination des questions (20 par page)",
+        "Fonctionnalités d'export/import des données",
+        "Validation des données",
+        "Système de versioning"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-11-15",
+      "changes": [
+        "Version initiale avec quiz, base de questions et module animaux"
+      ]
+    }
+  ],
+  "dependencies": {
+    "browser": "Chrome, Firefox, Edge, Safari (dernières versions)",
+    "storage": "localStorage support requis",
+    "features": ["ES6", "CSS Grid", "Flexbox"]
+  },
+  "features": {
+    "quiz": true,
+    "questionsDatabase": true,
+    "animalsModule": true,
+    "progressTracking": true,
+    "darkMode": true,
+    "favorites": true,
+    "pagination": true,
+    "dataExport": true,
+    "dataImport": true,
+    "dataValidation": true
+  },
+  "stats": {
+    "totalQuestions": 0,
+    "totalAnimals": 0,
+    "totalBlocs": 12
+  }
+}

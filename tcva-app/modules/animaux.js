@@ -247,6 +247,8 @@ function createAnimalCard(animal) {
     img.src = animal.image || 'https://via.placeholder.com/300x200';
     img.alt = animal.name;
     img.className = 'animal-image';
+    img.loading = 'lazy';
+    img.decoding = 'async';
     img.onerror = () => {
         img.src = 'https://via.placeholder.com/300x200?text=' + encodeURIComponent(animal.name);
     };
@@ -306,6 +308,8 @@ function showAnimalModal(animal) {
                 <img src="${animal.image || 'https://via.placeholder.com/400x300'}" 
                      alt="${animal.name}" 
                      class="animal-modal-image"
+                     loading="lazy"
+                     decoding="async"
                      onerror="this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(animal.name)}';">
                 <div class="animal-modal-info">
                     <div class="info-section">
@@ -445,6 +449,8 @@ function displayAnimalQuestion(timeLimit) {
     const img = document.getElementById('quiz-animal-image');
     img.src = animal.image || 'https://via.placeholder.com/400x300';
     img.alt = animal.name;
+    img.loading = 'lazy';
+    img.decoding = 'async';
     
     displayAnimalOptions(animal);
     

@@ -22,6 +22,7 @@
                     <li><a href="#" onclick="showPage('questions-list')">Base de Questions</a></li>
                     <li><a href="modules/animaux.html">Reconnaissance Animaux</a></li>
                     <li><a href="#" onclick="showPage('a-retenir')">À Retenir</a></li>
+                    <li><a href="#" onclick="showPage('outils')">Outils</a></li>
                 </ul>
             </nav>
             <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Mode sombre">🌙</button>
@@ -270,6 +271,55 @@
                 </div>
                <div class="questions-list" id="questions-container">
                </div>
+               <div id="pagination-container" class="pagination-container"></div>
+            </div>
+
+            <!-- PAGE OUTILS -->
+            <div id="outils" class="page">
+                <h2>🔧 Outils</h2>
+                <div class="tools-container">
+                    <div class="tool-section">
+                        <h3>💾 Sauvegarde et Restauration</h3>
+                        <div class="tool-actions">
+                            <button class="btn btn-primary" onclick="exportData()">
+                                ✅ Exporter toutes les données
+                            </button>
+                            <button class="btn btn-secondary" onclick="importData()">
+                                📥 Importer des données
+                            </button>
+                            <button class="btn btn-danger" onclick="clearAllData()">
+                                🗑️ Tout effacer
+                            </button>
+                        </div>
+                        <div id="import-export-status" class="status-message"></div>
+                    </div>
+                    
+                    <div class="tool-section">
+                        <h3>📊 Statistiques</h3>
+                        <div class="stats-overview">
+                            <div class="stat-card">
+                                <div class="stat-number" id="export-total-questions">0</div>
+                                <div class="stat-label">Questions dans la base</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="export-total-animals">0</div>
+                                <div class="stat-label">Animaux référencés</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="export-local-storage-size">0 Ko</div>
+                                <div class="stat-label">Espace local utilisé</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-section">
+                        <h3>✅ Validation des Données</h3>
+                        <button class="btn" onclick="validateData()">
+                            Vérifier l'intégrité des données
+                        </button>
+                        <div id="validation-results" class="validation-results"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- PAGE À RETENIR -->
