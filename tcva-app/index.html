@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bac Pro TCVA - Révision et Quiz Interactif</title>
-    <link rel="stylesheet" href="css/style.css?v=1.0">
-    <link rel="stylesheet" href="css/animals.css?v=1.0">
+    <link rel="stylesheet" href="css/style.css?v=6.0">
+    <link rel="stylesheet" href="css/animals.css?v=6.0">
 </head>
 <body>
     <header id="site-header">
@@ -175,11 +175,10 @@
                         <input type="number" id="time-limit" min="10" max="300" value="30" placeholder="Temps en secondes">
                     </div>
                     
-                    <div class="form-group" style="margin-bottom: 1rem;">
+                    <div class="mt-2">
                         <button class="btn btn-secondary" onclick="resetQuizSetup()">Réinitialiser les filtres</button>
+                        <button class="btn" onclick="startQuiz()">Commencer le Quiz</button>
                     </div>
-                    
-                    <button class="btn" onclick="startQuiz()">Commencer le Quiz</button>
                 </div>
             </div>
 
@@ -451,6 +450,6 @@
 
     <script src="js/quiz-tcva.js?v=1.0"></script>
     <script src="modules/animals-db.js?v=1.0"></script>
-    <script src="js/script-tcva.js?v=1.0"></script>
+    <script src="js/script-tcva.js?v=2.4"></script>
 </body>
 </html>

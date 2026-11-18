@@ -576,8 +576,10 @@ function displayAnimalOptions(correctAnimal) {
     const sameCategoryAnimals = allAnimals.filter(a => a.category === correctAnimal.category && a.id !== correctAnimal.id);
     const wrongOptions = shuffleArray(sameCategoryAnimals).slice(0, 3).map(a => a.name);
     
-    const options = [correctAnimal.name, ...wrongOptions];
-    const shuffledOptions = shuffleArray(options);
+    // Créer toutes les options et les mélanger VRAIMENT aléatoirement
+    const allOptions = [correctAnimal.name, ...wrongOptions];
+    // Méthode alternative de mélange pour garantir l'aléatoire
+    const shuffledOptions = [...allOptions].sort(() => Math.random() - 0.5);
     
     shuffledOptions.forEach((option, index) => {
         const optionElement = document.createElement('div');

@@ -314,16 +314,23 @@ function displayAnswers(question) {
     const answersContainer = document.getElementById('answers-container');
     answersContainer.innerHTML = '';
     
-    question.options.forEach((option, index) => {
+    // Mélanger les options pour que la bonne réponse ne soit pas toujours en premier
+    const shuffledOptions = shuffleArray([...question.options]);
+    
+    // Trouver la nouvelle position de la bonne réponse après le mélange
+    const correctOption = question.options[question.correct];
+    const newCorrectIndex = shuffledOptions.indexOf(correctOption);
+    
+    shuffledOptions.forEach((option, index) => {
         const answerElement = document.createElement('div');
         answerElement.className = 'answer-option';
         answerElement.textContent = option;
-        answerElement.onclick = () => selectAnswer(index, question);
+        answerElement.onclick = () => selectAnswer(index, question, newCorrectIndex);
         answersContainer.appendChild(answerElement);
     });
 }
 
-function selectAnswer(selectedIndex, question) {
+function selectAnswer(selectedIndex, question, actualCorrectIndex) {
     // Désactiver les clics sur les réponses
     const answerOptions = document.querySelectorAll('.answer-option');
     answerOptions.forEach(option => {
@@ -333,8 +340,8 @@ function selectAnswer(selectedIndex, question) {
     // Marquer la réponse sélectionnée
     answerOptions[selectedIndex].classList.add('selected');
     
-    // Vérifier si c'est la bonne réponse
-    const isCorrect = selectedIndex === question.correct;
+    // Vérifier si c'est la bonne réponse (utiliser l'index actuel de la bonne réponse)
+    const isCorrect = selectedIndex === actualCorrectIndex;
     
     // Mettre à jour le score
     if (isCorrect) {
@@ -343,8 +350,8 @@ function selectAnswer(selectedIndex, question) {
         answerOptions[selectedIndex].classList.remove('selected');
     } else {
         answerOptions[selectedIndex].classList.add('incorrect');
-        // Marquer la bonne réponse
-        answerOptions[question.correct].classList.add('correct');
+        // Marquer la bonne réponse (utiliser l'index actuel)
+        answerOptions[actualCorrectIndex].classList.add('correct');
     }
     
     // Marquer la question comme vue
@@ -539,6 +546,9 @@ function displayQuestionsList(page = 1) {
     // Afficher la pagination
     displayPagination(filteredQuestions.length, page, totalPages);
     
+    // Remonter en haut de la page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     // Mettre à jour le nombre total de questions
     displayTotalQuestions();
 }
@@ -580,7 +590,7 @@ function displayPagination(totalItems, currentPage, totalPages) {
     
     for (let i = startPage; i <= endPage; i++) {
         const pageBtn = document.createElement('button');
-        pageBtn.className = 'btn' + (i === currentPage ? ' btn-primary' : ' btn-secondary');
+        pageBtn.className = 'btn btn-pagination' + (i === currentPage ? ' active' : ' btn-secondary');
         pageBtn.textContent = i;
         pageBtn.onclick = () => displayQuestionsList(i);
         paginationDiv.appendChild(pageBtn);

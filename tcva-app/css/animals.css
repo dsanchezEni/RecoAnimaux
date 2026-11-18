@@ -1568,3 +1568,27 @@
         min-width: 200px;
     }
 }
+
+/* Quiz Setup Buttons - always on same line */
+.animal-quiz-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.animal-quiz-buttons .btn {
+    flex: 1;
+    min-width: 180px;
+}
+
+@media (max-width: 480px) {
+    .animal-quiz-buttons {
+        flex-direction: column;
+    }
+    
+    .animal-quiz-buttons .btn {
+        min-width: 100%;
+    }
+}
+

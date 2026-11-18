@@ -717,9 +717,16 @@ main {
     padding: 0.5rem 0.75rem;
 }
 
-.pagination button.btn-primary {
-    background: var(--primary-color);
-    color: white;
+/* Page active dans la pagination */
+.pagination button.active,
+.pagination .btn.active,
+.pagination button.btn.active,
+.pagination > div > button.active,
+.pagination .btn-pagination.active {
+    background: var(--primary-color) !important;
+    color: white !important;
+    border-color: var(--primary-color) !important;
+    font-weight: bold;
 }
 
 /* Tools Page */
