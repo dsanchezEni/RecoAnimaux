@@ -3,9 +3,6 @@
 // Images locales dans le dossier img/
 // ============================================
 
-// Éviter le rechargement multiple du fichier
-if (typeof window.REWARDS === 'undefined') {
-
 window.ANIMALS_DB = {
     chien: [
         {
@@ -1553,4 +1550,3 @@ window.SPECIFIC_ANIMAL_BLOCS = {
     'oiseau-001': ["BC01", "BC02", "BC05", "BC06", "BC07", "BC10", "BC11", "BC12"], // Perroquet Gris (animation)
     'NAC-001': ["BC01", "BC02", "BC05", "BC06", "BC10", "BC12"]  // Lapin Nain (animation)
 };
-}

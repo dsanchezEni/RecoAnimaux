@@ -772,18 +772,22 @@ function displayRecommendations() {
     const quizByBloc = {};
     if (quizHistory && Array.isArray(quizHistory)) {
         quizHistory.forEach(quiz => {
-        quiz.wrongAnswers.forEach(answer => {
-            const question = QUESTIONS_TCVA.find(q => q.id === answer.questionId);
-            if (question) {
-                const blocId = question.bloc;
-                if (!quizByBloc[blocId]) {
-                    quizByBloc[blocId] = { total: 0, wrong: 0 };
-                }
-                quizByBloc[blocId].total++;
-                quizByBloc[blocId].wrong++;
+            // Vérifier que wrongAnswers existe et est un tableau
+            if (quiz.wrongAnswers && Array.isArray(quiz.wrongAnswers)) {
+                quiz.wrongAnswers.forEach(answer => {
+                    const question = QUESTIONS_TCVA.find(q => q.id === answer.questionId);
+                    if (question) {
+                        const blocId = question.bloc;
+                        if (!quizByBloc[blocId]) {
+                            quizByBloc[blocId] = { total: 0, wrong: 0 };
+                        }
+                        quizByBloc[blocId].total++;
+                        quizByBloc[blocId].wrong++;
+                    }
+                });
             }
         });
-    };
+    }
     
     // Calculer le taux d'erreur par bloc
     const blocErrorRates = Object.entries(quizByBloc).map(([blocId, stats]) => ({

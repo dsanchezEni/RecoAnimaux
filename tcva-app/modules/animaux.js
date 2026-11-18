@@ -1612,10 +1612,11 @@ function saveRewardProgress() {
 
 // Vérifier et attribuer les récompenses
 function checkAndAwardRewards() {
-    if (!REWARDS) return;
+    const REWARDS_LOCAL = window.REWARDS;
+    if (!REWARDS_LOCAL) return;
     
-    Object.keys(REWARDS).forEach(rewardId => {
-        const reward = REWARDS[rewardId];
+    Object.keys(REWARDS_LOCAL).forEach(rewardId => {
+        const reward = REWARDS_LOCAL[rewardId];
         if (unlockedRewards.has(rewardId)) return;
         
         if (checkRewardUnlock(reward)) {
@@ -1691,7 +1692,7 @@ function checkRewardUnlock(reward) {
 
 // Débloquer une récompense
 function unlockReward(rewardId) {
-    const reward = REWARDS[rewardId];
+    const reward = window.REWARDS ? window.REWARDS[rewardId] : null;
     if (!reward || unlockedRewards.has(rewardId)) return;
     
     unlockedRewards.add(rewardId);
@@ -1743,13 +1744,13 @@ function displayRewards(filter = 'earned') {
     const REWARDS_LOCAL = window.REWARDS || REWARDS;
     if (!REWARDS_LOCAL) {
         container.innerHTML = '<p style="text-align: center; padding: 2rem; color: #F44336;">⚠️ Erreur : données des récompenses non chargées. Veuillez recharger la page.</p>';
-        console.error('REWARDS non défini. Vérifiez que animals-db.js est chargé.');
+        console.error('window.REWARDS non défini. Vérifiez que animals-db.js est chargé.');
         return;
     }
     
     container.innerHTML = '';
     
-    const rewardsToShow = Object.values(REWARDS).filter(reward => {
+    const rewardsToShow = Object.values(REWARDS_LOCAL).filter(reward => {
         if (filter === 'earned') {
             return unlockedRewards.has(reward.id);
         } else if (filter === 'available') {
@@ -1856,9 +1857,9 @@ function updateRewardsSummary() {
     const earnedEl = document.getElementById('rewards-earned');
     const totalEl = document.getElementById('rewards-total');
     
-    if (earnedEl && totalEl && REWARDS) {
+    if (earnedEl && totalEl && window.REWARDS) {
         earnedEl.textContent = unlockedRewards.size;
-        totalEl.textContent = Object.keys(REWARDS).length;
+        totalEl.textContent = Object.keys(window.REWARDS).length;
     }
 }
 
